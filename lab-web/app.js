@@ -1,6 +1,6 @@
 import {readEventStream} from './chat-stream.js?v=1.3.0';
 const browserMode = !!globalThis.NEXO_BROWSER;
-const browserRuntime = browserMode ? await import('./browser/runtime.js') : null;
+const browserRuntime = browserMode ? await import('./browser/runtime.js?v=1.4.1') : null;
 const request = browserRuntime ? browserRuntime.request : fetch;
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];

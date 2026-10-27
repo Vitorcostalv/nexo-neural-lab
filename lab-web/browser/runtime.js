@@ -1,4 +1,4 @@
-import {cosine,retrieve,publicMemory,graph,predict} from './learning.js';
+import {cosine,retrieve,publicMemory,graph,predict} from './learning.js?v=1.4.1';
 let db,worker,sequence=0,mutating=false;
 const pending=new Map();
 const notice=document.createElement('div');notice.className='browser-notice';notice.setAttribute('role','status');
@@ -9,7 +9,7 @@ document.querySelector('label[for="api-key"]').hidden=true;
 document.querySelector('#save-key').hidden=true;
 const about=document.querySelector('#view-about');if(about){const p=document.createElement('p');p.className='body-copy';p.textContent='Edição web: Qwen2.5 0.5B + MiniLM multilíngue (384 dimensões), IndexedDB e MLP em JavaScript. A edição Python usa modelos maiores, SQLite, NumPy e Whisper. A rede 3D é ilustrativa; somente os nós de memória e suas similaridades representam os dados.';about.prepend(p);}
 function rpc(type,payload,onDelta){
-  if(!worker){worker=new Worker(new URL('./inference-worker.js',import.meta.url),{type:'module'});
+  if(!worker){worker=new Worker(new URL('./inference-worker.js?v=1.4.1',import.meta.url),{type:'module'});
     worker.onmessage=({data})=>{const p=pending.get(data.id);if(!p)return;if(data.progress)notice.textContent=data.progress;else if(data.delta)p.onDelta?.(data.delta);else{pending.delete(data.id);data.error?p.reject(Error(data.error)):p.resolve(data.result);}};
     worker.onerror=()=>{for(const p of pending.values())p.reject(Error('Não foi possível iniciar a IA. Recarregue a página e verifique sua conexão.'));pending.clear();worker.terminate();worker=null;};
   }

@@ -5,6 +5,7 @@ await mkdir(out,{recursive:true});
 await cp(resolve(root,'lab-web'),resolve(out,'assets'),{recursive:true,filter:src=>!src.includes('tests')&&!src.endsWith('package.json')});
 let html=await readFile(resolve(root,'lab-web/index.html'),'utf8');
 html=html.replaceAll('/assets/','./assets/').replace('href="/"','href="./"').replace('<head>','<head>\n<script>globalThis.NEXO_BROWSER=true;</script>');
+html=html.replaceAll('?v=1.3.0','?v=1.4.1');
 html=html.replace('NumPy / CPU','JavaScript / Worker').replace('armazenados no SQLite','armazenados no IndexedDB deste navegador').replace('Modelos, memórias e interface rodam localmente, sem CDN.','A inferência roda no dispositivo; bibliotecas e modelos são baixados de jsDelivr e Hugging Face. Os textos não são enviados para um servidor de IA.');
 await writeFile(resolve(out,'index.html'),html);
 await writeFile(resolve(out,'.nojekyll'),'');

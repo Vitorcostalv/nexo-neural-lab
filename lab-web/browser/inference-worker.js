@@ -1,4 +1,4 @@
-import {train} from './learning.js';
+import {train} from './learning.js?v=1.4.1';
 let transformers,extractor,generator,engine,gpuFailed=false;
 const progress=(id,text)=>postMessage({id,progress:text});
 async function library(){return transformers ||= await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1');}
