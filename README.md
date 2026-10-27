@@ -2,6 +2,9 @@
 
 **Laboratório interativo de deep learning, memória vetorial e RAG.**
 
+[![Quality checks](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/ci.yml)
+[![Deploy](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/pages.yml/badge.svg)](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/pages.yml)
+
 [Abrir aplicação](https://vitorcostalv.github.io/nexo-neural-lab/) · [Relatório técnico](docs/PRODUCAO.md)
 
 ![Nexo: memórias formando novas conexões](reports/nexo-birth.png)
@@ -11,7 +14,7 @@ Projeto de estudo de **Vitor Costa**: converse com uma LLM, ensine informações
 | | Web gratuita | Python local |
 |---|---|---|
 | Execução | Navegador, sem servidor de IA | FastAPI + Ollama |
-| LLM | Qwen2.5 0.5B Instruct, ONNX q4 | Qwen3 4B Instruct 2507 |
+| LLM | Qwen2.5 0.5B Instruct, MLC/ONNX q4 | Qwen3 4B Instruct 2507 |
 | Embeddings | MiniLM multilíngue, 384 dimensões | EmbeddingGemma 300M, 768 dimensões |
 | Memória | IndexedDB por navegador | SQLite no computador |
 | Rede treinável | JavaScript em Web Worker | NumPy, CPU |
@@ -47,7 +50,7 @@ node scripts/build-web.mjs
 python -m http.server 8020 --directory dist --bind 127.0.0.1
 ```
 
-Acesse `http://127.0.0.1:8020`. Modelos e bibliotecas são baixados de Hugging Face e jsDelivr, com versão da biblioteca fixada no código. O navegador reutiliza o cache quando disponível. Não há chave de API nem cobrança por inferência no servidor.
+Acesse `http://127.0.0.1:8020`. Modelos e bibliotecas são baixados de Hugging Face, jsDelivr e dos arquivos oficiais MLC no GitHub, com versões de bibliotecas fixadas no código. WebLLM executa a LLM na GPU; Transformers.js executa embeddings e oferece a alternativa CPU para a LLM. O navegador reutiliza o cache quando disponível. Não há chave de API nem cobrança por inferência no servidor.
 
 ## Edição Python
 

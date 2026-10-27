@@ -13,8 +13,8 @@ Esta escolha transfere o custo computacional para o dispositivo do visitante. O 
 ## Implementação
 
 - Build estático com caminhos relativos, compatível com subdiretórios do Pages.
-- Transformers.js 3.8.1 em Web Worker: MiniLM multilíngue q8, Qwen2.5 0.5B q4, progresso de download e streaming de texto.
-- Tentativa de WebGPU e recuperação para WebAssembly caso a inicialização GPU falhe.
+- Transformers.js 3.8.1 em Web Worker: MiniLM multilíngue q8 e alternativa Qwen2.5 0.5B ONNX q4 para CPU.
+- WebLLM 0.2.86 para Qwen2.5 0.5B MLC em WebGPU; recuperação para WebAssembly se a GPU não estiver disponível ou a inicialização falhar. Progresso de download e streaming de texto.
 - IndexedDB separado por navegador; importação/exportação de textos entre edições.
 - MLP JavaScript 384 → 64 → 24 → classes, Adam e backpropagation, validação e parada antecipada. A edição NumPy foi preservada.
 - Grafo com similaridades reais e projeção aproximada; animações de integração preservadas.
@@ -25,7 +25,7 @@ Esta escolha transfere o custo computacional para o dispositivo do visitante. O 
 
 Antes da publicação, passaram 44 testes Python e 20 JavaScript. A suíte JavaScript inclui treinamento reproduzível, classificação de exemplos separáveis não vistos, busca por cosseno e contrato dos dados do grafo. Os testes unitários não baixam modelos.
 
-A edição web foi testada no navegador com saudação sem memória, download real do modelo de embeddings e gravação de informação fictícia. Resultados finais da implantação e teste da LLM devem ser consultados no histórico de commits e no status dos workflows.
+A edição web foi testada no navegador com saudação sem memória, download real do modelo de embeddings e gravação de informação fictícia. A pergunta sobre o observatório Aurora recuperou a memória com similaridade de 72% e recebeu a resposta correta sobre Recife. O primeiro ciclo com inicialização da LLM levou 26,57 s; uma pergunta geral subsequente sobre a capital do Brasil levou 0,19 s, no PC de validação com GPU. Estes números são observações pontuais, não garantias para outros dispositivos. A integração contínua também passou em Linux/Python 3.12 no GitHub Actions.
 
 ## Operação e atualização
 

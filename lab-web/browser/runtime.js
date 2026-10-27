@@ -5,6 +5,8 @@ const notice=document.createElement('div');notice.className='browser-notice';not
 notice.textContent='EDIÇÃO WEB · IA no seu dispositivo. Primeiro uso baixa modelos (~650 MB); aguarde. Memórias ficam neste navegador. Exporte para ter um backup.';
 document.querySelector('main').prepend(notice);
 document.querySelector('.version').textContent='WEB / V1.4';
+document.querySelector('label[for="api-key"]').hidden=true;
+document.querySelector('#save-key').hidden=true;
 const about=document.querySelector('#view-about');if(about){const p=document.createElement('p');p.className='body-copy';p.textContent='Edição web: Qwen2.5 0.5B + MiniLM multilíngue (384 dimensões), IndexedDB e MLP em JavaScript. A edição Python usa modelos maiores, SQLite, NumPy e Whisper. A rede 3D é ilustrativa; somente os nós de memória e suas similaridades representam os dados.';about.prepend(p);}
 function rpc(type,payload,onDelta){
   if(!worker){worker=new Worker(new URL('./inference-worker.js',import.meta.url),{type:'module'});

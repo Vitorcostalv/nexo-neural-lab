@@ -5,12 +5,15 @@ export function retrieve(memories,vector,limit=5){
 }
 export const publicMemory = ({vector,...m}) => m;
 export function graph(memories){
-  const nodes=memories.slice(-180).map(m=>({...publicMemory(m),x:0,y:0,z:0}));
+  const visible=memories.slice(-180),nodes=visible.map(m=>({...publicMemory(m),x:0,y:0,z:0}));
   // Fixed random projection, distinct from the local Python PCA projection.
-  for(const n of nodes){const v=memories.find(m=>m.id===n.id).vector;for(let axis=0;axis<3;axis++)n[['x','y','z'][axis]]=v.reduce((s,x,i)=>s+x*Math.sin((i+1)*(axis+7)*12.9898),0)*3;}
+  for(let k=0;k<nodes.length;k++){const n=nodes[k],v=visible[k].vector;for(let axis=0;axis<3;axis++)n[['x','y','z'][axis]]=v.reduce((s,x,i)=>s+x*Math.sin((i+1)*(axis+7)*12.9898),0);}
+  for(const key of ['x','y','z']){const mean=nodes.reduce((s,n)=>s+n[key],0)/Math.max(nodes.length,1);for(const n of nodes)n[key]-=mean;}
+  const extent=Math.max(...nodes.flatMap(n=>[Math.abs(n.x),Math.abs(n.y),Math.abs(n.z)]),1e-6);
+  for(const n of nodes)for(const key of ['x','y','z'])n[key]/=extent;
   const edges=[],seen=new Set();
   for(const n of nodes){const v=memories.find(m=>m.id===n.id).vector;
-    for(const other of retrieve(memories.filter(m=>m.id!==n.id&&nodes.some(n=>n.id===m.id)),v,3)){
+    for(const other of retrieve(visible.filter(m=>m.id!==n.id),v,3)){
       const key=[n.id,other.id].sort((a,b)=>a-b).join(':');if(!seen.has(key)){seen.add(key);edges.push({source:n.id,target:other.id,score:other.score});}
     }
   }return {nodes:nodes.map(({x,y,z,...n})=>({...n,position:[x,y,z]})),edges,total:memories.length};
