@@ -13,7 +13,7 @@ async function generate(messages,id){
     if(adapter?.features.has('shader-f16')){
       if(!engine){progress(id,'Preparando Qwen na GPU. Baixando pesos e compilando shaders…');const {CreateMLCEngine}=await import('https://cdn.jsdelivr.net/npm/@mlc-ai/web-llm@0.2.86/+esm');
         engine=await CreateMLCEngine('Qwen2.5-0.5B-Instruct-q4f16_1-MLC',{initProgressCallback:p=>progress(id,`GPU: ${p.text}`)},{context_window_size:2048});}
-      progress(id,'Modelo pronto · gerando resposta na GPU…');let answer='';const chunks=await engine.chat.completions.create({messages,max_tokens:220,temperature:.3,stream:true});
+      progress(id,'Modelo pronto · gerando resposta na GPU…');let answer='';const chunks=await engine.chat.completions.create({messages,max_tokens:220,temperature:0,stream:true});
       for await(const chunk of chunks){const text=chunk.choices[0]?.delta.content||'';answer+=text;if(text){emitted=true;postMessage({id,delta:text});}}return answer.trim();
     }
     gpuFailed=true;

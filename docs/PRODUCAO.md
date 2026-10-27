@@ -29,6 +29,8 @@ A edição web foi testada no navegador com saudação sem memória, download re
 
 ## Operação e atualização
 
+No domínio público, a recuperação e o streaming funcionaram com uma memória fictícia separada da base local. Em um dos testes, a LLM recuperou Recife corretamente, mas acrescentou um estado incorreto à resposta. O prompt foi reforçado para limitar detalhes aos fatos das fontes e a geração GPU passou a usar temperatura zero. Isso reduz variação, mas não elimina alucinações; a edição web deve ser tratada como experimento educacional, com conferência das fontes.
+
 O fluxo real de treino no navegador também foi validado: 18 exemplos didáticos, 3 categorias, 15 amostras de treino e 3 de validação. O MLP completou 132 épocas em 3,02 s e teve 100% de acurácia em ambos os conjuntos pequenos. Estes resultados demonstram execução funcional, não generalização para dados novos.
 
 Push em `main` aciona `Deploy browser edition`. O workflow executa os testes JavaScript, gera `dist/` e publica no Pages. `Quality checks` executa testes Python e JavaScript. Não existem segredos de aplicação necessários para a edição web. O token temporário de implantação é gerado pelo GitHub Actions com permissões restritas ao job.
