@@ -1,11 +1,13 @@
-import {cp,mkdir,readFile,writeFile} from 'node:fs/promises';
+import {cp,mkdir,readFile,writeFile,readdir} from 'node:fs/promises';
 import {resolve} from 'node:path';
 const root=resolve(import.meta.dirname,'..'),out=resolve(root,'dist');
+const revision=(process.env.GITHUB_SHA||`dev-${Date.now()}`).replace(/[^a-zA-Z0-9-]/g,'');
+const version=text=>text.replaceAll('?v=1.3.0',`?v=${revision}`).replaceAll('?v=1.4.1',`?v=${revision}`);
 await mkdir(out,{recursive:true});
 await cp(resolve(root,'lab-web'),resolve(out,'assets'),{recursive:true,filter:src=>!src.includes('tests')&&!src.endsWith('package.json')});
 let html=await readFile(resolve(root,'lab-web/index.html'),'utf8');
 html=html.replaceAll('/assets/','./assets/').replace('href="/"','href="./"').replace('<head>','<head>\n<script>globalThis.NEXO_BROWSER=true;document.addEventListener("submit",event=>event.preventDefault());</script>');
-html=html.replaceAll('?v=1.3.0','?v=1.4.1');
+html=version(html);
 html=html.replace('NumPy / CPU','JavaScript / Worker').replace('armazenados no SQLite','armazenados no IndexedDB deste navegador').replace('Modelos, memórias e interface rodam localmente, sem CDN.','A inferência roda no dispositivo; bibliotecas e modelos são baixados de jsDelivr e Hugging Face. Os textos não são enviados para um servidor de IA.');
 await writeFile(resolve(out,'index.html'),html);
 await writeFile(resolve(out,'.nojekyll'),'');
@@ -13,4 +15,5 @@ await writeFile(resolve(out,'assets/browser.css'),'.browser-notice{padding:12px 
 html=html.replace('</head>','<link rel="stylesheet" href="./assets/browser.css"></head>');
 await writeFile(resolve(out,'index.html'),html);
 const css=await readFile(resolve(out,'assets/style.css'),'utf8');await writeFile(resolve(out,'assets/style.css'),css.replaceAll('/assets/vendor/','./vendor/'));
+for(const folder of ['assets','assets/browser'])for(const file of await readdir(resolve(out,folder))){if(file.endsWith('.js')){const target=resolve(out,folder,file);await writeFile(target,version(await readFile(target,'utf8')));}}
 console.log('Browser edition built in dist/');
