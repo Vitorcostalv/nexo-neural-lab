@@ -29,6 +29,8 @@ A edição web foi testada no navegador com saudação sem memória, download re
 
 ## Operação e atualização
 
+O fluxo real de treino no navegador também foi validado: 18 exemplos didáticos, 3 categorias, 15 amostras de treino e 3 de validação. O MLP completou 132 épocas em 3,02 s e teve 100% de acurácia em ambos os conjuntos pequenos. Estes resultados demonstram execução funcional, não generalização para dados novos.
+
 Push em `main` aciona `Deploy browser edition`. O workflow executa os testes JavaScript, gera `dist/` e publica no Pages. `Quality checks` executa testes Python e JavaScript. Não existem segredos de aplicação necessários para a edição web. O token temporário de implantação é gerado pelo GitHub Actions com permissões restritas ao job.
 
 Memórias não têm backup remoto. Exportar é responsabilidade do usuário. Use uma aba por vez para editar. A edição Python continua pessoal; uma versão SaaS precisaria autenticação, isolamento por usuário, controles de abuso, backup, observabilidade e infraestrutura de inferência próprios.
