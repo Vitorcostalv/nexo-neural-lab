@@ -1,0 +1,15 @@
+import {cp,mkdir,readFile,writeFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+const root=resolve(import.meta.dirname,'..'),out=resolve(root,'dist');
+await mkdir(out,{recursive:true});
+await cp(resolve(root,'lab-web'),resolve(out,'assets'),{recursive:true,filter:src=>!src.includes('tests')&&!src.endsWith('package.json')});
+let html=await readFile(resolve(root,'lab-web/index.html'),'utf8');
+html=html.replaceAll('/assets/','./assets/').replace('href="/"','href="./"').replace('<head>','<head>\n<script>globalThis.NEXO_BROWSER=true;</script>');
+html=html.replace('NumPy / CPU','JavaScript / Worker').replace('armazenados no SQLite','armazenados no IndexedDB deste navegador').replace('Modelos, memórias e interface rodam localmente, sem CDN.','A inferência roda no dispositivo; bibliotecas e modelos são baixados de jsDelivr e Hugging Face. Os textos não são enviados para um servidor de IA.');
+await writeFile(resolve(out,'index.html'),html);
+await writeFile(resolve(out,'.nojekyll'),'');
+await writeFile(resolve(out,'assets/browser.css'),'.browser-notice{padding:12px 16px;margin-bottom:24px;border:1px solid #365653;border-radius:9px;color:#b5ccc6;background:#122422;font-size:11px;line-height:1.7}');
+html=html.replace('</head>','<link rel="stylesheet" href="./assets/browser.css"></head>');
+await writeFile(resolve(out,'index.html'),html);
+const css=await readFile(resolve(out,'assets/style.css'),'utf8');await writeFile(resolve(out,'assets/style.css'),css.replaceAll('/assets/vendor/','./vendor/'));
+console.log('Browser edition built in dist/');

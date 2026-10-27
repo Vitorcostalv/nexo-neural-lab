@@ -1,0 +1,7 @@
+fastapi==0.119.1
+uvicorn==0.38.0
+httpx==0.28.1
+pydantic-settings==2.11.0
+numpy==2.5.4
+faster-whisper==1.2.1
+av==19.0.2

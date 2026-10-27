@@ -1,0 +1,33 @@
+:root{color-scheme:dark;--paper:#080f14;--ink:#e1eee7;--muted:#91a79b;--border:#263932;--mint:#b8f2ce;--green:#9cc8ac}
+#graph canvas{display:block;width:100%;height:100%}
+body{background:radial-gradient(ellipse at 18% 0,#14282066,transparent 55%),var(--paper)}
+.rail,.topbar{background:#0a1318}.topbar{border-color:#22382d}.wordmark>span,.version,.subtitle{color:#92a99b}
+.rail-btn{color:#718d7c}.rail-btn:hover,.rail-btn.active{color:#c2efcf;background:#1b3528}.avatar{background:#20362c;color:#c1d7c8}
+.metrics,.conversation,.pipeline,.content-panel{background:#0f1c1e;border-color:#263c32;box-shadow:0 14px 35px #00000013}
+.metric-icon,.step-icon,.chat-mark,.welcome-icon{background:#152b22;border-color:#2b4936;color:#a8d4b5}
+.metric-label,.metric-note,.metric-categories,.section-label>span,.tiny-badge{color:#91a88e}.tiny-badge{border-color:#3c5842}
+.metric strong{color:#d9f0df}.tab{color:#879e8e}.tab.active{color:#d7efdd}.tab.active:after{background:#a7dcad}
+.dark{background:#b2e5bd;color:#102416}.dark:hover{background:#d0f3d6}.subtle{background:#1a3026;color:#b8d1bd}.subtle:hover{background:#264433}
+.mint{background:#b0e9bf;color:#122b19}.danger{background:#3f2724;color:#f1ac98}
+.graph-panel{background:#030a0d;border-color:#304c3a}.graph-panel:before{background:radial-gradient(ellipse at 65% 45%,#25534025,transparent 70%)}
+.graph-caption p,.graph-top,.graph-tag{color:#a9bfa8}.graph-tag{border-color:#57734e77}.graph-caption h2{color:#ecf8e7}
+.graph-activity{color:#a0caa5}.graph-footnote{color:#91a58e}.graph-panel.is-thinking{border-color:#9bce89;box-shadow:0 0 0 1px #c7f7a526,0 0 40px #719c4b28}
+.graph-controls{background:#15251bf0;border-color:#4b654144}.graph-controls button{color:#b7d3ad}.graph-controls button:hover{background:#2c4931}.legend{color:#96b78f}
+.chat-heading{border-color:#294030}.chat-heading p,.privacy{color:#97ac91}.chat-heading h2{color:#d4e8cc}.icon-button{color:#91a88a}.icon-button:hover{background:#213a28;color:#daedce}
+.welcome h3{color:#e0efd8}.welcome p,.welcome .muted{color:#a1b59a}.suggestion{background:#14271d;border-color:#2a4530;color:#b8d4ac}.suggestion:hover{background:#203e27}
+.chat-message.user .message-body{background:#1c3325;border-color:#304c34;color:#d9ead0}.message-body{color:#c2d7b9}.message-meta{color:#9aaf90}.message-meta i{background:#9dcc8e}
+.source-block{border-color:#385431;background:#132418}.source-heading,.prediction{color:#a3ba91}.source-item{color:#bad4aa;border-color:#2a4125}.source-item b{color:#d1e9b8}
+.composer-area{background:#0f1c1e}.mode{color:#9ab08e}.mode.active{background:#263e28;color:#d2e8bf}
+#chat-form{border-color:#3c5733;background:#101f17}#message-input{color:#deecd5}.composer-bottom>span{color:#8da17f}.composer-bottom button{background:#afd79a;color:#11220b}.composer-bottom .mic-button{background:transparent;color:#a3c38e}
+textarea::placeholder,input::placeholder{color:#78946e}.is-streaming .message-body:after{content:'▍';display:inline;color:#bee997;animation:cursor-blink 1s step-end infinite}
+.search-box{background:#101e17;border-color:#30482e}.search-box input{color:#e0eed5}.memory-card{border-color:#2a3d28}.memory-card-top{color:#a3b695}.memory-card-text{color:#bfd3b4}.memory-card:hover .memory-card-text{color:#e0f5ce}
+.pill{background:#274329;color:#c2dcaf}.muted,.body-copy,.about-block p,.empty-state{color:#a5b79a}.about-block b{color:#d4e5c7}.honest-note{background:#1b3021;color:#b1c79f}
+.architecture{background:#07160f;border:1px solid #284b2f}.network-layer span{color:#a3c38e}.training-stat-grid>div{border-color:#344c2e;background:#132317}.training-stat-grid span{color:#9fb48e}
+.loss-chart{background:#142419}.loss-chart path:first-child{stroke:#3b5736}.loss-chart path:nth-child(2){stroke:#98d782}.loss-chart path:nth-child(3){stroke:#d0b17b}.loss-chart text{fill:#adc596}
+dialog{background:#102018;border-color:#3b5431;box-shadow:0 30px 100px #000a;color:#deecd2}dialog::backdrop{background:#020703ba;backdrop-filter:blur(6px)}
+dialog textarea,dialog input{background:#0b1811;border-color:#3f5c33;color:#dceecd}dialog textarea:read-only{background:#17291b}.connection-model{border-color:#32482b}.connection-model small{color:#9eb38a}
+.node-tooltip{background:#dbeacb;color:#1f3515;border-color:#97bc7a}.vector-bars{border-color:#425c33}#vector-inspector{border-color:#3b532f}
+footer{color:#8b9c7e;border-color:#2a3e27}footer>span:last-child{color:#acc396}.toast{background:#233d22;color:#e8f4dc;border-color:#59834c;box-shadow:0 12px 40px #0007}
+.toast.error{background:#633a2d;color:#fff1e5;border-color:#a2755c}
+@keyframes cursor-blink{50%{opacity:0}}
+@media(max-width:580px){.graph-panel{height:420px}.metrics,.conversation,.content-panel{box-shadow:none}.graph-caption{display:none}}
