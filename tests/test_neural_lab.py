@@ -213,6 +213,10 @@ def test_general_chat_does_not_depend_on_embeddings(client,monkeypatch,text):
     monkeypatch.setattr(api.ollama,'generate_unlocked',generate)
     result=client.post('/api/chat',json={'text':text})
     assert result.status_code==200
+    if (result.json().get('knowledge') or {}).get('method')=='curated-answer':
+        assert not seen and result.json()['sources']==[]
+        assert 'energia da luz' in result.json()['answer']
+        return
     assert 'MEMÓRIAS RECUPERADAS' not in seen[0][0]['content']
     assert 'NÃO dependem de memórias' in seen[0][0]['content']
 
@@ -221,12 +225,12 @@ def test_followup_receives_recent_turns(client,monkeypatch):
     seen=[]
     async def generate(messages):
         seen.append(messages)
-        return 'Fotossíntese transforma luz em energia para a planta.'
+        return 'Recursão ocorre quando uma função chama a si mesma.'
     monkeypatch.setattr(api.ollama,'generate_unlocked',generate)
-    client.post('/api/chat',json={'text':'O que é fotossíntese?'})
+    client.post('/api/chat',json={'text':'O que é recursão?'})
     client.post('/api/chat',json={'text':'Explique isso de forma mais simples.'})
-    assert seen[1][1]['content']=='O que é fotossíntese?'
-    assert 'Fotossíntese' in seen[1][2]['content']
+    assert seen[1][1]['content']=='O que é recursão?'
+    assert 'Recursão' in seen[1][2]['content']
 
 
 def test_deleted_memory_cannot_return_through_conversation_context(client,monkeypatch):

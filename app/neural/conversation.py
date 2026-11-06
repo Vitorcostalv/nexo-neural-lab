@@ -43,8 +43,11 @@ def social_reply(text):
     return None
 
 
-def build_messages(text, sources, recent):
+def build_messages(text, sources, recent, knowledge=None):
     system = SYSTEM_PROMPT
+    system += '\nRespostas anteriores do assistente podem estar erradas. Nomes, datas e idades da base verificada prevalecem sobre palpites anteriores. Para pessoas falecidas, informe idade ao falecer; não invente idade atual.'
+    if knowledge and knowledge.get('refs'):
+        system += '\nBASE LOCAL CONSULTADA (não complete atributos ausentes por suposição):\n' + '\n'.join(ref['excerpt'] for ref in knowledge['refs'])
     if sources:
         system += '\n\nMEMÓRIAS RECUPERADAS (use apenas se relevantes ao pedido):\n'
         system += '\n\n'.join(f"[M{s['id']}] {s.get('excerpt', s['text'])}" for s in sources)

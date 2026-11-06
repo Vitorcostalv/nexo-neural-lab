@@ -19,6 +19,7 @@ from app import ollama_client as ollama
 from app.config import ROOT, settings
 from app.neural import network, store
 from app.neural.conversation import build_messages, social_reply
+from app.neural.knowledge import lookup as lookup_knowledge
 
 operation_lock = asyncio.Lock()
 WEB = ROOT / 'lab-web'
@@ -262,7 +263,9 @@ async def chat_events(body: ChatInput,stream=False):
     busy()
     started = time.perf_counter()
     new_ids=[]
-    reply=None if body.learn else social_reply(body.text)
+    known = {'answer':None,'knowledge':None} if body.learn else lookup_knowledge(body.text, store.recent_context())
+    knowledge = known['knowledge']
+    reply=None if body.learn else social_reply(body.text) or known['answer']
     async with operation_lock, inference_guard(reply is None):
         yield {'type':'stage','state':'receiving','message':'Mensagem recebida pelo servidor local'}
         if body.learn:
@@ -288,7 +291,7 @@ async def chat_events(body: ChatInput,stream=False):
                 sources, prediction = [], None
             sources = [{**s, 'excerpt':s['text'][:1400]} for s in sources]
             yield {'type':'stage','state':'generating','message':'Contexto selecionado; preparando resposta','sources':sources}
-            messages = build_messages(body.text, sources, store.recent_context())
+            messages = build_messages(body.text, sources, store.recent_context(), knowledge)
             if stream:
                 pieces=[]
                 async for chunk in ollama.generate_stream_unlocked(messages):
@@ -301,8 +304,8 @@ async def chat_events(body: ChatInput,stream=False):
         if stream and (body.learn or reply is not None):
             yield {'type':'delta','text':answer}
         yield {'type':'stage','state':'saving','message':'Salvando conversa no perfil local'}
-        store.save_turn(body.text, answer, sources)
-        yield {'type':'done','result':{'answer': answer, 'sources': sources, 'prediction': prediction, 'learned': added, 'new_memory_ids':new_ids, 'seconds': round(time.perf_counter()-started, 2)}}
+        store.save_turn(body.text, answer, sources, knowledge)
+        yield {'type':'done','result':{'answer': answer, 'sources': sources, 'knowledge':knowledge, 'prediction': prediction, 'learned': added, 'new_memory_ids':new_ids, 'seconds': round(time.perf_counter()-started, 2)}}
 
 
 @app.post('/api/chat')

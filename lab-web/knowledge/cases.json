@@ -1,0 +1,278 @@
+[
+  {
+    "id": "reported-age",
+    "q": "quantos anos tem a antiga rainha da inglaterra?",
+    "contains": "96",
+    "method": "curated-answer"
+  },
+  {
+    "id": "reported-followup",
+    "q": "E a ultima?",
+    "recent": [
+      {
+        "role": "user",
+        "text": "quantos anos tem a antiga rainha da inglaterra?"
+      },
+      {
+        "role": "assistant",
+        "text": "Era Jane, que viveu de 1534 a 1536."
+      }
+    ],
+    "contains": "Elizabeth II",
+    "method": "curated-answer"
+  },
+  {
+    "id": "age-followup",
+    "q": "Qual a idade dela?",
+    "recent": [
+      {
+        "role": "user",
+        "text": "Quem foi Elizabeth II?"
+      },
+      {
+        "role": "assistant",
+        "text": "Elizabeth I, de 1558."
+      }
+    ],
+    "contains": "96",
+    "method": "curated-answer"
+  },
+  {
+    "id": "bare-followup",
+    "q": "E a última?",
+    "contains": "qual pessoa",
+    "method": "clarification"
+  },
+  {
+    "id": "unknown-new-subject",
+    "q": "Qual a idade da Jane?",
+    "recent": [
+      {
+        "role": "user",
+        "text": "Quem foi Elizabeth II?"
+      }
+    ],
+    "answerNull": true
+  },
+  {
+    "id": "topic-switch",
+    "q": "E a última?",
+    "recent": [
+      {
+        "role": "user",
+        "text": "Quem foi Elizabeth II?"
+      },
+      {
+        "role": "user",
+        "text": "Estou falando de uma pessoa chamada Marina."
+      }
+    ],
+    "method": "clarification"
+  },
+  {
+    "id": "elizabeth-i-distinct",
+    "q": "Quando reinou Elizabeth I?",
+    "contains": "1558 a 1603",
+    "method": "curated-answer"
+  },
+  {
+    "id": "anne",
+    "q": "Quem foi a rainha Ana?",
+    "contains": "1707",
+    "method": "curated-answer"
+  },
+  {
+    "id": "death",
+    "q": "Quando morreu Elizabeth II?",
+    "contains": "8 de setembro de 2022",
+    "method": "curated-answer"
+  },
+  {
+    "id": "unsupported-age-at-coronation",
+    "q": "Quantos anos Elizabeth II tinha quando foi coroada?",
+    "contains": "Não tenho esse detalhe",
+    "method": "knowledge-gap"
+  },
+  {
+    "id": "unsupported-eyes",
+    "q": "Qual era a cor dos olhos de Elizabeth II?",
+    "contains": "Não tenho esse detalhe",
+    "method": "knowledge-gap"
+  },
+  {
+    "id": "brazil",
+    "q": "Qual a capital do Brasil?",
+    "contains": "Brasília",
+    "method": "curated-answer"
+  },
+  {
+    "id": "portugal-followup",
+    "q": "E de Portugal?",
+    "recent": [
+      {
+        "role": "user",
+        "text": "Qual a capital do Brasil?"
+      }
+    ],
+    "contains": "Lisboa",
+    "method": "curated-answer"
+  },
+  {
+    "id": "france",
+    "q": "Qual é a capital da França?",
+    "contains": "Paris",
+    "method": "curated-answer"
+  },
+  {
+    "id": "japan",
+    "q": "Qual a capital do Japão?",
+    "contains": "Tóquio",
+    "method": "curated-answer"
+  },
+  {
+    "id": "personal-location",
+    "q": "Qual a capital do país onde eu moro?",
+    "answerNull": true
+  },
+  {
+    "id": "fictional",
+    "q": "Qual a capital do meu reino chamado Brasil?",
+    "answerNull": true
+  },
+  {
+    "id": "unknown-country",
+    "q": "Qual a capital de Nárnia?",
+    "answerNull": true
+  },
+  {
+    "id": "planets",
+    "q": "Quantos planetas tem no sistema solar?",
+    "contains": "oito",
+    "method": "curated-answer"
+  },
+  {
+    "id": "planet-order",
+    "q": "Qual a ordem dos planetas do sistema solar?",
+    "contains": "Mercúrio, Vênus, Terra",
+    "method": "curated-answer"
+  },
+  {
+    "id": "largest",
+    "q": "Qual o maior planeta do sistema solar?",
+    "contains": "Júpiter",
+    "method": "curated-answer"
+  },
+  {
+    "id": "largest-unknown-universe",
+    "q": "Qual o maior planeta do universo?",
+    "contains": "Não tenho esse detalhe",
+    "method": "knowledge-gap"
+  },
+  {
+    "id": "sun",
+    "q": "O Sol é um planeta?",
+    "contains": "estrela",
+    "method": "curated-answer"
+  },
+  {
+    "id": "moon-light",
+    "q": "Por que a lua brilha?",
+    "contains": "reflete",
+    "method": "curated-answer"
+  },
+  {
+    "id": "boiling",
+    "q": "A que temperatura a água ferve?",
+    "contains": "100 °C",
+    "method": "curated-answer"
+  },
+  {
+    "id": "condensation",
+    "q": "O que é condensação?",
+    "contains": "água líquida",
+    "method": "curated-answer"
+  },
+  {
+    "id": "photosynthesis",
+    "q": "O que é fotossíntese?",
+    "contains": "energia da luz",
+    "method": "curated-answer"
+  },
+  {
+    "id": "dna",
+    "q": "Para que serve DNA?",
+    "contains": "informação genética",
+    "method": "curated-answer"
+  },
+  {
+    "id": "html",
+    "q": "O que é HTML?",
+    "contains": "marcação",
+    "method": "curated-answer"
+  },
+  {
+    "id": "css",
+    "q": "Para que serve CSS?",
+    "contains": "apresentação",
+    "method": "curated-answer"
+  },
+  {
+    "id": "javascript",
+    "q": "O que é JavaScript?",
+    "contains": "interatividade",
+    "method": "curated-answer"
+  },
+  {
+    "id": "java-vs-js",
+    "q": "JavaScript é igual a Java?",
+    "contains": "diferentes",
+    "method": "curated-answer"
+  },
+  {
+    "id": "code-still-model",
+    "q": "Escreva uma função JavaScript para somar números.",
+    "answerNull": true,
+    "method": "model-context"
+  },
+  {
+    "id": "mass-unit",
+    "q": "Qual é a unidade de massa no SI?",
+    "contains": "quilograma",
+    "method": "curated-answer"
+  },
+  {
+    "id": "current-unsupported",
+    "q": "Quem é o presidente atual do Brasil?",
+    "contains": "Não tenho esse detalhe",
+    "method": "knowledge-gap"
+  },
+  {
+    "id": "generic-creative",
+    "q": "Crie um poema sobre amizade.",
+    "answerNull": true
+  },
+  {
+    "id": "chain-over-old-bad-history",
+    "q": "Qual a idade dela?",
+    "recent": [
+      {
+        "role": "user",
+        "text": "quantos anos tem a antiga rainha da inglaterra?"
+      },
+      {
+        "role": "assistant",
+        "text": "Era Jane."
+      },
+      {
+        "role": "user",
+        "text": "E a ultima?"
+      },
+      {
+        "role": "assistant",
+        "text": "Elizabeth I."
+      }
+    ],
+    "contains": "96",
+    "method": "curated-answer"
+  }
+]

@@ -1,0 +1,868 @@
+{
+  "created": "2026-11-06T19:27:59.221Z",
+  "catalogVersion": "common-2026-11-v1",
+  "reviewedAt": "2026-11-06",
+  "cards": 40,
+  "sources": 36,
+  "cases": 37,
+  "passed": 37,
+  "model": "none — deterministic editorial lookup",
+  "runtime": "v24.15.0",
+  "rows": [
+    {
+      "id": "reported-age",
+      "question": "quantos anos tem a antiga rainha da inglaterra?",
+      "passed": true,
+      "answer": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "elizabeth-ii"
+        ],
+        "refs": [
+          {
+            "id": "K:queen-death",
+            "publisher": "Governo britânico",
+            "title": "Falecimento de Elizabeth II",
+            "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "reported-followup",
+      "question": "E a ultima?",
+      "passed": true,
+      "answer": "Na monarquia britânica recente, a última rainha reinante foi Elizabeth II, que morreu aos 96 anos em 2022. No sentido histórico estrito de Reino da Inglaterra, a última rainha foi Ana (Anne), antes da união com a Escócia em 1707.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": "quantos anos tem a antiga rainha da inglaterra?",
+        "topics": [
+          "elizabeth-ii"
+        ],
+        "refs": [
+          {
+            "id": "K:queen-death",
+            "publisher": "Governo britânico",
+            "title": "Falecimento de Elizabeth II",
+            "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Na monarquia britânica recente, a última rainha reinante foi Elizabeth II, que morreu aos 96 anos em 2022. No sentido histórico estrito de Reino da Inglaterra, a última rainha foi Ana (Anne), antes da união com a Escócia em 1707."
+          },
+          {
+            "id": "K:anne",
+            "publisher": "Royal Family",
+            "title": "Anne, 1702–1714",
+            "url": "https://www.royal.uk/queen-anne",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Na monarquia britânica recente, a última rainha reinante foi Elizabeth II, que morreu aos 96 anos em 2022. No sentido histórico estrito de Reino da Inglaterra, a última rainha foi Ana (Anne), antes da união com a Escócia em 1707."
+          }
+        ]
+      }
+    },
+    {
+      "id": "age-followup",
+      "question": "Qual a idade dela?",
+      "passed": true,
+      "answer": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": "Quem foi Elizabeth II?",
+        "topics": [
+          "elizabeth-ii"
+        ],
+        "refs": [
+          {
+            "id": "K:queen-death",
+            "publisher": "Governo britânico",
+            "title": "Falecimento de Elizabeth II",
+            "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "bare-followup",
+      "question": "E a última?",
+      "passed": true,
+      "answer": "De qual pessoa ou assunto você está falando? Preciso dessa informação para responder sem adivinhar.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "clarification",
+        "refs": []
+      }
+    },
+    {
+      "id": "unknown-new-subject",
+      "question": "Qual a idade da Jane?",
+      "passed": true,
+      "answer": null,
+      "knowledge": null
+    },
+    {
+      "id": "topic-switch",
+      "question": "E a última?",
+      "passed": true,
+      "answer": "De qual pessoa ou assunto você está falando? Preciso dessa informação para responder sem adivinhar.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "clarification",
+        "refs": []
+      }
+    },
+    {
+      "id": "elizabeth-i-distinct",
+      "question": "Quando reinou Elizabeth I?",
+      "passed": true,
+      "answer": "Elizabeth I reinou na Inglaterra de 1558 a 1603. Ela não foi a rainha britânica falecida em 2022: essa foi Elizabeth II.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "elizabeth-i"
+        ],
+        "refs": [
+          {
+            "id": "K:monarchs",
+            "publisher": "Royal Family",
+            "title": "Monarcas desde 1066",
+            "url": "https://www.royal.uk/kings-and-queens-1066",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Elizabeth I reinou na Inglaterra de 1558 a 1603. Ela não foi a rainha britânica falecida em 2022: essa foi Elizabeth II."
+          }
+        ]
+      }
+    },
+    {
+      "id": "anne",
+      "question": "Quem foi a rainha Ana?",
+      "passed": true,
+      "answer": "Ana (Anne) reinou de 1702 a 1714. Em 1707, a união da Inglaterra com a Escócia formou a Grã-Bretanha durante seu reinado.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "queen-anne"
+        ],
+        "refs": [
+          {
+            "id": "K:anne",
+            "publisher": "Royal Family",
+            "title": "Anne, 1702–1714",
+            "url": "https://www.royal.uk/queen-anne",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Ana (Anne) reinou de 1702 a 1714. Em 1707, a união da Inglaterra com a Escócia formou a Grã-Bretanha durante seu reinado."
+          }
+        ]
+      }
+    },
+    {
+      "id": "death",
+      "question": "Quando morreu Elizabeth II?",
+      "passed": true,
+      "answer": "Elizabeth II morreu em 8 de setembro de 2022, aos 96 anos.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "elizabeth-ii"
+        ],
+        "refs": [
+          {
+            "id": "K:queen-death",
+            "publisher": "Governo britânico",
+            "title": "Falecimento de Elizabeth II",
+            "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Elizabeth II morreu em 8 de setembro de 2022, aos 96 anos."
+          }
+        ]
+      }
+    },
+    {
+      "id": "unsupported-age-at-coronation",
+      "question": "Quantos anos Elizabeth II tinha quando foi coroada?",
+      "passed": true,
+      "answer": "Não tenho esse detalhe verificado sobre Elizabeth II na base local. Pode especificar o que deseja saber ou fornecer uma fonte?",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "knowledge-gap",
+        "contextQuestion": null,
+        "topics": [
+          "elizabeth-ii"
+        ],
+        "refs": [
+          {
+            "id": "K:queen-death",
+            "publisher": "Governo britânico",
+            "title": "Falecimento de Elizabeth II",
+            "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+          },
+          {
+            "id": "K:queen-birth",
+            "publisher": "Royal Mint",
+            "title": "Elizabeth II — 1926–2022",
+            "url": "https://www.royalmint.com/globalassets/__rebrand/_structure/shop/editions/_historic-coins/flipbooks/greatest-queens-silver_booklet_p1-compressed.pdf",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "unsupported-eyes",
+      "question": "Qual era a cor dos olhos de Elizabeth II?",
+      "passed": true,
+      "answer": "Não tenho esse detalhe verificado sobre Elizabeth II na base local. Pode especificar o que deseja saber ou fornecer uma fonte?",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "knowledge-gap",
+        "contextQuestion": null,
+        "topics": [
+          "elizabeth-ii"
+        ],
+        "refs": [
+          {
+            "id": "K:queen-death",
+            "publisher": "Governo britânico",
+            "title": "Falecimento de Elizabeth II",
+            "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+          },
+          {
+            "id": "K:queen-birth",
+            "publisher": "Royal Mint",
+            "title": "Elizabeth II — 1926–2022",
+            "url": "https://www.royalmint.com/globalassets/__rebrand/_structure/shop/editions/_historic-coins/flipbooks/greatest-queens-silver_booklet_p1-compressed.pdf",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+          }
+        ]
+      }
+    },
+    {
+      "id": "brazil",
+      "question": "Qual a capital do Brasil?",
+      "passed": true,
+      "answer": "A capital do Brasil é Brasília.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "country-br"
+        ],
+        "refs": [
+          {
+            "id": "K:country-br",
+            "publisher": "IBGE",
+            "title": "Países — Brasil",
+            "url": "https://servicodados.ibge.gov.br/api/v1/paises/BR",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A capital do Brasil é Brasília."
+          }
+        ]
+      }
+    },
+    {
+      "id": "portugal-followup",
+      "question": "E de Portugal?",
+      "passed": true,
+      "answer": "A capital de Portugal é Lisboa.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": "Qual a capital do Brasil?",
+        "topics": [
+          "country-pt"
+        ],
+        "refs": [
+          {
+            "id": "K:country-pt",
+            "publisher": "IBGE",
+            "title": "Países — Portugal",
+            "url": "https://servicodados.ibge.gov.br/api/v1/paises/PT",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A capital de Portugal é Lisboa."
+          }
+        ]
+      }
+    },
+    {
+      "id": "france",
+      "question": "Qual é a capital da França?",
+      "passed": true,
+      "answer": "A capital da França é Paris.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "country-fr"
+        ],
+        "refs": [
+          {
+            "id": "K:country-fr",
+            "publisher": "IBGE",
+            "title": "Países — França",
+            "url": "https://servicodados.ibge.gov.br/api/v1/paises/FR",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A capital da França é Paris."
+          }
+        ]
+      }
+    },
+    {
+      "id": "japan",
+      "question": "Qual a capital do Japão?",
+      "passed": true,
+      "answer": "A capital do Japão é Tóquio.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "country-jp"
+        ],
+        "refs": [
+          {
+            "id": "K:country-jp",
+            "publisher": "IBGE",
+            "title": "Países — Japão",
+            "url": "https://servicodados.ibge.gov.br/api/v1/paises/JP",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A capital do Japão é Tóquio."
+          }
+        ]
+      }
+    },
+    {
+      "id": "personal-location",
+      "question": "Qual a capital do país onde eu moro?",
+      "passed": true,
+      "answer": null,
+      "knowledge": null
+    },
+    {
+      "id": "fictional",
+      "question": "Qual a capital do meu reino chamado Brasil?",
+      "passed": true,
+      "answer": null,
+      "knowledge": null
+    },
+    {
+      "id": "unknown-country",
+      "question": "Qual a capital de Nárnia?",
+      "passed": true,
+      "answer": null,
+      "knowledge": null
+    },
+    {
+      "id": "planets",
+      "question": "Quantos planetas tem no sistema solar?",
+      "passed": true,
+      "answer": "O Sistema Solar tem oito planetas. Plutão é classificado como planeta anão.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "solar-system"
+        ],
+        "refs": [
+          {
+            "id": "K:solar",
+            "publisher": "NASA",
+            "title": "Sistema Solar",
+            "url": "https://science.nasa.gov/solar-system/solar-system-facts/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "O Sistema Solar tem oito planetas. Plutão é classificado como planeta anão."
+          },
+          {
+            "id": "K:planets",
+            "publisher": "NASA",
+            "title": "Tamanhos e ordem dos planetas",
+            "url": "https://science.nasa.gov/solar-system/planet-sizes-and-locations-in-our-solar-system/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "O Sistema Solar tem oito planetas. Plutão é classificado como planeta anão."
+          }
+        ]
+      }
+    },
+    {
+      "id": "planet-order",
+      "question": "Qual a ordem dos planetas do sistema solar?",
+      "passed": true,
+      "answer": "A partir do Sol, os oito planetas são Mercúrio, Vênus, Terra, Marte, Júpiter, Saturno, Urano e Netuno.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "solar-system"
+        ],
+        "refs": [
+          {
+            "id": "K:solar",
+            "publisher": "NASA",
+            "title": "Sistema Solar",
+            "url": "https://science.nasa.gov/solar-system/solar-system-facts/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A partir do Sol, os oito planetas são Mercúrio, Vênus, Terra, Marte, Júpiter, Saturno, Urano e Netuno."
+          },
+          {
+            "id": "K:planets",
+            "publisher": "NASA",
+            "title": "Tamanhos e ordem dos planetas",
+            "url": "https://science.nasa.gov/solar-system/planet-sizes-and-locations-in-our-solar-system/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A partir do Sol, os oito planetas são Mercúrio, Vênus, Terra, Marte, Júpiter, Saturno, Urano e Netuno."
+          }
+        ]
+      }
+    },
+    {
+      "id": "largest",
+      "question": "Qual o maior planeta do sistema solar?",
+      "passed": true,
+      "answer": "Júpiter é o maior planeta do Sistema Solar e o quinto a partir do Sol. Júpiter é o maior planeta do Sistema Solar.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "jupiter",
+          "solar-system"
+        ],
+        "refs": [
+          {
+            "id": "K:planets",
+            "publisher": "NASA",
+            "title": "Tamanhos e ordem dos planetas",
+            "url": "https://science.nasa.gov/solar-system/planet-sizes-and-locations-in-our-solar-system/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Júpiter é o maior planeta do Sistema Solar e o quinto a partir do Sol."
+          },
+          {
+            "id": "K:solar",
+            "publisher": "NASA",
+            "title": "Sistema Solar",
+            "url": "https://science.nasa.gov/solar-system/solar-system-facts/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Júpiter é o maior planeta do Sistema Solar."
+          }
+        ]
+      }
+    },
+    {
+      "id": "largest-unknown-universe",
+      "question": "Qual o maior planeta do universo?",
+      "passed": true,
+      "answer": "Não tenho esse detalhe verificado sobre Júpiter na base local. Pode especificar o que deseja saber ou fornecer uma fonte?",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "knowledge-gap",
+        "contextQuestion": null,
+        "topics": [
+          "jupiter"
+        ],
+        "refs": [
+          {
+            "id": "K:planets",
+            "publisher": "NASA",
+            "title": "Tamanhos e ordem dos planetas",
+            "url": "https://science.nasa.gov/solar-system/planet-sizes-and-locations-in-our-solar-system/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Júpiter é o maior planeta do Sistema Solar e o quinto a partir do Sol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "sun",
+      "question": "O Sol é um planeta?",
+      "passed": true,
+      "answer": "O Sol é uma estrela, não um planeta. Sua energia é produzida por fusão nuclear.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "sun"
+        ],
+        "refs": [
+          {
+            "id": "K:sun",
+            "publisher": "NASA",
+            "title": "Fatos sobre o Sol",
+            "url": "https://science.nasa.gov/sun/facts/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "O Sol é uma estrela, não um planeta. Sua energia é produzida por fusão nuclear."
+          }
+        ]
+      }
+    },
+    {
+      "id": "moon-light",
+      "question": "Por que a lua brilha?",
+      "passed": true,
+      "answer": "A Lua não produz a luz visível que vemos dela: ela reflete a luz do Sol.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "moon"
+        ],
+        "refs": [
+          {
+            "id": "K:moon",
+            "publisher": "NASA",
+            "title": "Fatos sobre a Lua",
+            "url": "https://science.nasa.gov/moon/facts/",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A Lua não produz a luz visível que vemos dela: ela reflete a luz do Sol."
+          }
+        ]
+      }
+    },
+    {
+      "id": "boiling",
+      "question": "A que temperatura a água ferve?",
+      "passed": true,
+      "answer": "Água pura ferve a aproximadamente 100 °C sob pressão de uma atmosfera, ao nível do mar. A temperatura muda com a pressão e com substâncias dissolvidas.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "boiling-water"
+        ],
+        "refs": [
+          {
+            "id": "K:boiling",
+            "publisher": "USGS",
+            "title": "Temperatura de ebulição da água",
+            "url": "https://www.usgs.gov/observatories/yvo/news/how-hot-are-yellowstones-boiling-waters-some-are-hotter-others",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Água pura ferve a aproximadamente 100 °C sob pressão de uma atmosfera, ao nível do mar. A temperatura muda com a pressão e com substâncias dissolvidas."
+          }
+        ]
+      }
+    },
+    {
+      "id": "condensation",
+      "question": "O que é condensação?",
+      "passed": true,
+      "answer": "Condensação é a transformação de vapor de água em água líquida. Ela participa da formação de nuvens e de gotículas em superfícies frias.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "condensation"
+        ],
+        "refs": [
+          {
+            "id": "K:condensation",
+            "publisher": "USGS",
+            "title": "Condensação e ciclo da água",
+            "url": "https://www.usgs.gov/water-science-school/science/condensation-and-water-cycle",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Condensação é a transformação de vapor de água em água líquida. Ela participa da formação de nuvens e de gotículas em superfícies frias."
+          }
+        ]
+      }
+    },
+    {
+      "id": "photosynthesis",
+      "question": "O que é fotossíntese?",
+      "passed": true,
+      "answer": "Na fotossíntese, plantas, algas e outros organismos usam energia da luz para transformar água e dióxido de carbono em açúcares. Na fotossíntese oxigênica, há liberação de oxigênio.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "photosynthesis"
+        ],
+        "refs": [
+          {
+            "id": "K:photosynthesis",
+            "publisher": "NOAA",
+            "title": "Fotossíntese — energia para a vida",
+            "url": "https://oceanexplorer.noaa.gov/edu/materials/educator-guide-fueling-life-on-earth.pdf",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Na fotossíntese, plantas, algas e outros organismos usam energia da luz para transformar água e dióxido de carbono em açúcares. Na fotossíntese oxigênica, há liberação de oxigênio."
+          }
+        ]
+      }
+    },
+    {
+      "id": "dna",
+      "question": "Para que serve DNA?",
+      "passed": true,
+      "answer": "DNA é a molécula que armazena informação genética utilizada no desenvolvimento e funcionamento dos organismos.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "dna"
+        ],
+        "refs": [
+          {
+            "id": "K:dna",
+            "publisher": "NHGRI / NIH",
+            "title": "DNA",
+            "url": "https://www.genome.gov/genetics-glossary/Deoxyribonucleic-Acid-DNA",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "DNA é a molécula que armazena informação genética utilizada no desenvolvimento e funcionamento dos organismos."
+          }
+        ]
+      }
+    },
+    {
+      "id": "html",
+      "question": "O que é HTML?",
+      "passed": true,
+      "answer": "HTML é uma linguagem de marcação que dá estrutura e significado ao conteúdo de páginas web. Não é uma linguagem de programação.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "html"
+        ],
+        "refs": [
+          {
+            "id": "K:web",
+            "publisher": "MDN",
+            "title": "HTML, CSS e JavaScript",
+            "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/The_web_standards_model",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "HTML é uma linguagem de marcação que dá estrutura e significado ao conteúdo de páginas web. Não é uma linguagem de programação."
+          }
+        ]
+      }
+    },
+    {
+      "id": "css",
+      "question": "Para que serve CSS?",
+      "passed": true,
+      "answer": "CSS descreve a apresentação das páginas web, como cores, fontes, espaçamentos e organização visual.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "css"
+        ],
+        "refs": [
+          {
+            "id": "K:web",
+            "publisher": "MDN",
+            "title": "HTML, CSS e JavaScript",
+            "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/The_web_standards_model",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "CSS descreve a apresentação das páginas web, como cores, fontes, espaçamentos e organização visual."
+          }
+        ]
+      }
+    },
+    {
+      "id": "javascript",
+      "question": "O que é JavaScript?",
+      "passed": true,
+      "answer": "JavaScript é uma linguagem de programação muito usada para adicionar comportamento e interatividade a páginas web.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "javascript"
+        ],
+        "refs": [
+          {
+            "id": "K:web",
+            "publisher": "MDN",
+            "title": "HTML, CSS e JavaScript",
+            "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/The_web_standards_model",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "JavaScript é uma linguagem de programação muito usada para adicionar comportamento e interatividade a páginas web."
+          },
+          {
+            "id": "K:javascript",
+            "publisher": "MDN",
+            "title": "JavaScript e Java são linguagens diferentes",
+            "url": "https://developer.mozilla.org/en-US/docs/Glossary/JavaScript",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "JavaScript é uma linguagem de programação muito usada para adicionar comportamento e interatividade a páginas web."
+          }
+        ]
+      }
+    },
+    {
+      "id": "java-vs-js",
+      "question": "JavaScript é igual a Java?",
+      "passed": true,
+      "answer": "JavaScript e Java são linguagens de programação diferentes, apesar dos nomes semelhantes.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "javascript"
+        ],
+        "refs": [
+          {
+            "id": "K:web",
+            "publisher": "MDN",
+            "title": "HTML, CSS e JavaScript",
+            "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/The_web_standards_model",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "JavaScript e Java são linguagens de programação diferentes, apesar dos nomes semelhantes."
+          },
+          {
+            "id": "K:javascript",
+            "publisher": "MDN",
+            "title": "JavaScript e Java são linguagens diferentes",
+            "url": "https://developer.mozilla.org/en-US/docs/Glossary/JavaScript",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "JavaScript e Java são linguagens de programação diferentes, apesar dos nomes semelhantes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "code-still-model",
+      "question": "Escreva uma função JavaScript para somar números.",
+      "passed": true,
+      "answer": null,
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "model-context",
+        "contextQuestion": null,
+        "topics": [
+          "javascript"
+        ],
+        "refs": [
+          {
+            "id": "K:web",
+            "publisher": "MDN",
+            "title": "HTML, CSS e JavaScript",
+            "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/The_web_standards_model",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "JavaScript e Java são linguagens de programação diferentes, apesar dos nomes semelhantes."
+          },
+          {
+            "id": "K:javascript",
+            "publisher": "MDN",
+            "title": "JavaScript e Java são linguagens diferentes",
+            "url": "https://developer.mozilla.org/en-US/docs/Glossary/JavaScript",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "JavaScript e Java são linguagens de programação diferentes, apesar dos nomes semelhantes."
+          }
+        ]
+      }
+    },
+    {
+      "id": "mass-unit",
+      "question": "Qual é a unidade de massa no SI?",
+      "passed": true,
+      "answer": "A unidade básica de massa no Sistema Internacional é o quilograma, cujo símbolo é kg.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": null,
+        "topics": [
+          "si-mass"
+        ],
+        "refs": [
+          {
+            "id": "K:si",
+            "publisher": "BIPM",
+            "title": "Unidades básicas do SI",
+            "url": "https://www.bipm.org/en/measurement-units/si-base-units",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A unidade básica de massa no Sistema Internacional é o quilograma, cujo símbolo é kg."
+          }
+        ]
+      }
+    },
+    {
+      "id": "current-unsupported",
+      "question": "Quem é o presidente atual do Brasil?",
+      "passed": true,
+      "answer": "Não tenho esse detalhe verificado sobre Brasil na base local. Pode especificar o que deseja saber ou fornecer uma fonte?",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "knowledge-gap",
+        "contextQuestion": null,
+        "topics": [
+          "country-br"
+        ],
+        "refs": [
+          {
+            "id": "K:country-br",
+            "publisher": "IBGE",
+            "title": "Países — Brasil",
+            "url": "https://servicodados.ibge.gov.br/api/v1/paises/BR",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "A capital do Brasil é Brasília."
+          }
+        ]
+      }
+    },
+    {
+      "id": "generic-creative",
+      "question": "Crie um poema sobre amizade.",
+      "passed": true,
+      "answer": null,
+      "knowledge": null
+    },
+    {
+      "id": "chain-over-old-bad-history",
+      "question": "Qual a idade dela?",
+      "passed": true,
+      "answer": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer.",
+      "knowledge": {
+        "version": "common-2026-11-v1",
+        "method": "curated-answer",
+        "contextQuestion": "quantos anos tem a antiga rainha da inglaterra?",
+        "topics": [
+          "elizabeth-ii"
+        ],
+        "refs": [
+          {
+            "id": "K:queen-death",
+            "publisher": "Governo britânico",
+            "title": "Falecimento de Elizabeth II",
+            "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii",
+            "reviewedAt": "2026-11-06",
+            "excerpt": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "Regression expectations for a finite curated catalog, not LLM factuality or general intelligence.",
+    "Unknown questions still use the existing model; their answers are not verified by this report.",
+    "No synthetic score is presented as a real-model evaluation."
+  ]
+}

@@ -143,6 +143,12 @@ function setMode(next) {
   $('#composer-hint').textContent = mode === 'learn' ? 'Este texto será armazenado como memória' : 'Enter envia · Shift + Enter quebra linha';
 }
 $$('[data-mode]').forEach(el => el.onclick = () => setMode(el.dataset.mode));
+function knowledgeSources(knowledge){
+  if(!knowledge)return '';
+  const refs=(knowledge.refs||[]).slice(0,6).flatMap(ref=>{try{const url=new URL(ref.url);if(url.protocol!=='https:'||url.username||url.password)return [];return [`<a class="source-item" href="${escape(url.href)}" target="_blank" rel="noopener noreferrer"><b>${escape(ref.publisher)}</b> ${escape(ref.title)}</a>`];}catch{return [];}});
+  const label=knowledge.method==='curated-answer'?'RESPOSTA DO REPERTÓRIO LOCAL':knowledge.method==='clarification'?'PEDIDO DE ESCLARECIMENTO':'BASE LOCAL CONSULTADA';
+  return `<details class="source-block knowledge-block"><summary class="source-heading">${label}</summary><p class="micro muted">${escape(knowledge.version||'')} · Fontes de referência, sem consulta à internet nesta conversa.</p>${refs.join('')}</details>`;
+}
 function renderMessages() {
   const root = $('#messages');
   if (!state.messages.length) {
@@ -151,7 +157,7 @@ function renderMessages() {
     $('[data-suggest="question"]', root).onclick = () => { setMode('chat'); $('#message-input').value = 'Oi, Nexo!'; $('#message-input').focus(); };
     return;
   }
-  root.innerHTML = state.messages.map(m => `<article class="chat-message ${m.role}"><div class="message-meta"><i></i>${m.role === 'user' ? 'VOCÊ' : 'NEXO'}</div><div class="message-body">${escape(m.text)}</div>${m.sources?.length ? `<div class="source-block"><div class="source-heading">MEMÓRIAS RECUPERADAS · SIMILARIDADE</div>${m.sources.map(s => `<button class="source-item" data-source="${s.id}"><b>M${s.id} · ${Math.round(s.score*100)}%</b> ${escape(s.text.slice(0,85))}${s.text.length>85?'…':''}</button>`).join('')}</div>` : ''}</article>`).join('');
+  root.innerHTML = state.messages.map(m => `<article class="chat-message ${m.role}"><div class="message-meta"><i></i>${m.role === 'user' ? 'VOCÊ' : 'NEXO'}</div><div class="message-body">${escape(m.text)}</div>${m.sources?.length ? `<div class="source-block"><div class="source-heading">MEMÓRIAS RECUPERADAS · SIMILARIDADE</div>${m.sources.map(s => `<button class="source-item" data-source="${s.id}"><b>M${s.id} · ${Math.round(s.score*100)}%</b> ${escape(s.text.slice(0,85))}${s.text.length>85?'…':''}</button>`).join('')}</div>` : ''}${knowledgeSources(m.knowledge)}</article>`).join('');
   $$('[data-source]', root).forEach(el => el.onclick = () => {
     const id = Number(el.dataset.source), memory = state.memories.find(m => m.id === id) || state.messages.flatMap(m => m.sources || []).find(m => m.id === id);
     if (memory) openMemory(memory);
@@ -188,7 +194,7 @@ $('#chat-form').onsubmit = async e => {
         const note = document.createElement('div'); note.className='prediction'; note.textContent = `Classificador: ${result.prediction.label} · saída softmax ${(result.prediction.confidence*100).toFixed(1)}% (não calibrada)`;
         $('#messages').lastElementChild?.append(note);
       }
-      toast(learn ? (result.learned ? 'Uma nova memória conectada.' : 'Memória já existente; sem duplicação.') : `Resposta em ${result.seconds}s · ${result.sources.length} memórias recuperadas`);
+      toast(learn ? (result.learned ? 'Uma nova memória conectada.' : 'Memória já existente; sem duplicação.') : `Resposta em ${result.seconds}s · ${result.knowledge?.refs?.length ? 'repertório local consultado' : result.sources.length+' memórias recuperadas'}`);
     } catch (error) {
       networkActivity('error',text,learn);
       state.messages.pop(); renderMessages(); throw error;

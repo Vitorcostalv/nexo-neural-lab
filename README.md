@@ -1,5 +1,7 @@
 # Nexo 4.0 · Neural Learning Lab
 
+**Repertório de respostas:** [40 temas locais com fontes, contexto de continuação e limites](docs/REPERTORIO.md). Os fatos gerais ficam separados das memórias pessoais; essa ampliação não altera os pesos da LLM.
+
 **Laboratório interativo de deep learning, memória vetorial e RAG.**
 
 [![Quality checks](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/ci.yml)

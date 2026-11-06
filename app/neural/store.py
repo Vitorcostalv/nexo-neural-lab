@@ -133,7 +133,12 @@ def retrieve(vector, limit=5, threshold=.40, excluded_ids=None):
 
 def history(limit=60):
     with connection() as db:
-        return [{**dict(r), 'sources': json.loads(r['sources'])} for r in reversed(list(db.execute('SELECT * FROM messages ORDER BY id DESC LIMIT ?', (limit,))))]
+        result=[]
+        for r in reversed(list(db.execute('SELECT * FROM messages ORDER BY id DESC LIMIT ?', (limit,)))):
+            refs=json.loads(r['sources'])
+            trace=next((s.get('trace') for s in refs if isinstance(s,dict) and s.get('kind')=='knowledge-trace'),None)
+            result.append({**dict(r),'sources':[s for s in refs if not isinstance(s,dict) or s.get('kind')!='knowledge-trace'],**({'knowledge':trace} if trace else {})})
+        return result
 
 
 def reset_context(db):
@@ -160,7 +165,8 @@ def recent_context(limit=8, char_budget=4800):
     return selected
 
 
-def save_turn(question, answer, sources):
+def save_turn(question, answer, sources, knowledge=None):
+    sources=[*sources, *([{'id':'K:trace','kind':'knowledge-trace','trace':knowledge}] if knowledge else [])]
     with connection() as db:
         db.execute("INSERT INTO messages(role,text) VALUES('user',?)", (question,))
         db.execute("INSERT INTO messages(role,text,sources) VALUES('assistant',?,?)", (answer, json.dumps(sources, ensure_ascii=False)))

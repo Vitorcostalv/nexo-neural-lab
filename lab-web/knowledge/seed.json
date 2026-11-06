@@ -1,0 +1,571 @@
+{
+  "version": "common-2026-11-v1",
+  "reviewedAt": "2026-11-06",
+  "sources": {
+    "queen-death": {
+      "publisher": "Governo britânico",
+      "title": "Falecimento de Elizabeth II",
+      "url": "https://www.gov.uk/government/speeches/prime-ministers-statement-on-the-death-of-her-majesty-queen-elizabeth-ii"
+    },
+    "queen-birth": {
+      "publisher": "Royal Mint",
+      "title": "Elizabeth II — 1926–2022",
+      "url": "https://www.royalmint.com/globalassets/__rebrand/_structure/shop/editions/_historic-coins/flipbooks/greatest-queens-silver_booklet_p1-compressed.pdf"
+    },
+    "anne": {
+      "publisher": "Royal Family",
+      "title": "Anne, 1702–1714",
+      "url": "https://www.royal.uk/queen-anne"
+    },
+    "monarchs": {
+      "publisher": "Royal Family",
+      "title": "Monarcas desde 1066",
+      "url": "https://www.royal.uk/kings-and-queens-1066"
+    },
+    "solar": {
+      "publisher": "NASA",
+      "title": "Sistema Solar",
+      "url": "https://science.nasa.gov/solar-system/solar-system-facts/"
+    },
+    "planets": {
+      "publisher": "NASA",
+      "title": "Tamanhos e ordem dos planetas",
+      "url": "https://science.nasa.gov/solar-system/planet-sizes-and-locations-in-our-solar-system/"
+    },
+    "sun": {
+      "publisher": "NASA",
+      "title": "Fatos sobre o Sol",
+      "url": "https://science.nasa.gov/sun/facts/"
+    },
+    "earth": {
+      "publisher": "NASA",
+      "title": "Fatos sobre a Terra",
+      "url": "https://science.nasa.gov/earth/facts/"
+    },
+    "moon": {
+      "publisher": "NASA",
+      "title": "Fatos sobre a Lua",
+      "url": "https://science.nasa.gov/moon/facts/"
+    },
+    "photosynthesis": {
+      "publisher": "NOAA",
+      "title": "Fotossíntese — energia para a vida",
+      "url": "https://oceanexplorer.noaa.gov/edu/materials/educator-guide-fueling-life-on-earth.pdf"
+    },
+    "dna": {
+      "publisher": "NHGRI / NIH",
+      "title": "DNA",
+      "url": "https://www.genome.gov/genetics-glossary/Deoxyribonucleic-Acid-DNA"
+    },
+    "boiling": {
+      "publisher": "USGS",
+      "title": "Temperatura de ebulição da água",
+      "url": "https://www.usgs.gov/observatories/yvo/news/how-hot-are-yellowstones-boiling-waters-some-are-hotter-others"
+    },
+    "evaporation": {
+      "publisher": "USGS",
+      "title": "Evaporação e ciclo da água",
+      "url": "https://www.usgs.gov/water-science-school/science/evaporation-and-water-cycle"
+    },
+    "condensation": {
+      "publisher": "USGS",
+      "title": "Condensação e ciclo da água",
+      "url": "https://www.usgs.gov/water-science-school/science/condensation-and-water-cycle"
+    },
+    "rain": {
+      "publisher": "USGS",
+      "title": "Precipitação e ciclo da água",
+      "url": "https://www.usgs.gov/water-science-school/science/precipitation-and-water-cycle"
+    },
+    "si": {
+      "publisher": "BIPM",
+      "title": "Unidades básicas do SI",
+      "url": "https://www.bipm.org/en/measurement-units/si-base-units"
+    },
+    "web": {
+      "publisher": "MDN",
+      "title": "HTML, CSS e JavaScript",
+      "url": "https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/The_web_standards_model"
+    },
+    "javascript": {
+      "publisher": "MDN",
+      "title": "JavaScript e Java são linguagens diferentes",
+      "url": "https://developer.mozilla.org/en-US/docs/Glossary/JavaScript"
+    }
+  },
+  "cards": [
+    {
+      "id": "elizabeth-ii",
+      "title": "Elizabeth II",
+      "aliases": [
+        "elizabeth ii",
+        "elisabeth ii",
+        "isabel ii",
+        "rainha da inglaterra",
+        "rainha do reino unido",
+        "rainha britanica"
+      ],
+      "sourceIds": [
+        "queen-death",
+        "queen-birth"
+      ],
+      "rules": [
+        {
+          "id": "age",
+          "pattern": "quantos anos|idade|velha",
+          "exclude": "coroa|casou|casamento|assumiu|comecou|começou|nasceu|teria|hoje",
+          "answer": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer.",
+          "sourceIds": [
+            "queen-death"
+          ]
+        },
+        {
+          "id": "latest",
+          "pattern": "ultima|mais recente",
+          "answer": "Na monarquia britânica recente, a última rainha reinante foi Elizabeth II, que morreu aos 96 anos em 2022. No sentido histórico estrito de Reino da Inglaterra, a última rainha foi Ana (Anne), antes da união com a Escócia em 1707.",
+          "sourceIds": [
+            "queen-death",
+            "anne"
+          ]
+        },
+        {
+          "id": "death",
+          "pattern": "quando.*(morreu|faleceu)|data.*(morte|falecimento)",
+          "answer": "Elizabeth II morreu em 8 de setembro de 2022, aos 96 anos.",
+          "sourceIds": [
+            "queen-death"
+          ]
+        },
+        {
+          "id": "identity",
+          "pattern": "quem|qual.*rainha|fale sobre|conte sobre",
+          "answer": "Elizabeth II foi rainha do Reino Unido de 1952 a 2022. Ela morreu aos 96 anos; não deve ser confundida com Elizabeth I, uma monarca de outro período.",
+          "sourceIds": [
+            "queen-death",
+            "queen-birth"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "elizabeth-i",
+      "title": "Elizabeth I",
+      "aliases": [
+        "elizabeth i",
+        "elisabeth i",
+        "isabel i"
+      ],
+      "sourceIds": [
+        "monarchs"
+      ],
+      "rules": [
+        {
+          "id": "reign",
+          "pattern": "quem|quando|reinou|reinado|fale sobre",
+          "answer": "Elizabeth I reinou na Inglaterra de 1558 a 1603. Ela não foi a rainha britânica falecida em 2022: essa foi Elizabeth II."
+        }
+      ]
+    },
+    {
+      "id": "queen-anne",
+      "title": "Rainha Ana (Anne)",
+      "aliases": [
+        "rainha ana",
+        "rainha anne",
+        "queen anne"
+      ],
+      "sourceIds": [
+        "anne"
+      ],
+      "rules": [
+        {
+          "id": "reign",
+          "pattern": "quem|quando|reinou|reinado|ultima|fale sobre",
+          "answer": "Ana (Anne) reinou de 1702 a 1714. Em 1707, a união da Inglaterra com a Escócia formou a Grã-Bretanha durante seu reinado."
+        }
+      ]
+    },
+    {
+      "id": "solar-system",
+      "title": "Sistema Solar",
+      "aliases": [
+        "sistema solar"
+      ],
+      "sourceIds": [
+        "solar",
+        "planets"
+      ],
+      "rules": [
+        {
+          "id": "count",
+          "pattern": "quantos planetas|quantidade de planetas|numero de planetas|oito planetas",
+          "answer": "O Sistema Solar tem oito planetas. Plutão é classificado como planeta anão."
+        },
+        {
+          "id": "order",
+          "pattern": "ordem|quais.*planetas|nome.*planetas",
+          "answer": "A partir do Sol, os oito planetas são Mercúrio, Vênus, Terra, Marte, Júpiter, Saturno, Urano e Netuno."
+        },
+        {
+          "id": "largest",
+          "pattern": "maior planeta",
+          "answer": "Júpiter é o maior planeta do Sistema Solar."
+        },
+        {
+          "id": "smallest",
+          "pattern": "menor planeta",
+          "answer": "Mercúrio é o menor dos oito planetas do Sistema Solar."
+        },
+        {
+          "id": "definition",
+          "pattern": "o que|oq|explique|explica|fale sobre",
+          "answer": "O Sistema Solar reúne o Sol e os corpos que orbitam ao seu redor, incluindo oito planetas, planetas anões, luas e pequenos corpos."
+        }
+      ]
+    },
+    {
+      "id": "sun",
+      "title": "Sol",
+      "aliases": [
+        "sol"
+      ],
+      "sourceIds": [
+        "sun"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|estrela|planeta|fale sobre",
+          "answer": "O Sol é uma estrela, não um planeta. Sua energia é produzida por fusão nuclear."
+        }
+      ]
+    },
+    {
+      "id": "earth",
+      "title": "Terra",
+      "aliases": [
+        "planeta terra",
+        "terra"
+      ],
+      "sourceIds": [
+        "earth"
+      ],
+      "rules": [
+        {
+          "id": "year",
+          "pattern": "translacao|dar.*volta.*sol|ano.*dur|dias.*ano",
+          "answer": "A Terra leva aproximadamente 365,25 dias para completar uma órbita ao redor do Sol."
+        },
+        {
+          "id": "day",
+          "pattern": "rotacao|dia.*noite|dia.*dur|quantas horas.*dia",
+          "answer": "A rotação da Terra está ligada à alternância entre dia e noite; um dia solar dura aproximadamente 24 horas."
+        },
+        {
+          "id": "definition",
+          "pattern": "o que|oq|fale sobre|qual.*posicao",
+          "answer": "A Terra é o terceiro planeta a partir do Sol e possui água líquida na superfície."
+        }
+      ]
+    },
+    {
+      "id": "moon",
+      "title": "Lua",
+      "aliases": [
+        "lua"
+      ],
+      "sourceIds": [
+        "moon"
+      ],
+      "rules": [
+        {
+          "id": "light",
+          "pattern": "luz|brilha|brilho",
+          "answer": "A Lua não produz a luz visível que vemos dela: ela reflete a luz do Sol."
+        },
+        {
+          "id": "definition",
+          "pattern": "o que|oq|satelite|fale sobre",
+          "answer": "A Lua é o satélite natural da Terra."
+        }
+      ]
+    },
+    {
+      "id": "jupiter",
+      "title": "Júpiter",
+      "aliases": [
+        "jupiter",
+        "maior planeta"
+      ],
+      "sourceIds": [
+        "planets"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|qual|quem|fale sobre|maior",
+          "answer": "Júpiter é o maior planeta do Sistema Solar e o quinto a partir do Sol.",
+          "exclude": "universo|exoplaneta"
+        }
+      ]
+    },
+    {
+      "id": "mercury",
+      "title": "Mercúrio",
+      "aliases": [
+        "mercurio",
+        "menor planeta",
+        "planeta mais proximo do sol"
+      ],
+      "sourceIds": [
+        "planets"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|qual|quem|fale sobre|menor|proximo",
+          "answer": "Mercúrio é o planeta mais próximo do Sol e o menor dos oito planetas do Sistema Solar.",
+          "exclude": "universo|exoplaneta"
+        }
+      ]
+    },
+    {
+      "id": "photosynthesis",
+      "title": "Fotossíntese",
+      "aliases": [
+        "fotossintese"
+      ],
+      "sourceIds": [
+        "photosynthesis"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|como|explique|explica|define|significa|simples",
+          "answer": "Na fotossíntese, plantas, algas e outros organismos usam energia da luz para transformar água e dióxido de carbono em açúcares. Na fotossíntese oxigênica, há liberação de oxigênio."
+        }
+      ]
+    },
+    {
+      "id": "dna",
+      "title": "DNA",
+      "aliases": [
+        "dna",
+        "acido desoxirribonucleico"
+      ],
+      "sourceIds": [
+        "dna"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|para que|serve|explique|explica|significa",
+          "answer": "DNA é a molécula que armazena informação genética utilizada no desenvolvimento e funcionamento dos organismos."
+        }
+      ]
+    },
+    {
+      "id": "boiling-water",
+      "title": "Ebulição da água",
+      "aliases": [
+        "agua ferve",
+        "agua fervendo",
+        "ferver agua",
+        "ebulicao da agua",
+        "agua"
+      ],
+      "sourceIds": [
+        "boiling"
+      ],
+      "rules": [
+        {
+          "id": "temperature",
+          "pattern": "ferve|ferver|fervura|ebulicao",
+          "answer": "Água pura ferve a aproximadamente 100 °C sob pressão de uma atmosfera, ao nível do mar. A temperatura muda com a pressão e com substâncias dissolvidas."
+        }
+      ]
+    },
+    {
+      "id": "evaporation",
+      "title": "Evaporação",
+      "aliases": [
+        "evaporacao"
+      ],
+      "sourceIds": [
+        "evaporation"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|como|explique|explica|significa",
+          "answer": "Evaporação é a passagem da água do estado líquido para vapor. Esse processo participa do ciclo da água."
+        }
+      ]
+    },
+    {
+      "id": "condensation",
+      "title": "Condensação",
+      "aliases": [
+        "condensacao"
+      ],
+      "sourceIds": [
+        "condensation"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|como|explique|explica|significa",
+          "answer": "Condensação é a transformação de vapor de água em água líquida. Ela participa da formação de nuvens e de gotículas em superfícies frias."
+        }
+      ]
+    },
+    {
+      "id": "precipitation",
+      "title": "Precipitação",
+      "aliases": [
+        "precipitacao",
+        "chuva"
+      ],
+      "sourceIds": [
+        "rain"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|como|explique|explica|significa|forma",
+          "answer": "Precipitação é a água que cai das nuvens, por exemplo como chuva, neve ou granizo. Ela devolve água da atmosfera à superfície."
+        }
+      ]
+    },
+    {
+      "id": "html",
+      "title": "HTML",
+      "aliases": [
+        "html"
+      ],
+      "sourceIds": [
+        "web"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|para que|serve|explique|explica|significa|linguagem",
+          "answer": "HTML é uma linguagem de marcação que dá estrutura e significado ao conteúdo de páginas web. Não é uma linguagem de programação."
+        }
+      ]
+    },
+    {
+      "id": "css",
+      "title": "CSS",
+      "aliases": [
+        "css"
+      ],
+      "sourceIds": [
+        "web"
+      ],
+      "rules": [
+        {
+          "id": "definition",
+          "pattern": "o que|oq|para que|serve|explique|explica|significa",
+          "answer": "CSS descreve a apresentação das páginas web, como cores, fontes, espaçamentos e organização visual."
+        }
+      ]
+    },
+    {
+      "id": "javascript",
+      "title": "JavaScript",
+      "aliases": [
+        "javascript",
+        "js"
+      ],
+      "sourceIds": [
+        "web",
+        "javascript"
+      ],
+      "rules": [
+        {
+          "id": "java",
+          "pattern": "\\bjava\\b|mesma|igual|diferenca",
+          "answer": "JavaScript e Java são linguagens de programação diferentes, apesar dos nomes semelhantes."
+        },
+        {
+          "id": "definition",
+          "pattern": "o que|oq|para que|serve|explique|explica|significa",
+          "answer": "JavaScript é uma linguagem de programação muito usada para adicionar comportamento e interatividade a páginas web."
+        }
+      ]
+    },
+    {
+      "id": "si-time",
+      "title": "Unidade de tempo",
+      "aliases": [
+        "unidade de tempo",
+        "tempo no si"
+      ],
+      "sourceIds": [
+        "si"
+      ],
+      "rules": [
+        {
+          "id": "unit",
+          "pattern": "qual|unidade|o que",
+          "answer": "A unidade básica de tempo no Sistema Internacional é o segundo, cujo símbolo é s."
+        }
+      ]
+    },
+    {
+      "id": "si-length",
+      "title": "Unidade de comprimento",
+      "aliases": [
+        "unidade de comprimento",
+        "comprimento no si"
+      ],
+      "sourceIds": [
+        "si"
+      ],
+      "rules": [
+        {
+          "id": "unit",
+          "pattern": "qual|unidade|o que",
+          "answer": "A unidade básica de comprimento no Sistema Internacional é o metro, cujo símbolo é m."
+        }
+      ]
+    },
+    {
+      "id": "si-mass",
+      "title": "Unidade de massa",
+      "aliases": [
+        "unidade de massa",
+        "massa no si"
+      ],
+      "sourceIds": [
+        "si"
+      ],
+      "rules": [
+        {
+          "id": "unit",
+          "pattern": "qual|unidade|o que",
+          "answer": "A unidade básica de massa no Sistema Internacional é o quilograma, cujo símbolo é kg."
+        }
+      ]
+    },
+    {
+      "id": "si-temperature",
+      "title": "Unidade de temperatura",
+      "aliases": [
+        "unidade de temperatura",
+        "temperatura no si"
+      ],
+      "sourceIds": [
+        "si"
+      ],
+      "rules": [
+        {
+          "id": "unit",
+          "pattern": "qual|unidade|o que",
+          "answer": "A unidade básica de temperatura termodinâmica no Sistema Internacional é o kelvin, cujo símbolo é K."
+        }
+      ]
+    }
+  ]
+}

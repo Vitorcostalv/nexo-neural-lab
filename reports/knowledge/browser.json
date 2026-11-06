@@ -1,0 +1,80 @@
+{
+  "classification": "Actual browser application / editorial lookup, no LLM inference",
+  "reports": [
+    {
+      "name": "desktop",
+      "width": 1420,
+      "height": 900,
+      "answers": [
+        {
+          "question": "quantos anos tem a antiga rainha da inglaterra?",
+          "answer": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+        },
+        {
+          "question": "E a ultima?",
+          "answer": "Na monarquia britânica recente, a última rainha reinante foi Elizabeth II, que morreu aos 96 anos em 2022. No sentido histórico estrito de Reino da Inglaterra, a última rainha foi Ana (Anne), antes da união com a Escócia em 1707."
+        },
+        {
+          "question": "Qual a capital do Brasil?",
+          "answer": "A capital do Brasil é Brasília."
+        },
+        {
+          "question": "E de Portugal?",
+          "answer": "A capital de Portugal é Lisboa."
+        },
+        {
+          "question": "O que é fotossíntese?",
+          "answer": "Na fotossíntese, plantas, algas e outros organismos usam energia da luz para transformar água e dióxido de carbono em açúcares. Na fotossíntese oxigênica, há liberação de oxigênio."
+        },
+        {
+          "question": "Qual era a cor dos olhos de Elizabeth II?",
+          "answer": "Não tenho esse detalhe verificado sobre Elizabeth II na base local. Pode especificar o que deseja saber ou fornecer uma fonte?"
+        }
+      ],
+      "workerStarts": 0,
+      "personalMemories": 0,
+      "reloadPreservesSources": true,
+      "errors": []
+    },
+    {
+      "name": "mobile",
+      "width": 380,
+      "height": 844,
+      "answers": [
+        {
+          "question": "quantos anos tem a antiga rainha da inglaterra?",
+          "answer": "Se você se refere a Elizabeth II, ela morreu aos 96 anos, em 8 de setembro de 2022. Ela era rainha do Reino Unido; por isso, sua idade é informada como idade ao falecer."
+        },
+        {
+          "question": "E a ultima?",
+          "answer": "Na monarquia britânica recente, a última rainha reinante foi Elizabeth II, que morreu aos 96 anos em 2022. No sentido histórico estrito de Reino da Inglaterra, a última rainha foi Ana (Anne), antes da união com a Escócia em 1707."
+        },
+        {
+          "question": "Qual a capital do Brasil?",
+          "answer": "A capital do Brasil é Brasília."
+        },
+        {
+          "question": "E de Portugal?",
+          "answer": "A capital de Portugal é Lisboa."
+        },
+        {
+          "question": "O que é fotossíntese?",
+          "answer": "Na fotossíntese, plantas, algas e outros organismos usam energia da luz para transformar água e dióxido de carbono em açúcares. Na fotossíntese oxigênica, há liberação de oxigênio."
+        },
+        {
+          "question": "Qual era a cor dos olhos de Elizabeth II?",
+          "answer": "Não tenho esse detalhe verificado sobre Elizabeth II na base local. Pode especificar o que deseja saber ou fornecer uma fonte?"
+        }
+      ],
+      "workerStarts": 0,
+      "personalMemories": 0,
+      "reloadPreservesSources": true,
+      "errors": []
+    }
+  ],
+  "limitations": [
+    "Finite curated repertoire, not a model benchmark.",
+    "Headless browser sizes, not a physical phone.",
+    "No guarantee of factual accuracy for uncovered LLM-generated answers."
+  ]
+}
