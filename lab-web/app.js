@@ -1,5 +1,6 @@
 import {startProfiles,mountProfiles,persistControls} from './profiles/ui.js?v=1.4.1';
-import {mountCompanion} from './companion.js?v=1.4.1';
+import {mountCompanion} from './companion-girl.js?v=1.4.1';
+import {mountNavigationLabels} from './navigation-labels.js?v=1.4.1';
 import {activity,phase} from './activity-state.js?v=1.4.1';
 import {readEventStream} from './chat-stream.js?v=1.3.0';
 import {mountExperiments} from './experiments.js?v=1.4.1';
@@ -7,13 +8,15 @@ import {prepareResearchViews,mountResearch,researchTitles} from './lab/studio.js
 const browserMode = !!globalThis.NEXO_BROWSER;
 const nativeProfileRequest=async(method,path,body,profile)=>{const response=await fetch('/api'+path,{method,headers:{'Content-Type':'application/json',...(sessionStorage.getItem('nexo-key')?{'X-API-Key':sessionStorage.getItem('nexo-key')}:{}),...(profile?{'X-Nexo-Profile':profile.id,...(profile.nativeGeneration?{'X-Nexo-Generation':profile.nativeGeneration}:{})}:{})},...(body?{body:JSON.stringify(body)}:{})});const data=await response.json();if(!response.ok)throw Error(typeof data.detail==='string'?data.detail:'Falha na operação de perfis locais');return data;};
 const profiles=await startProfiles({remote:browserMode?null:nativeProfileRequest});
-mountCompanion(profiles.profile);
+let sceneController=null;
+mountCompanion(profiles.profile,{onMotionChange:async value=>{await profiles.preferences({motion:value});document.documentElement.dataset.motion=value;sceneController?.setMotion?.(value);}});
 const browserRuntime = browserMode ? await import('./browser/runtime.js?v=1.4.1') : null;
 const profileHeaders=()=>({'X-Nexo-Profile':profiles.profile.id,...(profiles.profile.nativeGeneration?{'X-Nexo-Generation':profiles.profile.nativeGeneration}:{})});
 const request = browserRuntime ? browserRuntime.request : (url,options={})=>fetch(url,{...options,headers:{...profileHeaders(),...options.headers}});
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const paths = {
+  library:'<path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-3H4V4Zm16 0h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-3h3V4Z"/><path d="M7 8h3M7 11h3m6-3h1m-1 3h1"/>',
   network: '<circle cx="5" cy="5" r="2"/><circle cx="19" cy="7" r="2"/><circle cx="8" cy="19" r="2"/><circle cx="18" cy="18" r="2"/><path d="m7 5 10 2M6 7l2 10m2 2 6-1M18 9v7M7 7l9 9"/>',
   database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
   activity: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
@@ -120,17 +123,18 @@ function setView(view) {
   else if(view==='network')$('#graph-mode').textContent=state.count?'MEMÓRIAS + REDE VISUAL':'REDE VISUAL · SEM MEMÓRIAS';
   $$('.view').forEach(el => el.classList.toggle('active', el.id === 'view-'+view));
   $$('[data-view]').forEach(el => {
-    el.classList.toggle('active', el.dataset.view === view);
-    if (el.classList.contains('rail-btn')) el.setAttribute('aria-current', el.dataset.view === view ? 'page' : 'false');
+    const active=el.dataset.view===view||el.dataset.views?.split(' ').includes(view);
+    el.classList.toggle('active', !!active);
+    if (el.classList.contains('rail-btn')) el.setAttribute('aria-current', active ? 'page' : 'false');
   });
+  $$('[data-library-view]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.libraryView===view)));
   const titles = {companion:['Uma presença feita de <em>conexões.</em>','Seu laboratório local. Uma conversa, muitas descobertas.'],network:['Toda ideia deixa um <em>nexo.</em>','Converse. Conecte. Transforme informação em memória.'], memories:['Conhecimento que <em>permanece.</em>','Guarde, organize e encontre o que importa.'], training:['Aprender é criar <em>conexões.</em>','Treinamento real, com seus exemplos e resultados mensuráveis.'], about:['Entenda cada <em>conexão.</em>','Um laboratório aberto para explorar memória e aprendizado.']};
   titles.experiments=['Uma pergunta. Dois <em>contextos.</em>','Compare, investigue e repita. A influência da memória, à vista.'];
   Object.assign(titles,researchTitles);
   $('#page-title').innerHTML = titles[view][0]; $('#page-subtitle').textContent = titles[view][1];
   if (['network','experiments','sources'].includes(view)) requestAnimationFrame(() => {drawGraph();graphResize?.();});
 }
-const experimentTab=document.createElement('button');experimentTab.className='tab';experimentTab.dataset.view='experiments';experimentTab.textContent='Experimentos';$('.tabs').append(experimentTab);
-prepareResearchViews();icons();
+prepareResearchViews();icons();mountNavigationLabels();
 $$('[data-view]').forEach(el => el.onclick = () => setView(el.dataset.view));
 function setMode(next) {
   mode = next;
@@ -362,7 +366,7 @@ $('#close-connection').onclick=()=>$('#connection-dialog').close();
 $('#save-key').onclick=async()=>{apiKey=$('#api-key').value.trim();sessionStorage.setItem('nexo-key',apiKey);$('#connection-dialog').close();await checkHealth();refresh().catch(e=>toast(e.message,true));};
 
 // A living visual network is distinct from persisted memory nodes.
-let graphResize=null, drawGraph=()=>{}, highlightGraph=()=>{}, sceneController=null,experimentGraph=null,studioGraph=null,studioSources=[],studioOpenSource=null;
+let graphResize=null, drawGraph=()=>{}, highlightGraph=()=>{}, experimentGraph=null,studioGraph=null,studioSources=[],studioOpenSource=null;
 let activityTimer=null,integrating=false,graphMotionRunning=true,lastBirthState={count:0,phase:'idle'};
 function showBirthState(info){
   lastBirthState=info;integrating=info.count>0;clearTimeout(activityTimer);

@@ -1,5 +1,5 @@
 {
-  "created": "2026-11-06T14:38:52.981Z",
+  "created": "2026-11-06T15:02:49.594Z",
   "classification": "DOM emulation with explicit model doubles",
   "widths": [
     360,
@@ -7,6 +7,9 @@
   ],
   "checks": [
     "companion is first; one shared conversation and explicit local-profile onboarding",
+    "only companion/network occupy main tabs; one library hub and keyboard-dismissible animated rail labels",
+    "six gesture previews are explicit and preempted by real-task state; typing/mouth pause between streamed fragments",
+    "visible character motion control persists the shared profile preference and explains static poses",
     "opening all views starts no model worker",
     "preview/index MD safely without downloading models",
     "query context, valid reference opening and invalid reference rejection",

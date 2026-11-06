@@ -12,14 +12,15 @@
   <link rel="stylesheet" href="/assets/experiments.css?v=1.4.1">
   <link rel="stylesheet" href="/assets/lab/studio.css?v=1.4.1">
   <link rel="stylesheet" href="/assets/companion.css?v=1.4.1">
+  <link rel="stylesheet" href="/assets/companion-girl.css?v=1.4.1">
 </head>
 <body>
 <aside class="rail" aria-label="Navegação principal">
   <a class="brand" href="/" aria-label="Nexo início"><svg viewBox="0 0 32 32" fill="none"><path d="M7 25V7l18 18V7M7 16h18" stroke="currentColor" stroke-width="2.5"/><circle cx="7" cy="7" r="3" fill="currentColor"/><circle cx="25" cy="25" r="3" fill="currentColor"/></svg></a>
   <span class="rail-line"></span>
-  <button class="rail-btn active" data-view="companion" title="Companheiro" aria-label="Companheiro" aria-current="page" data-icon="spark"></button>
+  <button class="rail-btn active" data-view="companion" title="Companheira" aria-label="Companheira" aria-current="page" data-icon="spark"></button>
   <button class="rail-btn" data-view="network" title="Rede semântica" aria-label="Rede semântica" data-icon="network"></button>
-  <button class="rail-btn" data-view="memories" title="Memórias" aria-label="Memórias" data-icon="database"></button>
+  <button class="rail-btn" data-view="memories" data-views="memories documents" title="Biblioteca" aria-label="Biblioteca: memórias e documentos" data-icon="library"></button>
   <button class="rail-btn" data-view="training" title="Treinamento" aria-label="Treinamento" data-icon="activity"></button>
   <button class="rail-btn" data-view="experiments" title="Experimentos" aria-label="Experimentos" data-icon="layers"></button>
   <div class="rail-bottom"><button class="rail-btn" data-view="about" title="Como funciona" aria-label="Como funciona" data-icon="info"></button><span class="avatar">VC</span></div>
@@ -36,7 +37,7 @@
     </section>
     <div class="main-grid">
       <div class="explorer">
-        <nav class="tabs" aria-label="Visualizações"><button class="tab active" data-view="companion">Companheiro</button><button class="tab" data-view="network">Rede semântica <span class="tiny-badge">3D</span></button><button class="tab" data-view="memories">Memórias</button><button class="tab" data-view="training">Treinamento</button></nav>
+        <nav class="tabs" aria-label="Visualizações"><button class="tab active" data-view="companion">Companheira</button><button class="tab" data-view="network">Rede semântica <span class="tiny-badge">3D</span></button></nav>
         <section id="view-experiments" class="view content-panel" aria-label="Experimentos"></section>
         <section id="view-network" class="view">
           <div class="graph-panel" id="graph-panel">
