@@ -1,0 +1,9 @@
+Biblioteca Brisa
+
+A biblioteca Brisa fica em Curitiba.
+
+O projeto BRI-09 utiliza Rust e atende somente a biblioteca Brisa.
+
+O prazo de BRI-09 é 15 de agosto de 2026; a responsável é a equipe Vento.
+
+A senha de demonstração da biblioteca é VENTO-31.

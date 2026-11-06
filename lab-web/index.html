@@ -10,19 +10,22 @@
   <link rel="stylesheet" href="/assets/activity.css?v=1.3.0">
   <link rel="stylesheet" href="/assets/dark.css?v=1.3.0">
   <link rel="stylesheet" href="/assets/experiments.css?v=1.4.1">
+  <link rel="stylesheet" href="/assets/lab/studio.css?v=1.4.1">
+  <link rel="stylesheet" href="/assets/companion.css?v=1.4.1">
 </head>
 <body>
 <aside class="rail" aria-label="Navegação principal">
   <a class="brand" href="/" aria-label="Nexo início"><svg viewBox="0 0 32 32" fill="none"><path d="M7 25V7l18 18V7M7 16h18" stroke="currentColor" stroke-width="2.5"/><circle cx="7" cy="7" r="3" fill="currentColor"/><circle cx="25" cy="25" r="3" fill="currentColor"/></svg></a>
   <span class="rail-line"></span>
-  <button class="rail-btn active" data-view="network" title="Rede semântica" aria-label="Rede semântica" aria-current="page" data-icon="network"></button>
+  <button class="rail-btn active" data-view="companion" title="Companheiro" aria-label="Companheiro" aria-current="page" data-icon="spark"></button>
+  <button class="rail-btn" data-view="network" title="Rede semântica" aria-label="Rede semântica" data-icon="network"></button>
   <button class="rail-btn" data-view="memories" title="Memórias" aria-label="Memórias" data-icon="database"></button>
   <button class="rail-btn" data-view="training" title="Treinamento" aria-label="Treinamento" data-icon="activity"></button>
   <button class="rail-btn" data-view="experiments" title="Experimentos" aria-label="Experimentos" data-icon="layers"></button>
   <div class="rail-bottom"><button class="rail-btn" data-view="about" title="Como funciona" aria-label="Como funciona" data-icon="info"></button><span class="avatar">VC</span></div>
 </aside>
 <div class="workspace">
-  <header class="topbar"><div class="wordmark">nexo<span>LABORATÓRIO NEURAL</span></div><div class="top-actions"><span class="version">LOCAL / V2.0</span><button id="connection" class="status"><i></i><span id="status-text">Conectando</span><span data-icon="chevron"></span></button></div></header>
+  <header class="topbar"><div class="wordmark">nexo<span>LABORATÓRIO NEURAL</span></div><div class="top-actions"><span class="version">LOCAL / V4.0</span><button id="connection" class="status"><i></i><span id="status-text">Conectando</span><span data-icon="chevron"></span></button></div></header>
   <main>
     <div class="page-heading"><div><p class="eyebrow">INTELIGÊNCIA QUE CRIA CONEXÕES</p><h1 id="page-title">Toda ideia deixa um <em>nexo.</em></h1><p class="subtitle" id="page-subtitle">Converse. Conecte. Transforme informação em memória.</p></div><button class="button dark" id="new-memory"><span data-icon="plus"></span>Nova memória</button></div>
     <section class="metrics" aria-label="Métricas da memória">
@@ -33,16 +36,16 @@
     </section>
     <div class="main-grid">
       <div class="explorer">
-        <nav class="tabs" aria-label="Visualizações"><button class="tab active" data-view="network">Rede semântica <span class="tiny-badge">3D</span></button><button class="tab" data-view="memories">Memórias</button><button class="tab" data-view="training">Treinamento</button></nav>
+        <nav class="tabs" aria-label="Visualizações"><button class="tab active" data-view="companion">Companheiro</button><button class="tab" data-view="network">Rede semântica <span class="tiny-badge">3D</span></button><button class="tab" data-view="memories">Memórias</button><button class="tab" data-view="training">Treinamento</button></nav>
         <section id="view-experiments" class="view content-panel" aria-label="Experimentos"></section>
-        <section id="view-network" class="view active">
+        <section id="view-network" class="view">
           <div class="graph-panel" id="graph-panel">
             <div class="graph-top"><div><span class="live-dot"></span><span>MAPA DE CONHECIMENTO</span></div><span class="graph-tag" id="graph-mode">ESTADO INICIAL</span></div>
             <div id="graph" aria-label="Visualização tridimensional das memórias; os mesmos dados estão disponíveis na aba Memórias"></div>
             <div class="graph-caption" id="graph-caption"><span class="eyebrow">CONHECIMENTO EM MOVIMENTO</span><h2>Uma ideia acende<br>outras conexões.</h2><p>Converse livremente. Para guardar algo, use Ensinar e crie uma nova memória.</p><button class="button mint" id="graph-teach">Criar primeira memória <span data-icon="arrow"></span></button></div>
             <div id="graph-activity" class="graph-activity" role="status">Rede em movimento · atividade visual ilustrativa</div>
             <div id="node-tooltip" class="node-tooltip" hidden></div>
-            <div class="graph-bottom"><div class="legend"><span><i class="mint-dot"></i>Memórias</span><span><i class="line-dot"></i>Rede visual</span></div><div class="graph-controls"><button id="rotate" title="Pausar movimento" aria-label="Pausar movimento" data-icon="pause"></button><button id="reset-camera" title="Restaurar câmera" aria-label="Restaurar câmera" data-icon="focus"></button><button id="fullscreen" title="Expandir mapa" aria-label="Expandir mapa" data-icon="expand"></button></div></div>
+            <div class="graph-bottom"><div class="legend"><span><i class="mint-dot"></i>Memórias</span><span><i class="line-dot"></i>Fundo ilustrativo</span><span style="color:#f1d995">? Fontes selecionadas</span><span>Linhas entre memórias: similaridade</span></div><div class="graph-controls"><button id="rotate" title="Pausar movimento" aria-label="Pausar movimento" data-icon="pause"></button><button id="reset-camera" title="Restaurar câmera" aria-label="Restaurar câmera" data-icon="focus"></button><button id="fullscreen" title="Expandir mapa" aria-label="Expandir mapa" data-icon="expand"></button></div></div>
           </div>
           <div class="graph-footnote"><span data-icon="mouse"></span><span>Arraste para girar · role para aproximar · selecione uma memória</span><span id="graph-count">0 nós reais</span></div>
           <div class="pipeline"><div class="section-label">DA IDEIA À RESPOSTA<span>O CAMINHO DA INFORMAÇÃO</span></div><div class="pipeline-steps"><div><span class="step-icon" data-icon="message"></span><strong>Sua mensagem</strong><small>O ponto de partida</small></div><b>→</b><div><span class="step-icon" data-icon="layers"></span><strong>Embedding</strong><small>Significado em vetores</small></div><b>→</b><div><span class="step-icon" data-icon="search"></span><strong>Busca semântica</strong><small>Memórias relevantes</small></div><b>→</b><div><span class="step-icon" data-icon="spark"></span><strong>Resposta local</strong><small>LLM + contexto</small></div></div></div>

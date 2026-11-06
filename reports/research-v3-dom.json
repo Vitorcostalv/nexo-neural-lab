@@ -1,0 +1,31 @@
+{
+  "created": "2026-11-06T04:22:43.489Z",
+  "classification": "DOM emulation with explicit model doubles",
+  "widths": [
+    360,
+    1440
+  ],
+  "checks": [
+    "companion is first; one shared conversation and explicit local-profile onboarding",
+    "opening all views starts no model worker",
+    "preview/index MD safely without downloading models",
+    "query context, valid reference opening and invalid reference rejection",
+    "new version, isolated reindex/activation, historical/current queries and three-strategy comparison",
+    "chunking runs in separate namespaces and renders results",
+    "explicit train/validation/test, uncertainty suggestion with empty human label, annotation and retraining",
+    "map reparenting, safe imported HTML and original conversation view preserved",
+    "companion/network share the same live conversation element and persisted history",
+    "explicit teaching preserves history; actual retrieved IDs reach graph highlights and streamed response",
+    "motion preference persists and reaches both companion CSS and graph controller",
+    "profile JSON export contains persistent conversation, documents, annotations and retrieved-memory provenance",
+    "JSON restore preview validates before enabling commit; invalid input blocks restore",
+    "CSV mapping, multiline Portuguese preview and explicit memory import work through UI events",
+    "active experiment blocks profile switching; cancellation terminates worker and updates companion plus condition states",
+    "storage/API validation errors reach an accessible save status and discrete companion error state"
+  ],
+  "modelsStartedOnOpen": 0,
+  "limitations": [
+    "No CSS layout, screenshots, native WebGL or assistive-technology verification.",
+    "Token counts and generation in this DOM script are test doubles; real model results are in research-v3-validation.json."
+  ]
+}

@@ -1,8 +1,16 @@
+import {startProfiles,mountProfiles,persistControls} from './profiles/ui.js?v=1.4.1';
+import {mountCompanion} from './companion.js?v=1.4.1';
+import {activity,phase} from './activity-state.js?v=1.4.1';
 import {readEventStream} from './chat-stream.js?v=1.3.0';
 import {mountExperiments} from './experiments.js?v=1.4.1';
+import {prepareResearchViews,mountResearch,researchTitles} from './lab/studio.js?v=1.4.1';
 const browserMode = !!globalThis.NEXO_BROWSER;
+const nativeProfileRequest=async(method,path,body,profile)=>{const response=await fetch('/api'+path,{method,headers:{'Content-Type':'application/json',...(sessionStorage.getItem('nexo-key')?{'X-API-Key':sessionStorage.getItem('nexo-key')}:{}),...(profile?{'X-Nexo-Profile':profile.id,...(profile.nativeGeneration?{'X-Nexo-Generation':profile.nativeGeneration}:{})}:{})},...(body?{body:JSON.stringify(body)}:{})});const data=await response.json();if(!response.ok)throw Error(typeof data.detail==='string'?data.detail:'Falha na operação de perfis locais');return data;};
+const profiles=await startProfiles({remote:browserMode?null:nativeProfileRequest});
+mountCompanion(profiles.profile);
 const browserRuntime = browserMode ? await import('./browser/runtime.js?v=1.4.1') : null;
-const request = browserRuntime ? browserRuntime.request : fetch;
+const profileHeaders=()=>({'X-Nexo-Profile':profiles.profile.id,...(profiles.profile.nativeGeneration?{'X-Nexo-Generation':profiles.profile.nativeGeneration}:{})});
+const request = browserRuntime ? browserRuntime.request : (url,options={})=>fetch(url,{...options,headers:{...profileHeaders(),...options.headers}});
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const paths = {
@@ -34,7 +42,7 @@ function icons(root = document) { $$('[data-icon]', root).forEach(el => { el.inn
 icons();
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let state = {memories: [], messages: [], categories: [], count: 0, network: null};
-let graphData = {nodes: [], edges: []}, mode = 'chat', busy = false, selectedMemory = null, currentView = 'network';
+let graphData = {nodes: [], edges: []}, mode = 'chat', busy = false, selectedMemory = null, currentView = 'companion';
 let selectedSources = [], health = null, filterTimer, toastTimer;
 const queuedBirths=new Set();let graphHydrated=false,maxSeenMemoryId=0;
 function queueBirths(ids=[]){for(const id of ids)queuedBirths.add(id);}
@@ -52,7 +60,7 @@ const post = (path, body = {}) => api(path, {method:'POST', body:JSON.stringify(
 async function streamChat(body,onDelta){
   const response=await request('/api/chat/stream',{method:'POST',headers:{'Content-Type':'application/json','Accept':'text/event-stream',...(apiKey?{'X-API-Key':apiKey}:{})},body:JSON.stringify(body)});
   if(!response.ok){const error=await response.json();throw new Error(typeof error.detail==='string'?error.detail:'Não foi possível enviar a mensagem.');}
-  return readEventStream(response,onDelta);
+  return readEventStream(response,onDelta,event=>{if(event.type==='stage'){phase(event.state,event.message);if(event.sources){selectedSources=event.sources.map(s=>s.id);highlightGraph();const token=activity.current.token;api('/graph?selected_ids='+selectedSources.join(',')).then(data=>{if(activity.current.token!==token)return;graphData=data;if(currentView==='network')drawGraph();}).catch(error=>toast(error.message,true));}}});
 }
 function toast(text, error = false) {
   const el = $('#toast'); el.textContent = text; el.hidden = false; el.classList.toggle('error', error);
@@ -77,11 +85,12 @@ function setBusy(value) {
 }
 async function operation(fn) {
   if (busy) return toast('Aguarde a operação atual.');
+  let release; const token=activity.begin();
   setBusy(true);
-  try { await fn(); } catch (error) { toast(error.message, true); } finally { setBusy(false); }
+  try { release=await profiles.acquire(); await fn(); activity.finish(token); if(document.querySelector('#save-status'))document.querySelector('#save-status').textContent='Dados salvos localmente'; } catch (error) { activity.finish(token,error.name==='AbortError'?'cancelled':'error',error.message); toast(error.message, true); if(document.querySelector('#save-status'))document.querySelector('#save-status').textContent='Operação não concluída: '+error.message; } finally { if(release)await release().catch(e=>toast(e.message,true));setBusy(false); }
 }
 async function refresh() {
-  const [next, graph] = await Promise.all([api('/state'), api('/graph')]);
+  const [next, graph] = await Promise.all([api('/state'), api('/graph?selected_ids='+selectedSources.filter(Number.isSafeInteger).join(','))]);
   if(graphHydrated)queueBirths(graph.nodes.filter(node=>node.id>maxSeenMemoryId).map(node=>node.id));
   maxSeenMemoryId=Math.max(maxSeenMemoryId,...graph.nodes.map(node=>node.id));graphHydrated=true;
   state = next; graphData = graph;
@@ -100,22 +109,28 @@ async function refresh() {
 }
 function setView(view) {
   currentView = view;
-  $('.main-grid').classList.toggle('experiment-layout',view==='experiments');
+  $('.main-grid').classList.toggle('chat-layout',['companion','network'].includes(view));
+  $('.main-grid').classList.toggle('experiment-layout',view==='experiments'||Object.hasOwn(researchTitles,view));
   const graphPanel=$('#graph-panel'),slot=$('#experiment-map-slot');
   if(view==='experiments'&&slot)slot.append(graphPanel);
-  else if(graphPanel.parentElement?.id==='experiment-map-slot')$('#view-network').prepend(graphPanel);
-  $('#graph').setAttribute('aria-label',view==='experiments'?'Mapa do snapshot do experimento. Os trechos e identificadores estão disponíveis nesta área.':'Mapa das memórias; os mesmos dados estão disponíveis na aba Memórias.');
+  else if(view==='sources'&&$('#studio-map-slot'))$('#studio-map-slot').append(graphPanel);
+  else if(['experiment-map-slot','studio-map-slot'].includes(graphPanel.parentElement?.id))$('#view-network').prepend(graphPanel);
+  $('#graph').setAttribute('aria-label',view==='sources'?'Mapa das fontes do documento. Os trechos e referências estão disponíveis nesta área.':view==='experiments'?'Mapa do snapshot do experimento. Os trechos e identificadores estão disponíveis nesta área.':'Mapa das memórias; os mesmos dados estão disponíveis na aba Memórias.');
+  if(view==='sources')$('#graph-mode').textContent='FONTES DOCUMENTAIS / SNAPSHOT';
+  else if(view==='network')$('#graph-mode').textContent=state.count?'MEMÓRIAS + REDE VISUAL':'REDE VISUAL · SEM MEMÓRIAS';
   $$('.view').forEach(el => el.classList.toggle('active', el.id === 'view-'+view));
   $$('[data-view]').forEach(el => {
     el.classList.toggle('active', el.dataset.view === view);
     if (el.classList.contains('rail-btn')) el.setAttribute('aria-current', el.dataset.view === view ? 'page' : 'false');
   });
-  const titles = {network:['Toda ideia deixa um <em>nexo.</em>','Converse. Conecte. Transforme informação em memória.'], memories:['Conhecimento que <em>permanece.</em>','Guarde, organize e encontre o que importa.'], training:['Aprender é criar <em>conexões.</em>','Treinamento real, com seus exemplos e resultados mensuráveis.'], about:['Entenda cada <em>conexão.</em>','Um laboratório aberto para explorar memória e aprendizado.']};
+  const titles = {companion:['Uma presença feita de <em>conexões.</em>','Seu laboratório local. Uma conversa, muitas descobertas.'],network:['Toda ideia deixa um <em>nexo.</em>','Converse. Conecte. Transforme informação em memória.'], memories:['Conhecimento que <em>permanece.</em>','Guarde, organize e encontre o que importa.'], training:['Aprender é criar <em>conexões.</em>','Treinamento real, com seus exemplos e resultados mensuráveis.'], about:['Entenda cada <em>conexão.</em>','Um laboratório aberto para explorar memória e aprendizado.']};
   titles.experiments=['Uma pergunta. Dois <em>contextos.</em>','Compare, investigue e repita. A influência da memória, à vista.'];
+  Object.assign(titles,researchTitles);
   $('#page-title').innerHTML = titles[view][0]; $('#page-subtitle').textContent = titles[view][1];
-  if (view === 'network'||view==='experiments') requestAnimationFrame(() => {drawGraph();graphResize?.();});
+  if (['network','experiments','sources'].includes(view)) requestAnimationFrame(() => {drawGraph();graphResize?.();});
 }
 const experimentTab=document.createElement('button');experimentTab.className='tab';experimentTab.dataset.view='experiments';experimentTab.textContent='Experimentos';$('.tabs').append(experimentTab);
+prepareResearchViews();icons();
 $$('[data-view]').forEach(el => el.onclick = () => setView(el.dataset.view));
 function setMode(next) {
   mode = next;
@@ -145,6 +160,7 @@ $('#chat-form').onsubmit = async e => {
   if (!text || busy) return;
   const learn = mode === 'learn';
   await operation(async () => {
+    selectedSources=[];highlightGraph();phase(learn?'saving':'receiving',learn?'Preparando memória explícita':'Mensagem recebida');
     networkActivity('begin',text,learn);
     state.messages.push({role:'user', text, sources:[]}); renderMessages();
     const pending = document.createElement('article'); pending.className = 'chat-message';
@@ -155,6 +171,7 @@ $('#chat-form').onsubmit = async e => {
     update(); const timer = setInterval(update, 1000);
     try {
       const result = await streamChat({text, learn},chunk=>{
+        phase('responding','Recebendo fragmentos da resposta');
         if(!receiving){receiving=true;$('.message-body',pending).textContent='';pending.classList.add('is-streaming');}
         $('.message-body',pending).textContent+=chunk;
         $('#chat-scroll').scrollTop=$('#chat-scroll').scrollHeight;
@@ -193,7 +210,7 @@ mic.onclick=async()=>{
       const blob=new Blob(chunks,{type:recorder.mimeType});
       await operation(async()=>{
         toast('Transcrevendo no computador…');
-        const response=await fetch('/api/transcribe',{method:'POST',headers:{'Content-Type':blob.type,...(apiKey?{'X-API-Key':apiKey}:{})},body:blob});
+        const response=await request('/api/transcribe',{method:'POST',headers:{'Content-Type':blob.type,...(apiKey?{'X-API-Key':apiKey}:{})},body:blob});
         const result=await response.json();if(!response.ok)throw new Error(result.detail||'Erro ao transcrever.');
         $('#message-input').value=result.text.slice(0,6000);$('#message-input').focus();
         toast(result.text?'Transcrição pronta. Revise o texto antes de enviar.':'Não identifiquei fala. Tente novamente.');
@@ -224,7 +241,8 @@ function openMemory(memory = null) {
   if(!inspector){inspector=document.createElement('div');inspector.id='vector-inspector';$('#memory-form').append(inspector);}
   inspector.innerHTML='';inspector.hidden=!memory;
   if(memory){
-    selectedSources=[memory.id];highlightGraph();
+    selectedSources=[memory.id];highlightGraph();sceneController?.focus?.(memory.id);
+    let metadata=$('#memory-metadata');if(!metadata){metadata=document.createElement('p');metadata.id='memory-metadata';metadata.className='graph-metadata';$('#dialog-note').after(metadata);}metadata.textContent=`Origem: ${memory.origin||'não informada'} · Categoria: ${memory.label||'sem categoria'} · Criada: ${memory.created||'não informada'}`;
     api(`/memories/${memory.id}`).then(detail=>{
       if(selectedMemory?.id!==memory.id)return;
       const max=Math.max(...detail.preview.map(Math.abs),.001);
@@ -344,7 +362,7 @@ $('#close-connection').onclick=()=>$('#connection-dialog').close();
 $('#save-key').onclick=async()=>{apiKey=$('#api-key').value.trim();sessionStorage.setItem('nexo-key',apiKey);$('#connection-dialog').close();await checkHealth();refresh().catch(e=>toast(e.message,true));};
 
 // A living visual network is distinct from persisted memory nodes.
-let graphResize=null, drawGraph=()=>{}, highlightGraph=()=>{}, sceneController=null,experimentGraph=null;
+let graphResize=null, drawGraph=()=>{}, highlightGraph=()=>{}, sceneController=null,experimentGraph=null,studioGraph=null,studioSources=[],studioOpenSource=null;
 let activityTimer=null,integrating=false,graphMotionRunning=true,lastBirthState={count:0,phase:'idle'};
 function showBirthState(info){
   lastBirthState=info;integrating=info.count>0;clearTimeout(activityTimer);
@@ -360,11 +378,13 @@ function showBirthState(info){
 }
 function showMotion(running){graphMotionRunning=running;if(integrating)showBirthState(lastBirthState);else $('#graph-activity').textContent=running?'Rede em movimento · atividade visual ilustrativa':'Movimento pausado · pressione ▶ para retomar';}
 function renderSceneGraph(){
-  if(currentView==='experiments'&&experimentGraph)sceneController.draw(experimentGraph,selectedSources,[]);
+  if(currentView==='sources'&&studioGraph)sceneController.draw(studioGraph,selectedSources,[]);
+  else if(currentView==='experiments'&&experimentGraph)sceneController.draw(experimentGraph,selectedSources,[]);
   else {sceneController.draw(graphData,selectedSources,[...queuedBirths]);queuedBirths.clear();}
 }
 function selectGraphMemory(memory){
-  if(currentView==='experiments')toast(`Snapshot M${memory.id}: ${memory.text}`);
+  if(currentView==='sources'&&studioOpenSource){studioOpenSource(studioSources.find(s=>s.id===memory.id)||memory);return;}
+  if(currentView==='experiments'||currentView==='sources')toast(`Snapshot ${memory.id}: ${memory.text}`);
   else openMemory(memory);
 }
 function networkActivity(stage,text='',learn=false){
@@ -381,28 +401,38 @@ function networkActivity(stage,text='',learn=false){
 async function initGraph(){
   try{
     const {createNeuralScene}=await import('./neural-scene.js?v=1.3.0');
-    sceneController=createNeuralScene({container:$('#graph'),isVisible:()=>currentView==='network'||currentView==='experiments',
+    sceneController=createNeuralScene({container:$('#graph'),isVisible:()=>['network','experiments','sources'].includes(currentView),
       onSelect:selectGraphMemory,buttonHTML:icon,onBirth:showBirthState,
       onMotion:showMotion,
       onHover:node=>{const tip=$('#node-tooltip');tip.hidden=!node;if(node)tip.textContent=`M${node.id} · ${node.label||'sem categoria'}\n${node.text.slice(0,150)}`;}});
     drawGraph=renderSceneGraph;
     highlightGraph=()=>sceneController.highlight(selectedSources);
     graphResize=()=>sceneController.resize();
-    drawGraph();window.addEventListener('pagehide',()=>sceneController.dispose(),{once:true});
+    sceneController.setMotion?.(profiles.profile.preferences?.motion||'system');drawGraph();window.addEventListener('pagehide',()=>sceneController.dispose(),{once:true});
   }catch(error){
     console.warn('WebGL unavailable, using a living 2D projection.',error);
     const {createCanvasScene}=await import('./neural-canvas.js?v=1.3.0');
-    sceneController=createCanvasScene({container:$('#graph'),isVisible:()=>currentView==='network'||currentView==='experiments',buttonHTML:icon,onSelect:selectGraphMemory,onBirth:showBirthState,onMotion:showMotion});
+    sceneController=createCanvasScene({container:$('#graph'),isVisible:()=>['network','experiments','sources'].includes(currentView),buttonHTML:icon,onSelect:selectGraphMemory,onBirth:showBirthState,onMotion:showMotion});
     drawGraph=renderSceneGraph;highlightGraph=()=>sceneController.highlight(selectedSources);graphResize=()=>sceneController.resize();
-    drawGraph();$('#graph-mode').textContent='REDE VISUAL 2D';
+    sceneController.setMotion?.(profiles.profile.preferences?.motion||'system');drawGraph();$('#graph-mode').textContent='REDE VISUAL 2D';
     window.addEventListener('pagehide',()=>sceneController.dispose(),{once:true});
   }
 }
 $('#fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('#graph-panel').requestFullscreen();}catch{toast('Seu navegador não permite tela cheia.');}};
+const profileUI=mountProfiles(profiles,{toast,reprocessMemories:browserRuntime?()=>operation(async()=>{await post('/reprocess');await refresh();}):null,importMemories:items=>operation(async()=>{phase('saving','Importando memórias explícitas');const result=await post('/import',{items});await refresh();toast(`${result.added} memórias importadas.`);}),motion:value=>{document.documentElement.dataset.motion=value;sceneController?.setMotion?.(value);}});
+document.documentElement.dataset.motion=profiles.profile.preferences?.motion||'system';
 const graphReady=initGraph().catch(error=>{console.error('Visualização indisponível',error);toast('Não foi possível carregar o mapa. A conversa continua disponível; recarregue para tentar novamente.',true);});
 await mountExperiments({runtime:browserRuntime,operation,toast,onRecord:record=>{
   experimentGraph=record.graph||null;selectedSources=record.trace?.sources.map(m=>m.id)||[];if(currentView==='experiments')drawGraph();
 },highlight:ids=>{selectedSources=ids;highlightGraph();return (experimentGraph||graphData).nodes.some(node=>ids.includes(node.id));}}).catch(error=>toast(error.message,true));
+await mountResearch({runtime:browserRuntime,operation,toast,setView,apiFetch:(path,options={})=>request('/api'+path,{...options,headers:{...(apiKey?{'X-API-Key':apiKey}:{}),...options.headers}}),showMap:(sources,onSelect)=>{
+  studioOpenSource=onSelect;studioSources=sources;const nodes=sources.slice(0,20).map((s,i)=>({...s,position:[Math.cos(i*2.399),Math.sin(i*2.399),0]})),edges=[];
+  for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++)if(nodes[i].versionId===nodes[j].versionId)edges.push({source:nodes[i].id,target:nodes[j].id,score:1,relation:'same-document-version'});
+  studioGraph={nodes,edges};selectedSources=nodes.map(n=>n.id);if(currentView==='sources')drawGraph();
+}}).catch(error=>toast('Laboratório de fontes: '+error.message,true));
 await Promise.all([checkHealth(),refresh().catch(error=>toast(error.message,true))]);
 await graphReady;
 setInterval(()=>{if(!document.hidden&&!busy)checkHealth();},30000);
+
+persistControls(profiles,toast);
+setView('companion');

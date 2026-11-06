@@ -1,0 +1,57 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 2 /Kids [4 0 R 6 0 R] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 243 >>
+stream
+0.08 0.20 0.15 rg
+BT /F1 11 Tf 46 780 Td 20 TL
+(Manual da Estação ECA) Tj T*
+(Seção 1 - Segurança) Tj T*
+(A manutenção do sensor SEN-42 acontece às segundas-feiras.) Tj T*
+(Antes da manutenção, a equipe deve desligar o sensor SEN-42.) Tj T*
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 283 >>
+stream
+0.08 0.20 0.15 rg
+BT /F1 11 Tf 46 780 Td 20 TL
+(Manual da Estação ECA) Tj T*
+(Seção 2 - Rotas) Tj T*
+(O pacote ECA/BRI deve ser enviado primeiro para Recife e depois para) Tj T*
+(Curitiba.) Tj T*
+(A equipe de transporte de ECA/BRI é Boreal, sem responsabilidade por AUR-27.) Tj T*
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000224 00000 n 
+0000000350 00000 n 
+0000000644 00000 n 
+0000000770 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1104
+%%EOF

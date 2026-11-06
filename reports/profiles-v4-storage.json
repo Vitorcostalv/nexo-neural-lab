@@ -1,0 +1,21 @@
+{
+  "created": "2026-11-06T04:22:36.340Z",
+  "classification": "IndexedDB emulation, real application storage and transaction code",
+  "checks": [
+    "legacy migration assigns stable message IDs, preserves source and separate initial profile",
+    "new profiles isolate every database and renaming preserves stable identity",
+    "reload restores selection/preferences; active tasks block switching and deletion across tabs",
+    "complete JSON restore preserves IDs, document versions, binary originals, vectors, annotations and exact query snapshots",
+    "invalid import performs no writes and preserves active data",
+    "failure after staging both databases never activates a partial restore",
+    "quota failure opening staged research storage closes handles and leaves active profile untouched",
+    "legacy vectors without recorded revision are not silently reused on restore",
+    "omitted originals/vectors are explicit; pending data stays out of semantic retrieval",
+    "identical records deduplicate on merge; atomic generation pointer keeps profile identity",
+    "stale tabs must reload after restore and deletion requires exact confirmation"
+  ],
+  "limitations": [
+    "Not a browser visual, GPU or accessibility-technology test.",
+    "Model calls use deterministic unit vectors solely to test persistence."
+  ]
+}

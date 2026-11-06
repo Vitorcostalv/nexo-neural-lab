@@ -3,8 +3,8 @@ import {topology,deformation,curvePoint,activityEnergy,queryLinks,elapsedSeconds
 import {BirthTimeline,arrivalPosition,interpolatePosition,connectionProgress,integrationAnchors} from './neural-birth.js?v=1.3.0';
 
 export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion,onBirth,buttonHTML}){
-  // Motion is explicitly requested by the user. Pause remains available in the UI.
-  const reduced=false,mobile=matchMedia('(max-width:700px)').matches;
+  // Respect reduced motion initially; the explicit pause/play control remains available.
+  let reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,mobile=matchMedia('(max-width:700px)').matches;
   const renderer=new THREE.WebGLRenderer({antialias:!mobile,alpha:true,powerPreference:'high-performance'});
   renderer.setPixelRatio(Math.min(devicePixelRatio,mobile?1.25:1.5));
   renderer.domElement.setAttribute('aria-label','Rede visual animada com memórias selecionáveis');
@@ -53,8 +53,11 @@ export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion
   const birthMaterial=glowMaterial(0xe1ffca,44),birthGlow=new THREE.Points(birthGeometry,birthMaterial);birthGlow.frustumCulled=false;root.add(birthGlow);
   const births=new BirthTimeline(),birthOrigins=new Map(),layoutMoves=new Map();
   let memoryPoints=[],memoryPaths=null,memoryAnchors=null,data={nodes:[],edges:[]},selected=new Set(),fingerprint='',birthKey='',rootTargetX=0;
-  let motion=true,active=false,finished=-Infinity,started=0,time=0,last=0,frames=0,dirty=true,disposed=false,raf;
-  let down=null,dragging=false;
+  let motion=!reduced,active=false,finished=-Infinity,started=0,time=0,last=0,frames=0,dirty=true,disposed=false,raf;
+  let down=null,dragging=false,focusId=null,focusFrames=0,motionPolicy='system';const cameraTarget=new THREE.Vector3(),cameraAim=new THREE.Vector3();
+  function focus(id){if(!memoryPoints.some(p=>p.userData.id===id))return false;focusId=id;focusFrames=reduced?1:30;dirty=true;canvas.dataset.focusId=String(id);return true;}
+  function setMotion(policy){motionPolicy=policy;reduced=policy!=='system'||matchMedia('(prefers-reduced-motion: reduce)').matches;motion=!reduced;if(!motion){births.entries.clear();birthOrigins.clear();layoutMoves.clear();}updateButton();dirty=true;}
+  function updateFocus(){const point=memoryPoints.find(p=>p.userData.id===focusId);if(point){root.updateMatrixWorld(true);point.getWorldPosition(cameraTarget);}else cameraTarget.set(0,0,0);cameraAim.lerp(cameraTarget,reduced?1:.2);camera.lookAt(cameraAim);if(focusFrames>0)focusFrames--;}
   const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
   const positions=base.nodes.map(p=>[...p]);
   function updateButton(){const label=motion?'Pausar movimento':'Retomar movimento';const button=document.querySelector('#rotate');button.innerHTML=buttonHTML(motion?'pause':'play');button.setAttribute('aria-label',label);button.title=label;button.setAttribute('aria-pressed',String(motion));canvas.dataset.motion=motion?'running':'paused';onMotion?.(motion);}
@@ -70,7 +73,7 @@ export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion
     const oldPositions=new Map(memoryPoints.map(point=>[point.userData.id,point.position.toArray()]));
     const visible=new Set(next.nodes.map(node=>node.id));births.prune(visible);
     for(const id of layoutMoves.keys())if(!visible.has(id))layoutMoves.delete(id);
-    births.add(newIds.filter(id=>visible.has(id)),time);
+    births.add((motion?newIds:[]).filter(id=>visible.has(id)),time);
     if(newIds.some(id=>visible.has(id))){camera.position.z=Math.max(9,camera.position.z);root.rotation.x=0;}
     for(const id of birthOrigins.keys())if(!visible.has(id))birthOrigins.delete(id);
     data=next;const key=JSON.stringify([next.nodes.map(n=>[n.id,n.position]),next.edges]);
@@ -82,8 +85,8 @@ export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion
         point.userData={...node,target};
         if(births.entries.has(node.id)&&!birthOrigins.has(node.id))birthOrigins.set(node.id,arrivalPosition(target,node.id));
         const previous=oldPositions.get(node.id);
-        point.position.fromArray(previous||birthOrigins.get(node.id)||target);
-        if(previous&&!births.entries.has(node.id))layoutMoves.set(node.id,{from:previous,at:time});
+        point.position.fromArray((motion?previous:null)||birthOrigins.get(node.id)||target);
+        if(motion&&previous&&!births.entries.has(node.id))layoutMoves.set(node.id,{from:previous,at:time});
         if(births.entries.has(node.id))point.scale.setScalar(.001);
         root.add(point);memoryPoints.push(point);lookup.set(node.id,point.position.toArray());
       }
@@ -160,7 +163,7 @@ export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion
     birthGeometry.setDrawRange(0,glowCount);birthGeometry.attributes.position.needsUpdate=true;birthGeometry.attributes.intensity.needsUpdate=true;
     birthStatus(completed.length>0);
     rings.forEach((ring,i)=>{const phase=((time-started)*.45+i/3)%1;ring.visible=charge>.08;ring.scale.setScalar(.8+phase*2.7);ring.material.opacity=charge*(1-phase)*.24;ring.rotation.x=Math.sin(i+time*.22)*.65;ring.rotation.y=i*.7;});
-    if(!down&&!reduced){root.rotation.y+=delta*(active?.36:.2);root.rotation.z=Math.sin(time*.35)*.055;}
+    if(!down&&!reduced&&focusId===null){root.rotation.y+=delta*(active?.36:.2);root.rotation.z=Math.sin(time*.35)*.055;}
     canvas.dataset.activity=active?'processing':charge>.1?'settling':'idle';
   }
   function resize(){const w=container.clientWidth,h=container.clientHeight;if(!w||!h)return;const ratio=Math.min(devicePixelRatio,w<450?1.25:1.5);if(renderer.getPixelRatio()!==ratio)renderer.setPixelRatio(ratio);renderer.setSize(w,h,false);rootTargetX=data.nodes.length?0:(w<450?.25:1.35);root.position.x=rootTargetX;camera.aspect=w/h;camera.updateProjectionMatrix();dirty=true;}
@@ -175,8 +178,8 @@ export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion
   container.onpointercancel=()=>{down=null;};container.onpointerleave=()=>onHover?.(null);
   container.addEventListener('wheel',wheel,{passive:false});
   function wheel(e){e.preventDefault();camera.position.z=Math.max(4,Math.min(16,camera.position.z+e.deltaY*.006));dirty=true;}
-  document.querySelector('#rotate').onclick=()=>{motion=!motion;updateButton();dirty=true;};
-  document.querySelector('#reset-camera').onclick=()=>{camera.position.z=9;root.rotation.set(0,0,0);dirty=true;};
+  document.querySelector('#rotate').onclick=()=>{if(motionPolicy==='off')return;motion=!motion;updateButton();dirty=true;};
+  document.querySelector('#reset-camera').onclick=()=>{focusId=null;canvas.dataset.focusId='';focusFrames=reduced?1:30;camera.position.z=9;root.rotation.set(0,0,0);dirty=true;};
   function activity(stage,text=''){
     if(stage==='begin'){active=true;started=time;const seed=[...text].reduce((s,c)=>s+c.codePointAt(0),0)%base.nodes.length;tethers.edges=queryLinks(base.nodes.length,seed);}
     else{active=false;finished=time;}
@@ -187,10 +190,11 @@ export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion
     if(document.hidden||!isVisible()){last=stamp;return;}
     if(stamp-last<33)return;
     const delta=elapsedSeconds(stamp,last);last=stamp;
-    if(motion)update(delta);else if(dirty)update(0);
-    if(motion||dirty){renderer.render(scene,camera);canvas.dataset.frames=String(++frames);dirty=false;}
+    if(motion)update(delta);else if(dirty||focusFrames>0)update(0);
+    if(focusFrames>0||motion)updateFocus();
+    if(motion||dirty||focusFrames>0){renderer.render(scene,camera);canvas.dataset.frames=String(++frames);dirty=false;}
   }
   function dispose(){disposed=true;cancelAnimationFrame(raf);observer.disconnect();container.removeEventListener('wheel',wheel);clearMemories();[axons,tethers].forEach(p=>{p.geometry.dispose();p.material.dispose();});birthGeometry.dispose();birthMaterial.dispose();neuronGeometry.dispose();neuronMaterial.dispose();packetGeometry.dispose();packetMaterial.dispose();memoryGeometry.dispose();memoryMaterial.dispose();selectedMaterial.dispose();ringGeometry.dispose();rings.forEach(r=>r.material.dispose());renderer.dispose();}
   draw(data);update(0);updateButton();resize();raf=requestAnimationFrame(animate);
-  return {draw,highlight,activity,resize,dispose};
+  return {draw,highlight,activity,resize,focus,setMotion,dispose};
 }

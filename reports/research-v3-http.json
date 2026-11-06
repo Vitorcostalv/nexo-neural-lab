@@ -1,0 +1,5 @@
+{
+  "resources": 48,
+  "status": "passed",
+  "scope": "HTTP only, nested /dist/ path and local PDF/MD/TXT assets; not browser rendering."
+}

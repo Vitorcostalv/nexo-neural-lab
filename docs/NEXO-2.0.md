@@ -1,5 +1,7 @@
 # Nexo 2.0 — experimentos com memória
 
+Este guia registra a implementação 2.0. Para perfis, companheiro, backup/restauração e as verificações atuais do checkout local, consulte [Nexo 4.0](NEXO-4.0.md).
+
 ## Demonstração curta
 
 Para demonstrar sem baixar pesos, abra **Experimentos → Modo de execução → Demonstração sem download de modelos** e clique em **Simular comparação**. O cenário fixo usa oito memórias fictícias, vetores artificiais 2D e respostas roteirizadas. Exclua M1 e repita; confira o ranking, o mapa do snapshot, o histórico e o cancelamento. Os registros são marcados `mode=simulation`, não possuem tempos de inferência nem parâmetros aplicados e não modificam a biblioteca pessoal. Esse modo requer somente os arquivos normais do site, não os modelos de IA. A avaliação real fica desabilitada enquanto ele está selecionado.

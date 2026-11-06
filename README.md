@@ -1,4 +1,4 @@
-# Nexo 2.0 · Neural Learning Lab
+# Nexo 4.0 · Neural Learning Lab
 
 **Laboratório interativo de deep learning, memória vetorial e RAG.**
 
@@ -7,7 +7,27 @@
 
 [Abrir aplicação](https://vitorcostalv.github.io/nexo-neural-lab/) · [Relatório técnico](docs/PRODUCAO.md)
 
-## Experimentos: a memória muda a resposta?
+## Companheiro e continuidade local
+
+Companheiro SVG com estados de operações reais, conversa compartilhada com a rede semântica, foco de memórias e controle de movimento. Perfis locais isolam dados por ID, preservando os dados anteriores; backup JSON validado, restauração em novo perfil ou mesclagem sem sobrescrita silenciosa e CSV com prévia estão disponíveis no botão do perfil.
+
+A edição estática é publicada pelo workflow existente do GitHub Pages. [Guia de uso, persistência, formatos, testes e limitações do Nexo 4.0](docs/NEXO-4.0.md) · [Prompt de testes para o Codex do navegador](docs/TESTE-NAVEGADOR.md).
+
+## Fontes, recuperação e aprendizado ativo
+
+Os recursos desta evolução estão incluídos na publicação do Nexo 4.0. As medições abaixo foram realizadas localmente e não representam medições de desempenho do navegador.
+
+- **Documentos:** PDF, Markdown e TXT locais, prévia antes de indexar, páginas/seções/linhas, versões, validade e revisão manual de divergências.
+- **Consulta e fontes:** BM25, vetorial e híbrida por RRF; orçamento em tokens reais, contexto inspecionável, referências validadas e abertura local da origem.
+- **Reranking opcional:** cross-encoder multilíngue em CPU na edição Python com dependências Node opcionais. Sem fallback para API externa.
+- **Aprendizado ativo:** margem, entropia ou aleatório, rótulos humanos, histórico, teste fixo e retreinamento explícito do MLP.
+- **Bancada:** divisões fixa, por parágrafos e seções em namespaces isolados; avaliação com evidências na fonte, JSON/CSV e corpus ampliado de 16 perguntas, mantendo Aurora-v1 intacto.
+
+[Guia do Nexo 3.0, instalação, metodologia, resultados reais e limitações](docs/NEXO-3.0.md).
+
+Nos testes reais em CPU, a cobertura no teste reservado foi 87,5% para vetorial e 100% para BM25/híbrida. O reranker melhorou uma posição no ranking híbrido, mas não resolveu recuperações em perguntas sem resposta. No corpus fácil do MLP, margem e aleatório empataram. Esses resultados não comprovam generalização. [Artefato completo](reports/research-v3-validation.json).
+
+## Experimentos com memórias legadas (Nexo 2.0)
 
 A nova aba **Experimentos** da edição web compara a mesma pergunta sem recuperação e com contexto recuperado. As gerações são sequenciais, com o mesmo modelo, parâmetros e prompt-base, sem histórico da conversa. Inspecione os trechos, exclua uma memória da próxima comparação (sem apagá-la), altere top-k/limiar e execute novamente. Os dez últimos registros ficam no IndexedDB, com snapshots, prompts, tempos e exportação JSON.
 

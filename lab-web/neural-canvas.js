@@ -6,26 +6,29 @@ export function createCanvasScene({container,isVisible,buttonHTML,onSelect,onBir
   container.replaceChildren();const canvas=document.createElement('canvas');container.append(canvas);
   canvas.dataset.renderer='canvas2d';
   const ctx=canvas.getContext('2d'),base=topology(72);
-  let data={nodes:[],edges:[]},selected=new Set(),time=0,last=0,frames=0,raf,motion=true,active=false,finished=-Infinity,dirty=true,disposed=false,zoom=1;
+  let data={nodes:[],edges:[]},selected=new Set(),time=0,last=0,frames=0,raf,motion=!matchMedia('(prefers-reduced-motion: reduce)').matches,active=false,finished=-Infinity,dirty=true,disposed=false,zoom=1;
+  let focusId=null,focusAngle=null,motionPolicy='system',focusFrames=0,offset=[0,0],targetOffset=[0,0];
+  function focus(id){if(!data.nodes.some(n=>n.id===id))return false;focusId=id;focusAngle=time*.2;focusFrames=30;canvas.dataset.focusId=String(id);dirty=true;return true;}
+  function setMotion(policy){motionPolicy=policy;motion=policy==='system'&&!matchMedia('(prefers-reduced-motion: reduce)').matches;if(!motion){births.entries.clear();origins.clear();moves.clear();}updateButton();dirty=true;}
   let memoryHits=[],anchors=[],birthKey='';const births=new BirthTimeline(),origins=new Map(),targets=new Map(),displayed=new Map(),moves=new Map();
   function resize(){const w=container.clientWidth,h=container.clientHeight;canvas.width=Math.round(w);canvas.height=Math.round(h);dirty=true;}
   function birthStatus(complete=false){const state=births.summary(time),key=`${state.count}:${state.phase}`;canvas.dataset.births=String(state.count);canvas.dataset.birthStage=state.phase;if(key!==birthKey||complete){birthKey=key;onBirth?.(complete&&!state.count?{count:0,phase:'complete'}:state);}}
   function draw(next,ids=[],newIds=[]){
-    const visible=new Set(next.nodes.map(n=>n.id));births.prune(visible);births.add(newIds.filter(id=>visible.has(id)),time);
+    const visible=new Set(next.nodes.map(n=>n.id));births.prune(visible);births.add((motion?newIds:[]).filter(id=>visible.has(id)),time);
     if(newIds.some(id=>visible.has(id)))zoom=Math.min(1,zoom);
     for(const map of [origins,targets,displayed,moves])for(const id of map.keys())if(!visible.has(id))map.delete(id);
     data=next;highlight(ids);
     for(const node of next.nodes){
       const target=node.position.map(v=>v*2.2),previous=displayed.get(node.id);targets.set(node.id,target);
       if(births.entries.has(node.id)&&!origins.has(node.id))origins.set(node.id,arrivalPosition(target,node.id));
-      if(previous&&!births.entries.has(node.id))moves.set(node.id,{from:previous,at:time});
-      if(!previous)displayed.set(node.id,origins.get(node.id)||target);
+      if(motion&&previous&&!births.entries.has(node.id))moves.set(node.id,{from:previous,at:time});
+      if(!previous||!motion)displayed.set(node.id,origins.get(node.id)||target);
     }
     anchors=integrationAnchors(next.nodes.map(n=>({id:n.id,position:targets.get(n.id)})),base.nodes);
     birthStatus();dirty=true;
   }
   function activity(stage){active=stage==='begin';if(!active)finished=time;canvas.dataset.activity=active?'processing':'settling';dirty=true;}
-  function project(p){const angle=time*.2,x=p[0]*Math.cos(angle)-p[2]*Math.sin(angle);return [canvas.width*(data.nodes.length?.5:canvas.width<450?.54:.7)+x*canvas.width*.14*zoom,canvas.height*.49+p[1]*canvas.height*.18*zoom];}
+  function project(p){const angle=focusAngle??time*.2,x=p[0]*Math.cos(angle)-p[2]*Math.sin(angle);return [canvas.width*(data.nodes.length?.5:canvas.width<450?.54:.7)+x*canvas.width*.14*zoom+offset[0],canvas.height*.49+p[1]*canvas.height*.18*zoom+offset[1]];}
   function dot(x,y,r,color){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=color;ctx.fill();}
   function frame(){
     const completed=births.finish(time);for(const id of completed)origins.delete(id);
@@ -66,14 +69,14 @@ export function createCanvasScene({container,isVisible,buttonHTML,onSelect,onBir
     canvas.dataset.frames=String(++frames);canvas.dataset.activity=active?'processing':'idle';
   }
   function updateButton(){const label=motion?'Pausar movimento':'Retomar movimento';const button=document.querySelector('#rotate');button.innerHTML=buttonHTML(motion?'pause':'play');button.setAttribute('aria-label',label);button.title=label;canvas.dataset.motion=motion?'running':'paused';onMotion?.(motion);}
-  document.querySelector('#rotate').onclick=()=>{motion=!motion;updateButton();dirty=true;};
-  document.querySelector('#reset-camera').onclick=()=>{zoom=1;time=0;dirty=true;};
+  document.querySelector('#rotate').onclick=()=>{if(motionPolicy==='off')return;motion=!motion;updateButton();dirty=true;};
+  document.querySelector('#reset-camera').onclick=()=>{focusId=null;focusAngle=null;targetOffset=[0,0];focusFrames=30;canvas.dataset.focusId='';zoom=1;time=0;dirty=true;};
   canvas.onclick=e=>{const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;const hit=memoryHits.find(m=>Math.hypot(m.point[0]-x,m.point[1]-y)<12);if(hit)onSelect(hit.node);};
   function wheel(e){e.preventDefault();zoom=Math.max(.5,Math.min(2,zoom-e.deltaY*.001));dirty=true;}
   container.addEventListener('wheel',wheel,{passive:false});
   const observer=new ResizeObserver(resize);observer.observe(container);
-  function animate(stamp){if(disposed)return;raf=requestAnimationFrame(animate);if(document.hidden||!isVisible()){last=stamp;return;}if(stamp-last<33)return;const delta=elapsedSeconds(stamp,last);last=stamp;if(motion)time+=delta;if(motion||dirty){frame();dirty=false;}}
+  function animate(stamp){if(disposed)return;raf=requestAnimationFrame(animate);if(document.hidden||!isVisible()){last=stamp;return;}if(stamp-last<33)return;const delta=elapsedSeconds(stamp,last);last=stamp;if(motion)time+=delta;if(focusId!==null){const position=displayed.get(focusId);if(position){const p=project(position);targetOffset=[canvas.width*.5-(p[0]-offset[0]),canvas.height*.49-(p[1]-offset[1])];}}if(focusFrames>0){const factor=motion?.2:1;offset=offset.map((v,i)=>v+(targetOffset[i]-v)*factor);focusFrames--;}if(motion||dirty||focusFrames>0){frame();dirty=false;}}
   resize();updateButton();raf=requestAnimationFrame(animate);
   function highlight(ids=[]){selected=new Set(ids);canvas.dataset.selectedIds=JSON.stringify(data.nodes.filter(n=>selected.has(n.id)).map(n=>n.id));dirty=true;}
-  return {draw,activity,resize,highlight,dispose:()=>{disposed=true;cancelAnimationFrame(raf);observer.disconnect();container.removeEventListener('wheel',wheel);}};
+  return {draw,activity,resize,highlight,focus,setMotion,dispose:()=>{disposed=true;cancelAnimationFrame(raf);observer.disconnect();container.removeEventListener('wheel',wheel);}};
 }

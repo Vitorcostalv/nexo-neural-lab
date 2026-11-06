@@ -19,5 +19,5 @@ test('3D scene applies experiment selections to real node materials and exposes 
   const memory=id=>{let found;scene.traverse(node=>{if(node.userData.id===id)found=node;});return found;};
   assert.equal(memory(1).material.color.getHex(),0xffe49e);assert.equal(memory(2).material.color.getHex(),0xbcecc5);assert.equal(canvas.dataset.selectedIds,'[1]');
   controller.highlight([2]);assert.equal(memory(1).material.color.getHex(),0xbcecc5);assert.equal(memory(2).material.color.getHex(),0xffe49e);assert.equal(canvas.dataset.selectedIds,'[2]');
-  controller.highlight([999]);assert.equal(canvas.dataset.selectedIds,'[]');controller.dispose();
+  controller.highlight([999]);assert.equal(canvas.dataset.selectedIds,'[]');assert.equal(controller.focus(2),true);assert.equal(canvas.dataset.focusId,'2');assert.equal(controller.focus(999),false);frame(1100);buttons['#reset-camera'].onclick();assert.equal(canvas.dataset.focusId,'');controller.setMotion('off');assert.equal(canvas.dataset.motion,'paused');buttons['#rotate'].onclick();assert.equal(canvas.dataset.motion,'paused');controller.draw({nodes:[{id:3,text:'Static birth',position:[0,0,0]}],edges:[]},[3],[3]);frame(1200);assert.ok(memory(3).scale.x>=1);assert.equal(canvas.dataset.selectedIds,'[3]');controller.dispose();
 });

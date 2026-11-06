@@ -17,8 +17,10 @@ MAX_MEMORIES = 5000
 
 @contextmanager
 def connection():
-    DB.parent.mkdir(parents=True, exist_ok=True)
-    db = sqlite3.connect(DB, timeout=15)
+    from app.neural.profiles import selected_database
+    path = selected_database.get() or DB
+    path.parent.mkdir(parents=True, exist_ok=True)
+    db = sqlite3.connect(path, timeout=15)
     db.row_factory = sqlite3.Row
     db.execute('PRAGMA foreign_keys=ON')
     try:

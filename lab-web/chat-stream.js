@@ -1,10 +1,10 @@
-export async function readEventStream(response,onDelta){
+export async function readEventStream(response,onDelta,onEvent=()=>{}){
   if(!response.body)throw new Error('Seu navegador não disponibilizou a resposta em tempo real.');
   const reader=response.body.getReader(),decoder=new TextDecoder();
   let buffer='',result=null;
   function line(value){
     if(!value.startsWith('data:'))return;
-    const event=JSON.parse(value.slice(5).trim());
+    const event=JSON.parse(value.slice(5).trim());onEvent(event);
     if(event.type==='delta')onDelta(event.text);
     else if(event.type==='done')result=event.result;
     else if(event.type==='error')throw new Error(event.detail||'A resposta foi interrompida.');

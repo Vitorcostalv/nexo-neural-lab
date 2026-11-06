@@ -59,8 +59,12 @@ async def authorize(request: Request, x_api_key: Annotated[str | None, Header()]
             raise HTTPException(401, 'Configure a chave local no botão Conexão.')
 
 
-app = FastAPI(title='Nexo · Laboratório de memória neural', version='2.0.0', lifespan=lifespan, dependencies=[Depends(authorize)])
+from app.neural.profiles import bind_profile, router as profiles_router
+app = FastAPI(title='Nexo · Laboratório de memória neural', version='4.0.0', lifespan=lifespan, dependencies=[Depends(authorize), Depends(bind_profile)])
+app.include_router(profiles_router)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+from app.neural.research import router as research_router
+app.include_router(research_router)
 
 
 @app.middleware('http')
@@ -260,8 +264,9 @@ async def chat_events(body: ChatInput,stream=False):
     new_ids=[]
     reply=None if body.learn else social_reply(body.text)
     async with operation_lock, inference_guard(reply is None):
-        yield {'type':'status','stage':'preparing'}
+        yield {'type':'stage','state':'receiving','message':'Mensagem recebida pelo servidor local'}
         if body.learn:
+            yield {'type':'stage','state':'saving','message':'Calculando embedding da memória explícita'}
             vector = (await embeddings([body.text]))[0]
             prediction = network.predict(vector)
             new_ids = store.add_many([(body.text, body.label)], [vector], origin='conversation',return_ids=True)
@@ -274,6 +279,7 @@ async def chat_events(body: ChatInput,stream=False):
             with store.connection() as db:
                 has_memories = bool(db.execute('SELECT EXISTS(SELECT 1 FROM memories)').fetchone()[0])
             if has_memories:
+                yield {'type':'stage','state':'retrieving','message':'Consultando memórias do perfil local'}
                 vector = (await embeddings([body.text], query=True))[0]
                 sources = store.retrieve(vector)
                 prediction = network.predict(vector)
@@ -281,6 +287,7 @@ async def chat_events(body: ChatInput,stream=False):
                 # An empty RAG index must not add latency or an embedding dependency to general chat.
                 sources, prediction = [], None
             sources = [{**s, 'excerpt':s['text'][:1400]} for s in sources]
+            yield {'type':'stage','state':'generating','message':'Contexto selecionado; preparando resposta','sources':sources}
             messages = build_messages(body.text, sources, store.recent_context())
             if stream:
                 pieces=[]
@@ -293,6 +300,7 @@ async def chat_events(body: ChatInput,stream=False):
             added = 0
         if stream and (body.learn or reply is not None):
             yield {'type':'delta','text':answer}
+        yield {'type':'stage','state':'saving','message':'Salvando conversa no perfil local'}
         store.save_turn(body.text, answer, sources)
         yield {'type':'done','result':{'answer': answer, 'sources': sources, 'prediction': prediction, 'learned': added, 'new_memory_ids':new_ids, 'seconds': round(time.perf_counter()-started, 2)}}
 
@@ -354,10 +362,13 @@ async def transcribe(request: Request):
         return await run_in_threadpool(transcribe_audio, bytes(payload))
 
 
-def graph_data():
+def graph_data(selected_ids=()):
     with store.connection() as db:
         total = db.execute('SELECT count(*) FROM memories').fetchone()[0]
-        records = list(reversed(list(db.execute('SELECT * FROM memories ORDER BY id DESC LIMIT 180'))))
+        selected=list(db.execute('SELECT * FROM memories WHERE id IN ('+','.join('?' for _ in selected_ids)+')',selected_ids)) if selected_ids else []
+        recent=list(db.execute('SELECT * FROM memories ORDER BY id DESC LIMIT 180'))
+        selected_set={r['id'] for r in selected}
+        records=sorted(selected+[r for r in recent if r['id'] not in selected_set][:180-len(selected)],key=lambda r:r['id'])
     if not records:
         return {'nodes': [], 'edges': [], 'total': 0}
     matrix = np.stack([np.frombuffer(r['vector'], np.float32) for r in records])
@@ -383,8 +394,12 @@ def graph_data():
 
 
 @app.get('/api/graph')
-async def graph():
-    return await run_in_threadpool(graph_data)
+async def graph(selected_ids:str=''):
+    try:
+        ids=tuple({int(value) for value in selected_ids.split(',') if value})
+        if len(ids)>20 or any(i<1 for i in ids):raise ValueError()
+    except ValueError:raise HTTPException(422,'Selecione até 20 IDs de memória positivos.')
+    return await run_in_threadpool(graph_data,ids)
 
 
 @app.get('/')

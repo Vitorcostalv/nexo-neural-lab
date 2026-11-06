@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
-const source=(await readFile(new URL('../browser/inference-worker.js',import.meta.url),'utf8')).replace(/^import .*;\r?\n/,'');
+const source=(await readFile(new URL('../browser/inference-worker.js',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
 test('worker GPU protocol warms separately, resets context and fixes generation parameters',async()=>{
   const sent=[],requests=[];let resets=0;
   const engine={resetChat:async()=>{resets++;},chat:{completions:{async *create(request){requests.push(request);yield {choices:[{delta:{content:request.max_tokens===1?'':'Recife'}}]};}}}};

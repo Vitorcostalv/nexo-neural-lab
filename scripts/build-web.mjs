@@ -15,5 +15,5 @@ await writeFile(resolve(out,'assets/browser.css'),'.browser-notice{padding:12px 
 html=html.replace('</head>','<link rel="stylesheet" href="./assets/browser.css"></head>');
 await writeFile(resolve(out,'index.html'),html);
 const css=await readFile(resolve(out,'assets/style.css'),'utf8');await writeFile(resolve(out,'assets/style.css'),css.replaceAll('/assets/vendor/','./vendor/'));
-for(const folder of ['assets','assets/browser'])for(const file of await readdir(resolve(out,folder))){if(file.endsWith('.js')){const target=resolve(out,folder,file);await writeFile(target,version(await readFile(target,'utf8')));}}
+for(const folder of ['assets','assets/browser','assets/lab','assets/profiles'])for(const file of await readdir(resolve(out,folder))){if(file.endsWith('.js')){const target=resolve(out,folder,file);await writeFile(target,version(await readFile(target,'utf8')));}}
 console.log('Browser edition built in dist/');

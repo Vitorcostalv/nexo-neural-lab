@@ -1,0 +1,240 @@
+{
+  "created": "2026-11-06T04:28:52.524Z",
+  "classification": "HTTP asset and import smoke test; no browser layout/inference",
+  "prefix": "/nested/nexo/",
+  "resources": 58,
+  "rows": [
+    {
+      "path": "/nested/nexo/",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/fixtures/aurora-v3/aurora-v1.md",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/fixtures/aurora-v3/aurora-v2.md",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/fixtures/aurora-v3/brisa.txt",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/fixtures/aurora-v3/operacao.pdf",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/fixtures/aurora-v3/README.txt",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/fixtures/aurora-v3/sem-texto.pdf",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/favicon.svg",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/style.css?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/activity.css?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/dark.css?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/experiments.css?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/studio.css?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/companion.css?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser.css",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/app.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/vendor/manrope.ttf",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/profiles/ui.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/companion.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/activity-state.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/chat-stream.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/experiments.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/studio.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser/runtime.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/neural-scene.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/neural-canvas.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/profiles/manager.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/profiles/backup.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/ui.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser/demo.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser/retrieval.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/service.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/model-client.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/source-viewer.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/documents-view.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/query-view.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/benchmark-view.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/active-view.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/profiles/session.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/contracts.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser/learning.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser/experiment-core.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/experiment-map.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser/inference-worker.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/browser/evaluation.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/vendor/three.module.js",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/neural-motion.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/neural-birth.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/storage.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/active.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/chunk-benchmark.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/documents.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/chunking.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/search.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/lab/fixture-corpus.js?v=dev-1793939331533",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/vendor/three.core.js",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/vendor/pdfjs/pdf.mjs",
+      "status": 200
+    },
+    {
+      "path": "/nested/nexo/assets/vendor/pdfjs/pdf.worker.mjs",
+      "status": 200
+    }
+  ]
+}

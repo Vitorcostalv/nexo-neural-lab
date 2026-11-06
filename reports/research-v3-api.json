@@ -1,0 +1,38 @@
+{
+  "schema": "nexo-local-reranker-api-v1",
+  "classification": "documented real CPU execution",
+  "httpStatus": 200,
+  "capabilities": {
+    "rerank": true,
+    "backend": "Node.js / ONNX Runtime CPU",
+    "downloadBytes": 118235028,
+    "model": "SugoLabs/mmarco-mMiniLMv2-L12-H384-v1",
+    "revision": "6772eee1ea62dc82e1fcaaf3ed90c269fdcb1fcf",
+    "instruction": "npm install --prefix runtime/nexo-validation @huggingface/transformers@3.8.1"
+  },
+  "result": {
+    "model": "SugoLabs/mmarco-mMiniLMv2-L12-H384-v1",
+    "revision": "6772eee1ea62dc82e1fcaaf3ed90c269fdcb1fcf",
+    "dtype": "q8",
+    "bytes": 118235028,
+    "license": "Apache-2.0",
+    "maxTokens": 512,
+    "maxCandidates": 24,
+    "device": "cpu",
+    "loadMs": 761.8933999999999,
+    "inferenceMs": 14.573900000000094,
+    "scores": [
+      9.25546646118164,
+      -8.81934928894043
+    ],
+    "truncated": [
+      false,
+      false
+    ],
+    "scoreType": "raw cross-encoder logit, not probability of correctness",
+    "batchSize": 4
+  },
+  "progressEvents": 267,
+  "privateData": false,
+  "limitation": "TestClient ASGI, not a browser/network disconnect test."
+}

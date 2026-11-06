@@ -19,22 +19,29 @@ export function graph(memories){
     }
   }return {nodes:nodes.map(({x,y,z,...n})=>({...n,position:[x,y,z]})),edges,total:memories.length};
 }
-export function predict(model,vector){if(!model)return null;const p=forward(model,vector).at(-1);const k=p.indexOf(Math.max(...p));return {label:model.labels[k],confidence:p[k]};}
+export function distribution(model,vector){return model?forward(model,vector).at(-1):null;}
+export function predict(model,vector){if(!model)return null;const p=distribution(model,vector);const k=p.indexOf(Math.max(...p));return {label:model.labels[k],confidence:p[k]};}
 function forward(model,x){const values=[x];for(let l=0;l<3;l++){const layer=model.layers[l],prev=values.at(-1);let a=layer.b.map((b,j)=>b+prev.reduce((s,v,i)=>s+v*layer.w[i*layer.b.length+j],0));if(l<2)a=a.map(v=>Math.max(0,v));else{const max=Math.max(...a);a=a.map(v=>Math.exp(v-max));const sum=a.reduce((s,v)=>s+v,0);a=a.map(v=>v/sum);}values.push(a);}return values;}
-export async function train(memories,progress=()=>{}){
+export async function train(memories,progress=()=>{},options={}){
   const start=performance.now(),labels=[...new Set(memories.map(m=>m.label).filter(Boolean))].sort();
   if(labels.length<2||labels.length>32||labels.some(l=>memories.filter(m=>m.label===l).length<3))throw Error('Use 2 a 32 categorias, cada uma com pelo menos 3 exemplos.');
   if(memories.filter(m=>m.label).length>2000)throw Error('Treine com até 2.000 exemplos rotulados.');
-  let seed=42;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+  let seed=options.seed??42;const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
   const shuffle=arr=>{for(let i=arr.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;};
   const training=[],validation=[];
-  for(const label of labels){const items=shuffle(memories.filter(m=>m.label===label));const count=Math.max(1,Math.floor(items.length*.2));validation.push(...items.slice(0,count));training.push(...items.slice(count));}
+  if(options.partition){
+    const trainingIds=new Set(options.partition.train),validationIds=new Set(options.partition.validation);
+    if([...trainingIds].some(id=>validationIds.has(id)))throw Error('Vazamento entre treino e validação.');
+    training.push(...memories.filter(m=>trainingIds.has(m.id)));validation.push(...memories.filter(m=>validationIds.has(m.id)));
+    if(!validation.length||labels.some(label=>!training.some(m=>m.label===label)))throw Error('Treino deve cobrir todas as classes e validação deve ser separada.');
+  }else for(const label of labels){const items=shuffle(memories.filter(m=>m.label===label));const count=Math.max(1,Math.floor(items.length*.2));validation.push(...items.slice(0,count));training.push(...items.slice(count));}
   const dims=[memories[0].vector.length,64,24,labels.length];
   const layers=dims.slice(1).map((out,l)=>({w:Array.from({length:dims[l]*out},()=> (random()*2-1)*Math.sqrt(6/dims[l])),b:Array(out).fill(0)}));
   const model={labels,layers};let best=null,bestLoss=Infinity,stale=0,step=0;const curve=[];
   const adam=layers.map(l=>({w:[l.w.map(()=>0),l.w.map(()=>0)],b:[l.b.map(()=>0),l.b.map(()=>0)]}));
   const measure=items=>{let loss=0,correct=0;for(const m of items){const p=forward(model,m.vector).at(-1),y=labels.indexOf(m.label);loss-=Math.log(Math.max(p[y],1e-8));correct+=Number(p.indexOf(Math.max(...p))===y);}return {loss:loss/items.length,accuracy:correct/items.length};};
-  for(let epoch=1;epoch<=180;epoch++){
+  const maxEpochs=options.maxEpochs??180;
+  for(let epoch=1;epoch<=maxEpochs;epoch++){
     shuffle(training);
     for(let offset=0;offset<training.length;offset+=16){
       const batch=training.slice(offset,offset+16),grads=layers.map(l=>({w:l.w.map(()=>0),b:l.b.map(()=>0)}));
@@ -51,9 +58,9 @@ export async function train(memories,progress=()=>{}){
     }
     const t=measure(training),v=measure(validation);curve.push({epoch,loss:t.loss,validation_loss:v.loss});
     if(v.loss<bestLoss-1e-5){bestLoss=v.loss;best=structuredClone(layers);stale=0;}else stale++;
-    if(epoch%5===0){progress(`Treinando: época ${epoch}/180`);await new Promise(r=>setTimeout(r,0));}
+    if(epoch%5===0){progress(`Treinando: época ${epoch}/${maxEpochs}`);await new Promise(r=>setTimeout(r,0));}
     if(stale>=30)break;
   }
   model.layers=best;const t=measure(training),v=measure(validation);
-  model.metadata={labels,curve,train_accuracy:t.accuracy,validation_accuracy:v.accuracy,train_samples:training.length,validation_samples:validation.length,epochs:curve.length,parameters:layers.reduce((s,l)=>s+l.w.length+l.b.length,0),seconds:+((performance.now()-start)/1000).toFixed(2),trained_at:new Date().toISOString()};return model;
+  model.metadata={labels,curve,train_accuracy:t.accuracy,validation_accuracy:v.accuracy,train_samples:training.length,validation_samples:validation.length,epochs:curve.length,parameters:layers.reduce((s,l)=>s+l.w.length+l.b.length,0),seconds:+((performance.now()-start)/1000).toFixed(2),trained_at:new Date().toISOString(),configuration:{architecture:dims,optimizer:'Adam',learningRate:.003,batchSize:16,l2:.0001,beta1:.9,beta2:.999,epsilon:1e-8,maxEpochs,patience:30,minImprovement:1e-5,seed:options.seed??42,partition:options.partition??'stratified validation 20% per class'}};return model;
 }

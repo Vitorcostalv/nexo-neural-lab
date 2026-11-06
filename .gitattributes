@@ -1,0 +1,6 @@
+# Preserve byte offsets and binary fixtures on Windows and Linux checkouts.
+*.pdf binary
+*.wasm binary
+*.pfb binary
+*.ttf binary
+*.png binary

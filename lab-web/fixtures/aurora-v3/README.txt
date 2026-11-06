@@ -1,0 +1,1 @@
+Corpus ficticio aurora-v3. operacao.pdf: duas paginas de texto; sem-texto.pdf: sem texto extraivel, para testar o aviso de OCR. Nenhuma informacao pessoal real. Gerado por scripts/create-research-fixtures.mjs.
