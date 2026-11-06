@@ -9,9 +9,9 @@
 
 ## Companheiro e continuidade local
 
-**Companheira 3D para teste:** [menina chibi, origem/licenças, clips e vídeos de navegador](docs/COMPANHEIRA-CHIBI.md). Modelo GLB articulado, AnimationMixer, repouso, aceno, passos no lugar, sentar/levantar e satisfação. Digitação, leitura e dúvida continuam pendentes.
+**Companheira 3D por interação:** [movimentos automáticos e prompt atualizado](docs/COMPANHEIRA-INTERACOES.md). [menina chibi, origem/licenças, clips e vídeos de navegador](docs/COMPANHEIRA-CHIBI.md). Modelo GLB articulado, AnimationMixer, repouso, aceno, passos no lugar, sentar/levantar e satisfação. Digitação, leitura e dúvida continuam pendentes.
 
-A companheira 3D tem cabelo escuro e roupa verde, controles de gestos dentro da cena, respeito a movimento reduzido/desativado e fallback estático da mesma personagem. As versões SVG e digital anteriores estão preservadas. Conversa, Rede semântica, Biblioteca, perfis locais e backups continuam disponíveis.
+A companheira 3D tem cabelo escuro e roupa verde, reações automáticas à escrita e às tarefas reais, respeito a movimento reduzido/desativado e fallback estático da mesma personagem. As versões SVG e digital anteriores estão preservadas. Conversa, Rede semântica, Biblioteca, perfis locais e backups continuam disponíveis.
 
 A edição estática é publicada pelo workflow existente do GitHub Pages. [Guia de uso, persistência, formatos, testes e limitações do Nexo 4.0](docs/NEXO-4.0.md) · [Prompt de testes para o Codex do navegador](docs/TESTE-NAVEGADOR.md).
 

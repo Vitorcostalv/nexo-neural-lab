@@ -1,5 +1,7 @@
 # Companheira chibi 3D — versão para teste
 
+> Atualização: os botões de gestos foram retirados. A personagem agora reage somente à escrita e às tarefas reais. Use [o fluxo e o prompt atuais](COMPANHEIRA-INTERACOES.md); as evidências com botões abaixo são da primeira revisão.
+
 Esta revisão substitui o retrato antigo por **um modelo GLB real, com skin, esqueleto e clips reproduzidos por AnimationMixer**. O usuário autorizou mudar a personagem para uma menina mais nova e publicar para testar. A apresentação escolhida é uma menina estilizada em proporções chibi, com cabelo castanho escuro e roupa verde. Não se trata do antigo SVG recebendo efeitos de profundidade.
 
 ## Asset e licença

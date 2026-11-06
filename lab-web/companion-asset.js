@@ -5,7 +5,7 @@ export const companionAsset = Object.freeze({status:'ready',asset:{
   clips:{idle:'idle',walk:'walk',sit:'sit',seated:'seated',stand:'stand',wave:'wave',satisfaction:'satisfaction'},
   cameras:{desktop:'CameraDesktop',mobile:'CameraMobile'},nodes:{floor:'Floor',bench:'Bench'},
   review:{status:'for-user-review'},
-  note:'Companheira 3D em teste. Aceno, passos no lugar, sentar e reação de conclusão. Digitação, leitura e dúvida ainda não estão disponíveis.'
+  note:'Ela reage automaticamente: acompanha sua escrita, aguarda sentada durante o processamento e reage à conclusão. Os passos acompanham o carregamento. Digitação, leitura e dúvida ainda não têm clips próprios.'
 }});
 
 export const CLIPS=Object.freeze(['idle','walk','sit','type','stand','wave','satisfaction','doubt','read']);
