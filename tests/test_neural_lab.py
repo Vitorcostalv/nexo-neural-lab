@@ -54,6 +54,33 @@ def test_learn_retrieve_and_persist(client):
     assert len(store.history()) == 4
 
 
+def test_search_parameters_exclusions_and_trace(client):
+    client.post('/api/memories', json={'text': 'Eu estudo Python.'})
+    client.post('/api/memories', json={'text': 'Eu gosto de Python.'})
+    ids = [row['id'] for row in store.rows()]
+    result = client.post('/api/search', json={'query': 'Python', 'limit': 1, 'excluded_ids': [ids[0]]}).json()
+    assert [m['id'] for m in result['sources']] == [ids[1]]
+    assert result['trace']['candidates'][0]['reason'] == 'excluded'
+    assert result['trace']['total'] == 2
+    assert len(store.rows()) == 2
+    assert all('vector' not in c for c in result['trace']['candidates'])
+
+
+@pytest.mark.parametrize('config', [{'limit': 0}, {'limit': 21}, {'limit': 1.5}, {'threshold': 2}, {'excluded_ids': [-1]}])
+def test_search_rejects_invalid_parameters(client, config):
+    assert client.post('/api/search', json={'query': 'Python', **config}).status_code == 422
+
+
+def test_store_search_validates_even_when_empty(client):
+    for vector in ([], [0, 0], [float('nan'), 1]):
+        with pytest.raises(ValueError):
+            store.search_trace(vector)
+    for config in ({'limit': 0}, {'threshold': float('nan')}, {'excluded_ids': ['1']}):
+        with pytest.raises(ValueError):
+            store.search_trace([1, 0], **config)
+    assert store.search_trace([1, 0])['sources'] == []
+
+
 def test_duplicates_and_model_mismatch(client):
     client.post('/api/memories', json={'text':'Eu estudo Python.'})
     assert client.post('/api/memories', json={'text':'  Eu   estudo Python.  '}).json()['added'] == 0

@@ -1,10 +1,13 @@
 import {cosine,retrieve,publicMemory,graph,predict} from './learning.js?v=1.4.1';
+import {createExperiment,runExperiment} from './experiment-core.js?v=1.4.1';
+import {searchTrace,searchConfig,unitVector} from './retrieval.js?v=1.4.1';
+import {experimentMap} from '../experiment-map.js?v=1.4.1';
 let db,worker,sequence=0,mutating=false;
 const pending=new Map();
 const notice=document.createElement('div');notice.className='browser-notice';notice.setAttribute('role','status');
-notice.textContent='EDIÇÃO WEB · IA no seu dispositivo. Primeiro uso baixa modelos (~650 MB); aguarde. Memórias ficam neste navegador. Exporte para ter um backup.';
+notice.textContent='EDIÇÃO WEB · IA no seu dispositivo. Modelos exigem centenas de MB (CPU: ~0,9 GB, além do runtime). Use a demonstração em Experimentos para testar sem baixar modelos. Exporte suas memórias para ter um backup.';
 document.querySelector('main').prepend(notice);
-document.querySelector('.version').textContent='WEB / V1.4';
+document.querySelector('.version').textContent='WEB / V2.0';
 document.querySelector('label[for="api-key"]').hidden=true;
 document.querySelector('#save-key').hidden=true;
 const about=document.querySelector('#view-about');if(about){const p=document.createElement('p');p.className='body-copy';p.textContent='Edição web: Qwen2.5 0.5B + MiniLM multilíngue (384 dimensões), IndexedDB e MLP em JavaScript. A edição Python usa modelos maiores, SQLite, NumPy e Whisper. A rede 3D é ilustrativa; somente os nós de memória e suas similaridades representam os dados.';about.prepend(p);}
@@ -14,6 +17,51 @@ function rpc(type,payload,onDelta){
     worker.onerror=()=>{for(const p of pending.values())p.reject(Error('Não foi possível iniciar a IA. Recarregue a página e verifique sua conexão.'));pending.clear();worker.terminate();worker=null;};
   }
   return new Promise((resolve,reject)=>{const id=++sequence;pending.set(id,{resolve,reject,onDelta});worker.postMessage({id,type,payload});});
+}
+function stopWorker(){
+  worker?.terminate();worker=null;
+  for(const p of pending.values())p.reject(new DOMException('Worker encerrado pelo cancelamento.','AbortError'));
+  pending.clear();notice.textContent='Experimento cancelado. O worker foi encerrado; o próximo uso recarregará os modelos em cache.';
+}
+async function digest(value){return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(value)))),x=>x.toString(16).padStart(2,'0')).join('');}
+export async function experiments(){const s=await read();return s.experiments||[];}
+export async function demonstration(config,options={}){
+  if(mutating)throw Error('Aguarde a operação atual.');mutating=true;
+  try{
+    const {demoExperiment}=await import('./demo.js?v=1.4.1'),s=await read();
+    const record=await demoExperiment(config,options);
+    record.snapshotHash=await digest(record.snapshot);s.experiments=[record,...(s.experiments||[])].slice(0,10);await save(s);return record;
+  }finally{mutating=false;}
+}
+export async function experiment(question,config,{signal,onUpdate}={}){
+  if(mutating)throw Error('Aguarde a operação atual.');mutating=true;
+  const cancel=()=>stopWorker();signal?.addEventListener('abort',cancel,{once:true});
+  try{
+    const s=await read(),record=createExperiment(s.memories,question,config);
+    record.mode='real';
+    record.snapshotHash=await digest(record.snapshot);record.embeddingModel='Xenova/paraphrase-multilingual-MiniLM-L12-v2';
+    await runExperiment(record,{embed:text=>rpc('embedDetailed',text),prepare:()=>rpc('prepareExperiment',{}),generate:(messages,parameters,onDelta)=>rpc('generateDetailed',{messages,parameters},onDelta),signal,onUpdate:r=>{
+      if(r.trace&&!r.graph)r.graph=experimentMap(s.memories,r.trace.sources.map(m=>m.id));
+      onUpdate?.(r);
+    }});
+    // Retain texts/IDs and a digest of the exact vectors, never thousands of vectors in reports.
+    record.snapshot=record.snapshot.map(publicMemory);record.environment={userAgent:navigator.userAgent,hardwareConcurrency:navigator.hardwareConcurrency};
+    s.experiments=[record,...(s.experiments||[])].slice(0,10);await save(s);return record;
+  }finally{signal?.removeEventListener('abort',cancel);mutating=false;}
+}
+export async function evaluate(config,{signal,onProgress=()=>{}}={}){
+  if(mutating)throw Error('Aguarde a operação atual.');mutating=true;
+  const cancel=()=>stopWorker();signal?.addEventListener('abort',cancel,{once:true});
+  try {
+    const {CORPUS,QUERIES,metrics}=await import('./evaluation.js?v=1.4.1'),applied=searchConfig(config);
+    // Evaluation IDs belong to the fixture, not the user's base.
+    applied.excludedIds=[];const memories=[];
+    const check=()=>{if(signal?.aborted)throw new DOMException('Avaliação cancelada.','AbortError');};
+    for(const m of CORPUS){check();onProgress(`Indexando corpus fictício: ${memories.length+1}/${CORPUS.length}`);memories.push({...m,vector:await rpc('embed',m.text)});}
+    const rows=[];
+    for(const q of QUERIES){check();onProgress(`Avaliando pergunta: ${rows.length+1}/${QUERIES.length}`);const trace=searchTrace(memories,await rpc('embed',q.text),applied);rows.push({...q,retrieved:trace.sources.map(m=>m.id),trace});}
+    check();return {schema:'nexo-retrieval-evaluation-v1',fixture:'aurora-v1',created:new Date().toISOString(),embeddingModel:'Xenova/paraphrase-multilingual-MiniLM-L12-v2 (q8/WASM)',config:applied,corpus:CORPUS,rows,metrics:metrics(rows),note:'Corpus didático pequeno. Mede recuperação, não qualidade da resposta nem generalização.'};
+  }finally{signal?.removeEventListener('abort',cancel);mutating=false;}
 }
 const empty=()=>({memories:[],messages:[],model:null,nextId:1});
 const ready=new Promise((resolve,reject)=>{const r=indexedDB.open('nexo-web-v1',1);r.onupgradeneeded=()=>r.result.createObjectStore('state');r.onsuccess=()=>{db=r.result;resolve();};r.onerror=()=>reject(Error('Armazenamento indisponível. Permita dados locais neste navegador.'));});
@@ -26,7 +74,9 @@ async function add(s,items){
   const known=new Set(s.memories.map(m=>normalize(m.text))),created=[];
   for(const item of items){if(typeof item.text!=='string'||!item.text.trim()||item.text.length>6000||typeof(item.label||'')!=='string'||(item.label||'').length>48)throw Error('Texto ou categoria inválidos.');
     const key=normalize(item.text);if(known.has(key))continue;if(s.memories.length+created.length>=5000)throw Error('Limite de 5.000 memórias atingido.');known.add(key);
-    const vector=await rpc('embed',item.text.trim());created.push({id:s.nextId++,text:item.text.trim(),label:(item.label||'').trim(),created:new Date().toISOString(),origin:'browser',dimension:vector.length,vector});
+    const vector=unitVector(await rpc('embed',item.text.trim()),384);
+    if(s.memories.some(m=>m.dimension!==384))throw Error('Embeddings incompatíveis com a base. Exporte e recrie as memórias.');
+    created.push({id:s.nextId++,text:item.text.trim(),label:(item.label||'').trim(),created:new Date().toISOString(),origin:'browser',dimension:vector.length,vector});
   }
   if(created.length){s.memories.push(...created);s.model=null;s.messages=[];}
   return {added:created.length,new_memory_ids:created.map(m=>m.id),duplicates:items.length-created.length,prediction:null};
@@ -74,7 +124,7 @@ export async function request(url,options={}){
     else if(path==='/import')result=await add(s,body.items);
     else if(path==='/export')result={format:'nexo-memories-v1',items:s.memories.map(({text,label})=>({text,label}))};
     else if(path==='/train'){s.model=await rpc('train',s.memories);result=s.model.metadata;}
-    else if(path==='/search'){const vector=await rpc('embed',body.text);result={sources:retrieve(s.memories,vector).map(publicMemory),prediction:predict(s.model,vector)};}
+    else if(path==='/search'){const vector=await rpc('embed',body.text||body.query),trace=searchTrace(s.memories,vector,body);result={sources:trace.sources,prediction:predict(s.model,vector),trace};}
     else if(path==='/transcribe')throw Error('Whisper está disponível na edição Python local. Na web, use o ditado do teclado do dispositivo.');
     else return json({detail:'Operação indisponível.'},404);
     if(mutation)await save(s);return json(result);

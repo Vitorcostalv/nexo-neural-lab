@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import sqlite3
+import time
 from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
@@ -48,9 +49,12 @@ def initialize():
 
 def normalized(vector):
     v = np.asarray(vector, dtype=np.float32)
-    if v.ndim != 1 or not len(v) or not np.isfinite(v).all() or np.linalg.norm(v) < 1e-8:
+    if v.ndim != 1 or not len(v) or not np.isfinite(v).all():
         raise ValueError('O modelo retornou um vetor inválido.')
-    return v / np.linalg.norm(v)
+    norm = np.linalg.norm(v.astype(np.float64))
+    if not np.isfinite(norm) or norm < 1e-8:
+        raise ValueError('O modelo retornou um vetor inválido.')
+    return (v / norm).astype(np.float32)
 
 
 def public(row):
@@ -96,17 +100,33 @@ def add_many(items, vectors, origin='manual', *, return_ids=False):
         return new_ids if return_ids else added
 
 
-def retrieve(vector, limit=5, threshold=.40):
+def search_trace(vector, limit=5, threshold=.40, excluded_ids=None):
+    started = time.perf_counter()
+    excluded_ids = [] if excluded_ids is None else excluded_ids
+    if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= 20:
+        raise ValueError('Use entre 1 e 20 trechos.')
+    if isinstance(threshold, bool) or not isinstance(threshold, (int, float)) or not np.isfinite(threshold) or not -1 <= threshold <= 1:
+        raise ValueError('Limiar inválido.')
+    if not isinstance(excluded_ids, list) or any(type(i) is not int or i < 1 for i in excluded_ids):
+        raise ValueError('Identificadores de exclusão inválidos.')
     records = rows()
-    if not records:
-        return []
     v = normalized(vector)
     if any(r['model'] != settings.embed_model or r['dimension'] != len(v) for r in records):
         raise ValueError('Embeddings incompatíveis. Use o modelo original da base.')
-    matrix = np.stack([np.frombuffer(r['vector'], dtype=np.float32) for r in records])
-    scores = matrix @ v
-    return [{**public(records[i]), 'score': round(float(scores[i]), 4)}
-            for i in np.argsort(-scores, kind='stable')[:limit] if scores[i] >= threshold]
+    matrix = np.stack([normalized(np.frombuffer(r['vector'], dtype=np.float32)) for r in records]) if records else np.empty((0, len(v)))
+    scores = np.clip(matrix @ v, -1, 1)
+    candidates, sources = [], []
+    for rank, i in enumerate(np.argsort(-scores, kind='stable'), 1):
+        row, score = records[i], float(scores[i])
+        reason = 'excluded' if row['id'] in excluded_ids else 'below-threshold' if score < threshold else 'top-k' if len(sources) >= limit else 'included'
+        candidates.append({'id': row['id'], 'score': score, 'rank': rank, 'reason': reason})
+        if reason == 'included':
+            sources.append({**public(row), 'score': round(score, 4)})
+    return {'config': {'limit': limit, 'threshold': threshold, 'excludedIds': sorted(set(excluded_ids))}, 'total': len(records), 'sources': sources, 'candidates': candidates, 'timings': {'totalMs': (time.perf_counter()-started)*1000}}
+
+
+def retrieve(vector, limit=5, threshold=.40, excluded_ids=None):
+    return search_trace(vector, limit, threshold, excluded_ids)['sources']
 
 
 def history(limit=60):

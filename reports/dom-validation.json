@@ -1,0 +1,36 @@
+{
+  "schema": "nexo-dom-validation-v1",
+  "created": "2026-11-06T01:23:24.163Z",
+  "checks": [
+    {
+      "viewportWidth": 1440,
+      "result": "passed",
+      "checks": [
+        "simulation without inference worker",
+        "comparison/exclusion",
+        "ranking pagination (synthetic 45-candidate fixture)",
+        "snapshot map callbacks",
+        "history",
+        "cancellation",
+        "condition error",
+        "real baseline metric rendering"
+      ],
+      "limitation": "DOM emulation: no CSS layout, WebGL rendering, screenshots or assistive technology."
+    },
+    {
+      "viewportWidth": 390,
+      "result": "passed",
+      "checks": [
+        "simulation without inference worker",
+        "comparison/exclusion",
+        "ranking pagination (synthetic 45-candidate fixture)",
+        "snapshot map callbacks",
+        "history",
+        "cancellation",
+        "condition error",
+        "real baseline metric rendering"
+      ],
+      "limitation": "DOM emulation: no CSS layout, WebGL rendering, screenshots or assistive technology."
+    }
+  ]
+}

@@ -61,6 +61,7 @@ export function createNeuralScene({container,isVisible,onSelect,onHover,onMotion
   function clearMemories(){memoryPoints.forEach(p=>root.remove(p));memoryPoints=[];for(const paths of [memoryPaths,memoryAnchors])if(paths){root.remove(paths.mesh);paths.geometry.dispose();paths.material.dispose();}memoryPaths=null;memoryAnchors=null;}
   function highlight(ids=[]){
     selected=new Set(ids);memoryPoints.forEach(p=>p.material=selected.has(p.userData.id)||births.entries.has(p.userData.id)?selectedMaterial:memoryMaterial);
+    canvas.dataset.selectedIds=JSON.stringify(memoryPoints.filter(p=>selected.has(p.userData.id)).map(p=>p.userData.id));
     if(memoryPaths){const color=memoryPaths.geometry.attributes.color;memoryPaths.edges.forEach((edge,i)=>{const bright=selected.has(edge.source)||selected.has(edge.target);for(let j=0;j<segments*2;j++)color.setXYZ(i*segments*2+j,...(bright?[1,.85,.48]:[.45,.7,.52]));});color.needsUpdate=true;}
     dirty=true;
   }

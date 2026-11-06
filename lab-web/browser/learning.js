@@ -1,7 +1,8 @@
 // Small educational MLP: embeddings -> 64 ReLU -> 24 ReLU -> softmax.
 export const cosine = (a,b) => a.reduce((s,v,i)=>s+v*b[i],0);
-export function retrieve(memories,vector,limit=5){
-  return memories.map(m=>({...m,score:cosine(m.vector,vector)})).filter(m=>m.score>=.4).sort((a,b)=>b.score-a.score).slice(0,limit);
+import {searchTrace} from './retrieval.js?v=1.4.1';
+export function retrieve(memories,vector,options=5){
+  return searchTrace(memories,vector,typeof options==='number'?{limit:options}:options).sources;
 }
 export const publicMemory = ({vector,...m}) => m;
 export function graph(memories){

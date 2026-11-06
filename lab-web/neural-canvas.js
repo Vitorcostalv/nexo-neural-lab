@@ -14,7 +14,7 @@ export function createCanvasScene({container,isVisible,buttonHTML,onSelect,onBir
     const visible=new Set(next.nodes.map(n=>n.id));births.prune(visible);births.add(newIds.filter(id=>visible.has(id)),time);
     if(newIds.some(id=>visible.has(id)))zoom=Math.min(1,zoom);
     for(const map of [origins,targets,displayed,moves])for(const id of map.keys())if(!visible.has(id))map.delete(id);
-    data=next;selected=new Set(ids);
+    data=next;highlight(ids);
     for(const node of next.nodes){
       const target=node.position.map(v=>v*2.2),previous=displayed.get(node.id);targets.set(node.id,target);
       if(births.entries.has(node.id)&&!origins.has(node.id))origins.set(node.id,arrivalPosition(target,node.id));
@@ -74,5 +74,6 @@ export function createCanvasScene({container,isVisible,buttonHTML,onSelect,onBir
   const observer=new ResizeObserver(resize);observer.observe(container);
   function animate(stamp){if(disposed)return;raf=requestAnimationFrame(animate);if(document.hidden||!isVisible()){last=stamp;return;}if(stamp-last<33)return;const delta=elapsedSeconds(stamp,last);last=stamp;if(motion)time+=delta;if(motion||dirty){frame();dirty=false;}}
   resize();updateButton();raf=requestAnimationFrame(animate);
-  return {draw,activity,resize,highlight:ids=>{selected=new Set(ids);dirty=true;},dispose:()=>{disposed=true;cancelAnimationFrame(raf);observer.disconnect();container.removeEventListener('wheel',wheel);}};
+  function highlight(ids=[]){selected=new Set(ids);canvas.dataset.selectedIds=JSON.stringify(data.nodes.filter(n=>selected.has(n.id)).map(n=>n.id));dirty=true;}
+  return {draw,activity,resize,highlight,dispose:()=>{disposed=true;cancelAnimationFrame(raf);observer.disconnect();container.removeEventListener('wheel',wheel);}};
 }

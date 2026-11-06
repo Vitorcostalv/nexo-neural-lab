@@ -1,4 +1,5 @@
 import {readEventStream} from './chat-stream.js?v=1.3.0';
+import {mountExperiments} from './experiments.js?v=1.4.1';
 const browserMode = !!globalThis.NEXO_BROWSER;
 const browserRuntime = browserMode ? await import('./browser/runtime.js?v=1.4.1') : null;
 const request = browserRuntime ? browserRuntime.request : fetch;
@@ -99,15 +100,22 @@ async function refresh() {
 }
 function setView(view) {
   currentView = view;
+  $('.main-grid').classList.toggle('experiment-layout',view==='experiments');
+  const graphPanel=$('#graph-panel'),slot=$('#experiment-map-slot');
+  if(view==='experiments'&&slot)slot.append(graphPanel);
+  else if(graphPanel.parentElement?.id==='experiment-map-slot')$('#view-network').prepend(graphPanel);
+  $('#graph').setAttribute('aria-label',view==='experiments'?'Mapa do snapshot do experimento. Os trechos e identificadores estão disponíveis nesta área.':'Mapa das memórias; os mesmos dados estão disponíveis na aba Memórias.');
   $$('.view').forEach(el => el.classList.toggle('active', el.id === 'view-'+view));
   $$('[data-view]').forEach(el => {
     el.classList.toggle('active', el.dataset.view === view);
     if (el.classList.contains('rail-btn')) el.setAttribute('aria-current', el.dataset.view === view ? 'page' : 'false');
   });
   const titles = {network:['Toda ideia deixa um <em>nexo.</em>','Converse. Conecte. Transforme informação em memória.'], memories:['Conhecimento que <em>permanece.</em>','Guarde, organize e encontre o que importa.'], training:['Aprender é criar <em>conexões.</em>','Treinamento real, com seus exemplos e resultados mensuráveis.'], about:['Entenda cada <em>conexão.</em>','Um laboratório aberto para explorar memória e aprendizado.']};
+  titles.experiments=['Uma pergunta. Dois <em>contextos.</em>','Compare, investigue e repita. A influência da memória, à vista.'];
   $('#page-title').innerHTML = titles[view][0]; $('#page-subtitle').textContent = titles[view][1];
-  if (view === 'network') requestAnimationFrame(() => graphResize?.());
+  if (view === 'network'||view==='experiments') requestAnimationFrame(() => {drawGraph();graphResize?.();});
 }
+const experimentTab=document.createElement('button');experimentTab.className='tab';experimentTab.dataset.view='experiments';experimentTab.textContent='Experimentos';$('.tabs').append(experimentTab);
 $$('[data-view]').forEach(el => el.onclick = () => setView(el.dataset.view));
 function setMode(next) {
   mode = next;
@@ -336,7 +344,7 @@ $('#close-connection').onclick=()=>$('#connection-dialog').close();
 $('#save-key').onclick=async()=>{apiKey=$('#api-key').value.trim();sessionStorage.setItem('nexo-key',apiKey);$('#connection-dialog').close();await checkHealth();refresh().catch(e=>toast(e.message,true));};
 
 // A living visual network is distinct from persisted memory nodes.
-let graphResize=null, drawGraph=()=>{}, highlightGraph=()=>{}, sceneController=null;
+let graphResize=null, drawGraph=()=>{}, highlightGraph=()=>{}, sceneController=null,experimentGraph=null;
 let activityTimer=null,integrating=false,graphMotionRunning=true,lastBirthState={count:0,phase:'idle'};
 function showBirthState(info){
   lastBirthState=info;integrating=info.count>0;clearTimeout(activityTimer);
@@ -351,7 +359,14 @@ function showBirthState(info){
   }else status.textContent=graphMotionRunning?'Rede em movimento · atividade visual ilustrativa':'Movimento pausado · pressione ▶ para retomar';
 }
 function showMotion(running){graphMotionRunning=running;if(integrating)showBirthState(lastBirthState);else $('#graph-activity').textContent=running?'Rede em movimento · atividade visual ilustrativa':'Movimento pausado · pressione ▶ para retomar';}
-function renderSceneGraph(){sceneController.draw(graphData,selectedSources,[...queuedBirths]);queuedBirths.clear();}
+function renderSceneGraph(){
+  if(currentView==='experiments'&&experimentGraph)sceneController.draw(experimentGraph,selectedSources,[]);
+  else {sceneController.draw(graphData,selectedSources,[...queuedBirths]);queuedBirths.clear();}
+}
+function selectGraphMemory(memory){
+  if(currentView==='experiments')toast(`Snapshot M${memory.id}: ${memory.text}`);
+  else openMemory(memory);
+}
 function networkActivity(stage,text='',learn=false){
   const panel=$('#graph-panel'), status=$('#graph-activity');
   clearTimeout(activityTimer);
@@ -366,8 +381,8 @@ function networkActivity(stage,text='',learn=false){
 async function initGraph(){
   try{
     const {createNeuralScene}=await import('./neural-scene.js?v=1.3.0');
-    sceneController=createNeuralScene({container:$('#graph'),isVisible:()=>currentView==='network',
-      onSelect:openMemory,buttonHTML:icon,onBirth:showBirthState,
+    sceneController=createNeuralScene({container:$('#graph'),isVisible:()=>currentView==='network'||currentView==='experiments',
+      onSelect:selectGraphMemory,buttonHTML:icon,onBirth:showBirthState,
       onMotion:showMotion,
       onHover:node=>{const tip=$('#node-tooltip');tip.hidden=!node;if(node)tip.textContent=`M${node.id} · ${node.label||'sem categoria'}\n${node.text.slice(0,150)}`;}});
     drawGraph=renderSceneGraph;
@@ -377,7 +392,7 @@ async function initGraph(){
   }catch(error){
     console.warn('WebGL unavailable, using a living 2D projection.',error);
     const {createCanvasScene}=await import('./neural-canvas.js?v=1.3.0');
-    sceneController=createCanvasScene({container:$('#graph'),isVisible:()=>currentView==='network',buttonHTML:icon,onSelect:openMemory,onBirth:showBirthState,onMotion:showMotion});
+    sceneController=createCanvasScene({container:$('#graph'),isVisible:()=>currentView==='network'||currentView==='experiments',buttonHTML:icon,onSelect:selectGraphMemory,onBirth:showBirthState,onMotion:showMotion});
     drawGraph=renderSceneGraph;highlightGraph=()=>sceneController.highlight(selectedSources);graphResize=()=>sceneController.resize();
     drawGraph();$('#graph-mode').textContent='REDE VISUAL 2D';
     window.addEventListener('pagehide',()=>sceneController.dispose(),{once:true});
@@ -385,6 +400,9 @@ async function initGraph(){
 }
 $('#fullscreen').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await $('#graph-panel').requestFullscreen();}catch{toast('Seu navegador não permite tela cheia.');}};
 const graphReady=initGraph().catch(error=>{console.error('Visualização indisponível',error);toast('Não foi possível carregar o mapa. A conversa continua disponível; recarregue para tentar novamente.',true);});
+await mountExperiments({runtime:browserRuntime,operation,toast,onRecord:record=>{
+  experimentGraph=record.graph||null;selectedSources=record.trace?.sources.map(m=>m.id)||[];if(currentView==='experiments')drawGraph();
+},highlight:ids=>{selectedSources=ids;highlightGraph();return (experimentGraph||graphData).nodes.some(node=>ids.includes(node.id));}}).catch(error=>toast(error.message,true));
 await Promise.all([checkHealth(),refresh().catch(error=>toast(error.message,true))]);
 await graphReady;
 setInterval(()=>{if(!document.hidden&&!busy)checkHealth();},30000);

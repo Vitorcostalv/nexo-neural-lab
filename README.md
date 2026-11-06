@@ -1,4 +1,4 @@
-# Nexo · Neural Learning Lab
+# Nexo 2.0 · Neural Learning Lab
 
 **Laboratório interativo de deep learning, memória vetorial e RAG.**
 
@@ -6,6 +6,25 @@
 [![Deploy](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/pages.yml/badge.svg)](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/pages.yml)
 
 [Abrir aplicação](https://vitorcostalv.github.io/nexo-neural-lab/) · [Relatório técnico](docs/PRODUCAO.md)
+
+## Experimentos: a memória muda a resposta?
+
+A nova aba **Experimentos** da edição web compara a mesma pergunta sem recuperação e com contexto recuperado. As gerações são sequenciais, com o mesmo modelo, parâmetros e prompt-base, sem histórico da conversa. Inspecione os trechos, exclua uma memória da próxima comparação (sem apagá-la), altere top-k/limiar e execute novamente. Os dez últimos registros ficam no IndexedDB, com snapshots, prompts, tempos e exportação JSON.
+
+Para apresentar o fluxo imediatamente, escolha **Demonstração sem download de modelos**. Esse modo usa vetores artificiais e respostas roteirizadas, sempre identificados como simulação; não mede uma LLM e não altera a base pessoal. O mapa dentro de Experimentos usa o snapshot, destaca os trechos selecionados e inclui memórias relevantes antigas fora das 180 mais recentes.
+
+O ranking mostra 20 candidatos por página, scores e motivos de seleção/exclusão. Barras mostram participação em caracteres no contexto recuperado; não são atenção da LLM nem influência causal medida. Carregamento, aquecimento e geração têm tempos separados. O primeiro fragmento de texto é uma aproximação do primeiro token. Uma execução isolada não constitui benchmark.
+
+Em **Avaliar recuperação**, execute o MiniLM real sobre oito memórias fictícias e oito perguntas versionadas, com relevância esperada explícita. Consulte precisão, recall, MRR e hit rate e exporte o relatório. Não há métricas sem execução nem avaliação automática da qualidade da LLM.
+
+[Guia do Nexo 2.0: demonstração, contratos e limites](docs/NEXO-2.0.md).
+
+| Suporte 2.0 | Web / GitHub Pages | Python local |
+|---|---|---|
+| Comparação controlada e histórico de experimentos | Sim | Não; interface informa o suporte web |
+| Recuperação configurável e auditável | Sim | API `/api/search` |
+| Corpus Aurora e métricas na interface | Sim | Não |
+| Conversa, ensino, MLP, mapa, importação/exportação | Preservados | Preservados |
 
 ![Nexo: memórias formando novas conexões](reports/nexo-birth.png)
 
@@ -37,7 +56,7 @@ O mapa representa memórias e similaridades aproximadas. Neurônios e impulsos d
 4. Em **Treinamento**, adicione os 18 exemplos didáticos e treine. Veja curvas de perda e resultados separados de treino e validação.
 5. Use **Exportar** para guardar uma cópia dos textos e categorias.
 
-**Primeiro carregamento:** aproximadamente 650 MB em modelos, além do runtime. Downloads podem levar minutos e exigem internet e espaço no dispositivo. A aplicação informa o progresso. WebGPU acelera a geração quando disponível; WebAssembly oferece execução em CPU. Dispositivos com pouca memória podem não carregar a LLM. O modelo compacto tem capacidade e qualidade inferiores à edição local, especialmente em português.
+**Primeiro carregamento:** centenas de MB em modelos, além do runtime; os artefatos ONNX CPU verificados somam aproximadamente 0,9 GB (Qwen q4: 786 MB; MiniLM q8: 118 MB). O caminho WebGPU usa outros artefatos e pode variar. Downloads podem levar minutos e exigem internet e espaço no dispositivo. A aplicação informa o progresso. WebGPU acelera a geração quando disponível; WebAssembly oferece execução em CPU. Dispositivos com pouca memória podem não carregar a LLM. O modelo compacto tem capacidade e qualidade inferiores à edição local, especialmente em português.
 
 Memórias ficam no navegador e não são sincronizadas. Limpar dados do site, usar navegação privada ou perder o dispositivo pode apagá-las. Exporte regularmente. Use uma aba por vez para editar a base. Arquivos exportados podem ser importados em ambas as edições; embeddings são recalculados no destino.
 
@@ -98,6 +117,8 @@ Memórias -> projeção 3D -> nós e sinapses animados
 | `app/neural/` | API, SQLite, RAG, conversa, MLP NumPy |
 | `app/ollama_client.py` | Cliente e streaming da inferência local |
 | `lab-web/browser/` | Persistência e inferência da edição web |
+| `lab-web/browser/retrieval.js`, `experiment-core.js`, `evaluation.js` | Busca auditável, execução controlada e avaliação versionada |
+| `lab-web/experiments.js`, `experiments.css` | Interface responsiva dos experimentos |
 | `lab-web/neural-*.js` | Visualização 3D/2D e animações |
 | `tests/`, `lab-web/tests/` | Testes sem baixar modelos |
 | `scripts/build-web.mjs` | Build estático com caminhos relativos |
@@ -112,7 +133,7 @@ node --test lab-web/tests/*.test.js
 node scripts/build-web.mjs
 ```
 
-Na preparação da publicação: **44 testes Python e 20 JavaScript passaram**. Cobrem persistência, autenticação local, deduplicação, streaming, bloqueios, treinamento, busca vetorial e animações. Isso não garante correção factual de todas as respostas. Validação com poucos exemplos não comprova generalização; softmax não fornece probabilidades calibradas.
+Os testes cobrem persistência, autenticação local, deduplicação, streaming, bloqueios, treinamento, busca vetorial, animações e os contratos de experimentos/cancelamento. Testes de inferência usam doubles explícitos e não medem qualidade de modelos reais. Isso não garante correção factual de todas as respostas. Validação com poucos exemplos não comprova generalização; softmax não fornece probabilidades calibradas. Consulte a verificação desta evolução em [NEXO-2.0.md](docs/NEXO-2.0.md).
 
 ## Privacidade e limites
 

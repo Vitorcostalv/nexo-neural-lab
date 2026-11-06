@@ -59,7 +59,7 @@ async def authorize(request: Request, x_api_key: Annotated[str | None, Header()]
             raise HTTPException(401, 'Configure a chave local no botão Conexão.')
 
 
-app = FastAPI(title='Nexo · Laboratório de memória neural', version='1.3.0', lifespan=lifespan, dependencies=[Depends(authorize)])
+app = FastAPI(title='Nexo · Laboratório de memória neural', version='2.0.0', lifespan=lifespan, dependencies=[Depends(authorize)])
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 
@@ -118,6 +118,9 @@ class ChatInput(MemoryInput):
 
 class SearchInput(BaseModel):
     query: str = Field(min_length=1, max_length=6000)
+    limit: int = Field(default=5, ge=1, le=20, strict=True)
+    threshold: float = Field(default=.4, ge=-1, le=1, allow_inf_nan=False)
+    excluded_ids: list[Annotated[int, Field(strict=True, gt=0)]] = Field(default_factory=list, max_length=5000)
 
 
 class LabelInput(BaseModel):
@@ -247,7 +250,8 @@ async def search(body: SearchInput):
     busy()
     async with operation_lock, ollama.inference_lock:
         vector = (await embeddings([body.query], query=True))[0]
-        return {'sources': store.retrieve(vector), 'prediction': network.predict(vector)}
+        trace = store.search_trace(vector, body.limit, body.threshold, body.excluded_ids)
+        return {'sources': trace['sources'], 'prediction': network.predict(vector), 'trace': trace}
 
 
 async def chat_events(body: ChatInput,stream=False):
