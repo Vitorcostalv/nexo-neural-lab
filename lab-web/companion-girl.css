@@ -1,4 +1,5 @@
-/* Layout only. The central rig owns all character transforms. */
+/* Archived SVG motion remains in source; the active stage uses authored GLB clips. */
+.girl-character{cursor:default!important}.companion-static,.companion-canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.companion-canvas canvas{display:block;width:100%;height:100%}.companion-static[hidden]{display:none}.girl-pose-buttons button:disabled{opacity:.45;cursor:default}
 .girl-scene{height:418px;min-height:418px;background:#10221c;border-color:#304b3c}.girl-scene:before{background:none}
 .girl-character{position:relative;z-index:1;width:min(100%,410px);height:405px;margin:0;padding:0;align-self:end;background:transparent;border:0;border-radius:16px;color:inherit;cursor:pointer;touch-action:manipulation}.girl-character:disabled{opacity:1;cursor:default}.girl-character:focus-visible{outline:2px solid #bce5b5;outline-offset:-6px}.nexo-girl{display:block;width:100%;height:100%;overflow:hidden}
 .girl-scene .companion-coordinates{left:18px;top:17px;font-size:8px;letter-spacing:.18em;z-index:2;pointer-events:none}.girl-scene .companion-signal{left:18px;bottom:12px;font-size:9px;z-index:2;pointer-events:none}

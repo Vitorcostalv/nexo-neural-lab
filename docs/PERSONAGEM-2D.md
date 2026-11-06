@@ -1,5 +1,7 @@
 # Revisão da personagem — apoio, contato e transições
 
+> Documento histórico: a revisão visual posterior do usuário reprovou a composição de digitação e a pose feliz. Este rig não é mais montado pela aplicação ativa. Consulte [Companheira 3D](COMPANHEIRA-3D.md); os vídeos offline anteriores não aprovam a versão 3D.
+
 **Publicação autorizada para teste no navegador.** Esta revisão usa o workflow existente do GitHub Pages, após o pedido explícito de deploy. [Aplicação](https://vitorcostalv.github.io/nexo-neural-lab/) · [Publicações](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/pages.yml). Não houve migração de dados, alteração de modelos ou de configuração de serviços externos. As limitações de validação visual descritas abaixo continuam válidas.
 
 ## O que estava errado

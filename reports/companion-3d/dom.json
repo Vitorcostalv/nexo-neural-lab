@@ -1,0 +1,15 @@
+{
+  "created": "2026-11-06T17:32:07.799Z",
+  "classification": "jsdom with explicit scene and visibility doubles; no visual approval",
+  "checks": [
+    "pending asset uses static portrait, never downloads models or fabricates animated task execution",
+    "lazy load on visibility; real task preempts previews; cancellation and stale activity cannot revive typing",
+    "hidden, offscreen and inactive views stop the single render loop",
+    "off/reduced have no continuous rendering; context failure disposes scene and restores portrait",
+    "late asynchronous scene load is disposed after page teardown"
+  ],
+  "limitations": [
+    "No artist-approved GLB is available.",
+    "No WebGL rendering, browser layout, physical contact, complete visual cycles or video capture tested."
+  ]
+}

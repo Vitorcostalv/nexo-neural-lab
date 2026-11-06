@@ -9,9 +9,9 @@
 
 ## Companheiro e continuidade local
 
-**Revisão do sistema de animação:** [novo rig 2D, digitação sentada, clipes offline e testes](docs/PERSONAGEM-2D.md). A publicação pelo GitHub Pages foi autorizada para a validação no navegador; a revisão visual real ainda precisa ser concluída.
+**Companheira 3D (integração em revisão):** [estado, dependência de asset, contrato e evidências](docs/COMPANHEIRA-3D.md). O modelo final não está disponível; a interface local usa apresentação estática, sem os movimentos SVG reprovados. Esta revisão não foi publicada.
 
-Companheira humana ilustrada com braços/pernas articulados e poses de pensar, caminhar, digitar, felicidade, confusão e estudo. Estados acompanham operações reais; prévias de gestos são explícitas. Conversa compartilhada com a rede semântica, Biblioteca lateral reunindo memórias/documentos, foco no mapa e controle de movimento. O personagem digital anterior permanece preservado, sem uso. Perfis locais isolam dados por ID, preservando os dados anteriores; backup JSON validado, restauração em novo perfil ou mesclagem sem sobrescrita silenciosa e CSV com prévia estão disponíveis no botão do perfil.
+Companheira de cabelo escuro e roupa verde, conversa compartilhada com a Rede semântica, Biblioteca lateral e controle de movimento. Three.js e AnimationMixer estão preparados para um GLB articulado com nove clips revisados; nenhum modelo provisório é habilitado. As versões SVG e digital anteriores permanecem preservadas, sem uso ativo. Perfis locais, memórias, documentos e backups permanecem disponíveis.
 
 A edição estática é publicada pelo workflow existente do GitHub Pages. [Guia de uso, persistência, formatos, testes e limitações do Nexo 4.0](docs/NEXO-4.0.md) · [Prompt de testes para o Codex do navegador](docs/TESTE-NAVEGADOR.md).
 

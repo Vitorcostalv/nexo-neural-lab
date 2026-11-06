@@ -1,0 +1,53 @@
+{
+  "created": "2026-11-06T17:32:43.559568+00:00",
+  "status": "incomplete-awaiting-reviewed-character-asset",
+  "published": false,
+  "characterAssetIncluded": false,
+  "activePresentation": "existing identity, static SVG portrait",
+  "checks": {
+    "javascriptTests": 76,
+    "pythonTests": 63,
+    "pythonWarnings": [
+      "Starlette/AnyIO BlockingPortal deprecation"
+    ],
+    "build": "passed",
+    "nestedHttpResources": 68,
+    "companionDom": "passed with explicit scene doubles",
+    "researchDom": "passed with explicit model doubles",
+    "profilesIndexedDB": "passed in IndexedDB emulation"
+  },
+  "visual": {
+    "desktopWalkCycles": null,
+    "desktopTypeCycles": null,
+    "mobileWalkCycles": null,
+    "mobileTypeCycles": null,
+    "videos": [],
+    "status": "blocked",
+    "reasons": [
+      "No approved character GLB/clips available.",
+      "Computer Use browser access host and native pipe unavailable."
+    ]
+  },
+  "vendor": [
+    {
+      "file": "lab-web/vendor/GLTFLoader.js",
+      "source": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/loaders/GLTFLoader.js",
+      "license": "MIT",
+      "sha256": "515e48b60852e33284cae6d0560fda59ad7e1d16956c88f207da5f83470b2bec",
+      "modifications": "Only dependency import paths changed to local modules."
+    },
+    {
+      "file": "lab-web/vendor/BufferGeometryUtils.js",
+      "source": "https://raw.githubusercontent.com/mrdoob/three.js/r180/examples/jsm/utils/BufferGeometryUtils.js",
+      "license": "MIT",
+      "sha256": "f07a335d7603eb09a46536fd8492bcb7ae8ef9c99b9c06e9910b2958f0b87310",
+      "modifications": "Only dependency import paths changed to local modules."
+    }
+  ],
+  "limits": [
+    "No new real-model inference executed.",
+    "No WebGL character scene was rendered or visually approved.",
+    "Synthetic tracks test actual AnimationMixer sequencing only.",
+    "Existing offline SVG videos do not validate this revision."
+  ]
+}
