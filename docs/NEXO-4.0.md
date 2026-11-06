@@ -41,6 +41,8 @@ Documentos, bancada e aprendizado ativo da interface Python continuam em Indexed
 
 A interface informa: **“Perfis salvos neste navegador. Sem senha e sem sincronização entre dispositivos.”** Qualquer pessoa com acesso ao navegador pode trocar de perfil. O recurso não protege acesso a dados. Na edição Python, o servidor continua local; eventual chave global da API preexistente é independente dos perfis.
 
+Renomear, excluir e confirmar restauração usam controles dentro do painel de perfis, sem `alert()`, `prompt()` ou `confirm()` do navegador. O campo recebe foco; cancelar ou Escape retorna ao botão de origem, sem alterar os dados. Exclusão mantém a confirmação textual exata. Erros aparecem no próprio formulário, e ações concorrentes ficam desabilitadas durante a confirmação/gravação.
+
 O estado de salvamento fica abaixo do compositor. Erros/quota são mostrados no status/toast, mantendo o estado ativo anterior em importações/restaurações. Conversas não se transformam automaticamente em conhecimento. Na web, mudar a base reinicia somente o contexto da conversa, preservando o histórico visível. Histórico web: até 10.000 mensagens; ao atingir o limite, exportar/limpar é explícito. Python mantém seu limite anterior de 200 mensagens. Experimentos legados conservam os 10 últimos; avaliações legadas agora são persistidas, até 20. Resultados documentais mantêm o limite de 20 sem descarte silencioso.
 
 ## Backup JSON
@@ -91,7 +93,7 @@ Os nomes completos das colunas refletem os campos persistidos de cada tipo/ediç
 
 Em 06/11/2026:
 
-- `node --test lab-web/tests/*.test.js`: **59 testes passaram**, incluindo FSM, JSON/CSV, conflitos e foco/movimento/destaques com objetos Three reais e renderer substituto.
+- `node --test lab-web/tests/*.test.js`: **60 testes passaram**, incluindo proteção contra diálogos nativos, FSM, JSON/CSV, conflitos e foco/movimento/destaques com objetos Three reais e renderer substituto.
 - `.venv/Scripts/python.exe -m pytest -q`: **63 testes passaram**, incluindo isolamento SQLite, streaming com perfil capturado, restauração em geração isolada, conflitos e mapa com memória antiga. Permanece o aviso de depreciação `BlockingPortal` do Starlette/AnyIO.
 - `node scripts/validate-profiles.mjs`: integração IndexedDB com `fake-indexeddb`, migração, recarga, leases entre abas, arquivos/versões/labels/queries, falha de publicação e mesclagem. Artefato: [profiles-v4-storage.json](../reports/profiles-v4-storage.json).
 - `node scripts/validate-research-dom.mjs`: aplicação completa em jsdom, eventos dos recursos anteriores e novos, conversa compartilhada, preferências, CSV/backup, bloqueio de troca, cancelamento e erros. Larguras emuladas de 360 e 1440 não constituem teste de layout. Artefato: [research-v3-dom.json](../reports/research-v3-dom.json).

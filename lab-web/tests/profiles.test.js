@@ -1,5 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
+import {readdir,readFile} from 'node:fs/promises';
 import {ActivityState} from '../activity-state.js';
 import {displayName} from '../profiles/manager.js';
 import {parseCsv,csvMemories,validateBackup,mergeData} from '../profiles/backup.js';
@@ -7,6 +8,10 @@ import {exportCsv,hash,EMBEDDING} from '../lab/contracts.js';
 
 const data=()=>({legacy:{memories:[],messages:[],experiments:[],nextId:1},research:{catalog:[],indices:[],files:[],results:[],active:[]}});
 const pack=async d=>{const manifest={format:'nexo-profile',version:1,profile:{id:'profile',name:'João'},embedding:EMBEDDING,counts:{memories:0,pendingMemories:0,messages:0,experiments:0,evaluations:0,documents:0,versions:0,chunks:0,annotations:0,catalog:0,indices:0,files:0,results:0,active:0}};return {manifest,data:d,integrity:await hash({manifest,data:d})};};
+test('application code does not open native alert, confirm or prompt dialogs',async()=>{
+  async function check(directory){for(const entry of await readdir(directory,{withFileTypes:true})){if(['vendor','tests'].includes(entry.name))continue;const url=new URL(entry.name+(entry.isDirectory()?'/':''),directory);if(entry.isDirectory())await check(url);else if(entry.name.endsWith('.js'))assert.doesNotMatch(await readFile(url,'utf8'),/\b(?:alert|confirm|prompt)\s*\(/,url.pathname);}}
+  await check(new URL('../',import.meta.url));
+});
 test('display names do not become identifiers and reject empty/control input',()=>{assert.equal(displayName('  João da Conceição  '),'João da Conceição');for(const name of ['', '  ','a'.repeat(49),'Nome\n'])assert.throws(()=>displayName(name));});
 test('CSV round-trips Portuguese, commas, quotes and multiline text with formula protection',()=>{
   const text='São Paulo, João disse "olá".\nAmanhã: ação e conexão.',csv=exportCsv([{text,label:'português'},{text:'=HYPERLINK("x")',label:'@risco'}]),rows=parseCsv(csv);

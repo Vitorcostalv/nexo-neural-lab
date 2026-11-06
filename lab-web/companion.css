@@ -4,3 +4,5 @@
 [data-state=receiving] .being-eyes{animation:none;transform:translateY(-2px) scale(1.05)}[data-state=cancelled] .being-eyes{animation:none;transform:scaleY(.65)}[data-state=retrieving] .companion-orbit{border-style:dashed;animation:being-orbit 2.5s linear infinite}@keyframes being-orbit{to{transform:rotate(341deg)}}
 
 #profiles-dialog .row-actions{flex-wrap:wrap}#profiles-dialog select,#profiles-dialog input{max-width:100%}.graph-bottom .legend{display:flex;flex-wrap:wrap;gap:7px;max-width:calc(100% - 100px)}
+
+#profiles-dialog .profile-action{margin:18px 0;padding:20px;border:1px solid #6ea080;border-radius:8px}#profiles-dialog .profile-action h3{margin-top:0}#profiles-dialog [data-action-error]{color:#ffc491;white-space:pre-wrap}#profiles-dialog .profile-action input{width:100%}

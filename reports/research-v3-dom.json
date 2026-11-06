@@ -1,5 +1,5 @@
 {
-  "created": "2026-11-06T04:22:43.489Z",
+  "created": "2026-11-06T14:38:52.981Z",
   "classification": "DOM emulation with explicit model doubles",
   "widths": [
     360,
@@ -17,7 +17,9 @@
     "companion/network share the same live conversation element and persisted history",
     "explicit teaching preserves history; actual retrieved IDs reach graph highlights and streamed response",
     "motion preference persists and reaches both companion CSS and graph controller",
+    "rename/delete use inline controls with validation, cancel/Escape and restored focus; native dialogs are forbidden",
     "profile JSON export contains persistent conversation, documents, annotations and retrieved-memory provenance",
+    "new-profile restore and merge confirmations stay inside the app and cancellation performs no mutation",
     "JSON restore preview validates before enabling commit; invalid input blocks restore",
     "CSV mapping, multiline Portuguese preview and explicit memory import work through UI events",
     "active experiment blocks profile switching; cancellation terminates worker and updates companion plus condition states",
