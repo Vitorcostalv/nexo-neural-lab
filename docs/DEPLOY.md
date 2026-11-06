@@ -1,0 +1,11 @@
+# Publicação no GitHub Pages
+
+O workflow `.github/workflows/pages.yml` testa os módulos JavaScript e gera `dist` no job `build`. O job `deploy` depende dele e publica o artefato recebido pelo output `artifact_name`. Push em `main` e execução manual acionam esse fluxo. Não é necessário mudar a configuração externa do Pages, que já usa GitHub Actions.
+
+Cada artefato recebe o nome `github-pages-<run_id>-<run_attempt>`. Reexecutar um job de build não pode fazer o publicador encontrar dois pacotes com o mesmo nome. Se apenas o job de deploy falhar, reexecutar os jobs com falha reutiliza o output do build concluído. Não escolher manualmente um artefato de outro commit.
+
+As ações de Pages foram atualizadas para `configure-pages@v6`, `upload-pages-artifact@v5` e `deploy-pages@v5.0.1`, com runtime Node 24 compatível com runners hospedados atuais. O Node da aplicação continua em 22. O upload inclui `.nojekyll`, gerado pelo build. A separação dos jobs e o nome explícito seguem os contratos das [ações oficiais de Pages](https://github.com/actions/deploy-pages) e do [upload](https://github.com/actions/upload-pages-artifact).
+
+Diagnóstico em 06/11/2026: testes e build do commit `da2d945` passaram, mas duas execuções independentes retornaram `deployment_queued` e depois `Deployment failed, try again later`. Uma repetição também revelou artefatos duplicados. O pacote da execução `42268406743` foi baixado e inspecionado: 119 entradas, 6.365.876 bytes descompactados, `index.html` presente e nenhum link simbólico, hard link ou caminho inválido. Não foi identificada uma causa no conteúdo do pacote para a falha da fila do Pages. A atualização elimina o conflito reproduzível de artefatos; não se afirma que um erro interno do Pages seja corrigido apenas por atualizar ações.
+
+Para verificar uma publicação, conferir o resultado do workflow **e** buscar o HTML público. Os imports e estilos devem conter o SHA completo do commit publicado. Verificar também `assets/companion-girl.js`, `assets/companion-stage.js` e `assets/companion-static.svg`, com HTTP 200 e a revisão correta. HTTP 200 do HTML sozinho pode corresponder a uma versão antiga. A personagem continua estática enquanto o asset GLB revisado estiver pendente.
