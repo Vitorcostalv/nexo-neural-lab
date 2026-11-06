@@ -1,5 +1,5 @@
 {
-  "created": "2026-11-06T17:32:07.799Z",
+  "created": "2026-11-06T18:43:59.192Z",
   "classification": "jsdom with explicit scene and visibility doubles; no visual approval",
   "checks": [
     "pending asset uses static portrait, never downloads models or fabricates animated task execution",
@@ -9,7 +9,7 @@
     "late asynchronous scene load is disposed after page teardown"
   ],
   "limitations": [
-    "No artist-approved GLB is available.",
+    "This script uses an explicit scene double; actual licensed GLB browser evidence is recorded separately.",
     "No WebGL rendering, browser layout, physical contact, complete visual cycles or video capture tested."
   ]
 }

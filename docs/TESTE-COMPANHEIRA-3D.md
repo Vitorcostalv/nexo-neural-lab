@@ -1,5 +1,7 @@
 # Prompt para o Codex do navegador — revisão da companheira
 
+> Protocolo de aceitação para a entrega completa. A versão chibi atual tem clips sociais e está publicada para teste: use primeiro [o prompt e as capacidades atuais](COMPANHEIRA-CHIBI.md#prompt-para-testar-a-publicação). Não aprove digitação ou leitura sem esses clips.
+
 Copie o texto abaixo. Use a versão local desta revisão: a página pública ainda contém a versão anterior.
 
 ```text

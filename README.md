@@ -9,9 +9,9 @@
 
 ## Companheiro e continuidade local
 
-**Companheira 3D (integração em revisão):** [estado, dependência de asset, contrato e evidências](docs/COMPANHEIRA-3D.md). O modelo final não está disponível; a interface local usa apresentação estática, sem os movimentos SVG reprovados. Esta revisão não foi publicada.
+**Companheira 3D para teste:** [menina chibi, origem/licenças, clips e vídeos de navegador](docs/COMPANHEIRA-CHIBI.md). Modelo GLB articulado, AnimationMixer, repouso, aceno, passos no lugar, sentar/levantar e satisfação. Digitação, leitura e dúvida continuam pendentes.
 
-Companheira de cabelo escuro e roupa verde, conversa compartilhada com a Rede semântica, Biblioteca lateral e controle de movimento. Three.js e AnimationMixer estão preparados para um GLB articulado com nove clips revisados; nenhum modelo provisório é habilitado. As versões SVG e digital anteriores permanecem preservadas, sem uso ativo. Perfis locais, memórias, documentos e backups permanecem disponíveis.
+A companheira 3D tem cabelo escuro e roupa verde, controles de gestos dentro da cena, respeito a movimento reduzido/desativado e fallback estático da mesma personagem. As versões SVG e digital anteriores estão preservadas. Conversa, Rede semântica, Biblioteca, perfis locais e backups continuam disponíveis.
 
 A edição estática é publicada pelo workflow existente do GitHub Pages. [Guia de uso, persistência, formatos, testes e limitações do Nexo 4.0](docs/NEXO-4.0.md) · [Prompt de testes para o Codex do navegador](docs/TESTE-NAVEGADOR.md).
 

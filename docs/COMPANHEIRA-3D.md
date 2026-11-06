@@ -1,5 +1,7 @@
 # Companheira 3D — integração disponível, personagem final pendente
 
+> Histórico da integração sem asset. A revisão atual possui uma menina chibi GLB para teste, com um subconjunto de clips: [estado, licenças e evidências atuais](COMPANHEIRA-CHIBI.md). A estação de digitação completa continua pendente.
+
 Revisão local de 06/11/2026. **Não publicada. Não aprovada visualmente. Não há GLB final incluído.**
 
 A revisão feita pelo usuário no Brave identificou notebook orientado incorretamente e antebraço sobre o rosto na apresentação SVG. O rig anterior foi preservado nos arquivos, mas deixou de ser montado pela entrada pública. A interface ativa usa um retrato SVG estático em repouso, derivado da identidade existente: cabelo escuro e roupa verde. Não reproduz os gestos reprovados e não apresenta o retrato como personagem 3D concluída.

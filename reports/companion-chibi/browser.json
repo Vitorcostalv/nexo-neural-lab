@@ -1,0 +1,52 @@
+[
+  {
+    "name": "desktop",
+    "width": 1420,
+    "height": 900,
+    "renderer": "real WebGL via SwiftShader",
+    "completedMixerLoops": {
+      "walk": 4,
+      "seated": 3
+    },
+    "typingCycles": null,
+    "contextLossFallback": true,
+    "errors": [],
+    "lifecycle": {
+      "pose": "seated",
+      "lateAccepted": false
+    },
+    "limitations": [
+      "Mixer counts confirm playback, not visual quality or planted-foot contact.",
+      "Walk is an authored in-place cycle, without locomotion/contact approval.",
+      "Seated is not typing.",
+      "Headless desktop browser size emulation; not physical mobile.",
+      "Activity lifecycle injection is not real inference."
+    ],
+    "video": "desktop.webm"
+  },
+  {
+    "name": "mobile",
+    "width": 380,
+    "height": 844,
+    "renderer": "real WebGL via SwiftShader",
+    "completedMixerLoops": {
+      "walk": 4,
+      "seated": 3
+    },
+    "typingCycles": null,
+    "contextLossFallback": true,
+    "errors": [],
+    "lifecycle": {
+      "pose": "seated",
+      "lateAccepted": false
+    },
+    "limitations": [
+      "Mixer counts confirm playback, not visual quality or planted-foot contact.",
+      "Walk is an authored in-place cycle, without locomotion/contact approval.",
+      "Seated is not typing.",
+      "Headless desktop browser size emulation; not physical mobile.",
+      "Activity lifecycle injection is not real inference."
+    ],
+    "video": "mobile.webm"
+  }
+]

@@ -20,6 +20,13 @@ reports/nexo-mobile.png
 documents/
 runtime/
 models/
+!lab-web/models/
+lab-web/models/*
+!lab-web/models/nexo-chibi.glb
+!lab-web/models/nexo-static.png
+!lab-web/models/provenance.json
+!lab-web/models/LICENSE-character.txt
+!lab-web/models/LICENSE-animations.txt
 data/
 logs/
 documents/**/*.md

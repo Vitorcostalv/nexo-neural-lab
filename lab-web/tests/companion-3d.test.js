@@ -1,10 +1,12 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';import {createHash} from 'node:crypto';
 import {Object3D,AnimationClip,NumberKeyframeTrack} from '../vendor/three.module.js';
 import {CompanionPlayer} from '../companion-player.js';import {CLIPS,companionAsset,validateAsset,inspectGLB} from '../companion-asset.js';
 const names=Object.fromEntries(CLIPS.map(key=>[key,key]));
 function player(){const root=new Object3D();root.name='fixture';return new CompanionPlayer(root,CLIPS.map(name=>new AnimationClip(name,.5,[new NumberKeyframeTrack('fixture.position[x]',[0,.5],[0,0])])),names);}
 const advance=(p,n=16)=>{for(let i=0;i<n;i++)p.update(.05);};
-test('no unreviewed substitute character is enabled',()=>{assert.equal(companionAsset.status,'pending');assert.equal(companionAsset.asset,null);assert.throws(()=>validateAsset(null),/GLB local/);});
+test('licensed chibi is explicitly enabled for user review with honest capabilities',()=>{assert.equal(companionAsset.status,'ready');assert.equal(companionAsset.asset.review.status,'for-user-review');assert.equal(companionAsset.asset.credits.license,'CC0-1.0');assert.equal(companionAsset.asset.clips.type,undefined);assert.equal(companionAsset.asset.clips.read,undefined);assert.equal(validateAsset(companionAsset.asset),companionAsset.asset);assert.throws(()=>validateAsset(null),/GLB local/);});
+test('shipped character has the exact manifest hash, skin and advertised authored clips',async()=>{const bytes=await readFile(new URL('../models/nexo-chibi.glb',import.meta.url));assert.equal(createHash('sha256').update(bytes).digest('hex'),companionAsset.asset.sha256);const json=inspectGLB(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));assert.ok(json.skins.length>0);for(const name of Object.values(companionAsset.asset.clips))assert.ok(json.animations.some(clip=>clip.name===name),name);assert.equal(json.nodes.some(node=>/Knife|Crossbow|Throwable/.test(node.name||'')),false);});
 test('asset contract requires nine distinct clips, provenance and review',()=>{
   const asset={url:'./models/nexo.glb',sha256:'a'.repeat(64),credits:{author:'fixture',source:'https://example.org',license:'CC0',licenseUrl:'https://example.org/license'},clips:names,cameras:{desktop:'D',mobile:'M'},nodes:{floor:'F',desk:'D',chair:'C',screen:'S',keyboard:'K'},review:{videos:['desktop.mp4','mobile.mp4'],walkCycles:3,typeCycles:3,reviewer:'Fixture only'}};
   assert.equal(validateAsset(asset),asset);assert.throws(()=>validateAsset({...asset,clips:{...names,type:'idle'}}),/próprio/);assert.throws(()=>validateAsset({...asset,review:null}),/pendente/);assert.throws(()=>validateAsset({...asset,url:'./models/../bad.glb'}),/local/);

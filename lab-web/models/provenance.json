@@ -1,0 +1,81 @@
+{
+  "author": "Kay Lousberg",
+  "license": "CC0-1.0",
+  "characterPage": "https://kaylousberg.itch.io/kaykit-adventurers",
+  "animationPage": "https://kaylousberg.itch.io/kaykit-character-animations",
+  "sources": [
+    {
+      "name": "Rogue.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/672074b73ba276876a19e8816ecdc5241817ab47/addons/kaykit_character_pack_adventures/Characters/gltf/Rogue.glb",
+      "sha256": "e825437cd4d2ee9c1960b517a74a69101e33eb409ae7fa8cedc7134a998fbb7d"
+    },
+    {
+      "name": "LICENSE-character.txt",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/672074b73ba276876a19e8816ecdc5241817ab47/LICENSE.txt",
+      "sha256": "ae322141814056dda0deea7540d74c41d87aee1da319977cd1bd84ee5a923629"
+    },
+    {
+      "name": "Simulation.glb",
+      "url": "https://raw.githubusercontent.com/NoLimitNexus/game-models/d188ebf93ceb3c4b95ba9bc6b1856cd1fd34915d/library/animations/Rig_Medium_Simulation.glb",
+      "sha256": "3fadbea6b1de627c1052ce005857f928b00c70d4ca1fcd7ece352e5d049ce0ba"
+    },
+    {
+      "name": "LICENSE-animations.txt",
+      "url": "https://raw.githubusercontent.com/NoLimitNexus/game-models/d188ebf93ceb3c4b95ba9bc6b1856cd1fd34915d/licenses/kaykit-character-animations.txt",
+      "sha256": "88ae6e8a912f0587599ca8beb49a32f217714bf33b145c81d28e34dbd9652d0b"
+    }
+  ],
+  "output": {
+    "file": "nexo-chibi.glb",
+    "bytes": 869876,
+    "sha256": "7679fae1ecd3661cfa9f94657c65b10470116e2a1169355788756d273c5432ec"
+  },
+  "clips": [
+    {
+      "name": "idle",
+      "duration": 1.0666667222976685,
+      "tracks": 124
+    },
+    {
+      "name": "walk",
+      "duration": 1.0666667222976685,
+      "tracks": 124
+    },
+    {
+      "name": "sit",
+      "duration": 0.800000011920929,
+      "tracks": 124
+    },
+    {
+      "name": "seated",
+      "duration": 3.5999999046325684,
+      "tracks": 90
+    },
+    {
+      "name": "stand",
+      "duration": 0.800000011920929,
+      "tracks": 124
+    },
+    {
+      "name": "satisfaction",
+      "duration": 1.6666666269302368,
+      "tracks": 124
+    },
+    {
+      "name": "wave",
+      "duration": 2.125,
+      "tracks": 70
+    }
+  ],
+  "changes": [
+    "Removed handheld weapons",
+    "Darkened head texture brunette palette",
+    "Kept authored skeletal clips; added bench scale tracks and stage props/cameras",
+    "Imported Waving from matching named KayKit rig; review remains necessary"
+  ],
+  "limitations": [
+    "No typing, reading or doubt clip supplied",
+    "Walking clip is in-place; locomotion contact review pending",
+    "Not a complete nine-clip workstation character"
+  ]
+}
