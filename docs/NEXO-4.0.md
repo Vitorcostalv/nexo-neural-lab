@@ -1,5 +1,7 @@
 # Nexo 4.0 — presença e continuidade local
 
+**Revisão do sistema de animação:** o rig e a composição de digitação foram refeitos e sua publicação foi autorizada para teste no navegador. Consulte [Personagem 2D: implementação, clipes e limitações](PERSONAGEM-2D.md). As seções de animação abaixo também registram etapas anteriores; o documento da revisão descreve o código atual.
+
 Evolução implementada sobre o checkout existente, preservando os recursos do Nexo 2.0 e 3.0. A publicação autorizada em 06/11/2026 usa o workflow existente do GitHub Pages, sem alterar a configuração externa. [Aplicação](https://vitorcostalv.github.io/nexo-neural-lab/) · [Workflow de publicação](https://github.com/Vitorcostalv/nexo-neural-lab/actions/workflows/pages.yml) · [Prompt para validação no navegador](TESTE-NAVEGADOR.md).
 
 ## Demonstração

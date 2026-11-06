@@ -9,6 +9,8 @@
 
 ## Companheiro e continuidade local
 
+**Revisão do sistema de animação:** [novo rig 2D, digitação sentada, clipes offline e testes](docs/PERSONAGEM-2D.md). A publicação pelo GitHub Pages foi autorizada para a validação no navegador; a revisão visual real ainda precisa ser concluída.
+
 Companheira humana ilustrada com braços/pernas articulados e poses de pensar, caminhar, digitar, felicidade, confusão e estudo. Estados acompanham operações reais; prévias de gestos são explícitas. Conversa compartilhada com a rede semântica, Biblioteca lateral reunindo memórias/documentos, foco no mapa e controle de movimento. O personagem digital anterior permanece preservado, sem uso. Perfis locais isolam dados por ID, preservando os dados anteriores; backup JSON validado, restauração em novo perfil ou mesclagem sem sobrescrita silenciosa e CSV com prévia estão disponíveis no botão do perfil.
 
 A edição estática é publicada pelo workflow existente do GitHub Pages. [Guia de uso, persistência, formatos, testes e limitações do Nexo 4.0](docs/NEXO-4.0.md) · [Prompt de testes para o Codex do navegador](docs/TESTE-NAVEGADOR.md).

@@ -1,0 +1,14 @@
+{
+  "created": "2026-11-06T16:51:35.904Z",
+  "classification": "jsdom with explicit scheduler/visibility doubles",
+  "checks": [
+    "held gesture previews enter/leave a supported workstation and remain separate from real activity",
+    "real work preempts rapid previews; cancellation and late callbacks cannot revive old gestures",
+    "hidden tabs stop callbacks and resume without elapsed-time jumps",
+    "offscreen or inactive views pause; returning restarts only one loop",
+    "reduced motion ends after a short pose transition; disabled mode never starts a continuous loop"
+  ],
+  "limitations": [
+    "No actual browser visual validation, layout, refresh-rate or native intersection observer verification."
+  ]
+}

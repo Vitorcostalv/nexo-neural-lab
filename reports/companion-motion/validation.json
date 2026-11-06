@@ -1,0 +1,52 @@
+{
+  "created": "2026-11-06T16:54:35.868Z",
+  "classification": "Offline execution of the application rig and SVG renderer",
+  "fps": 24,
+  "clips": [
+    {
+      "pose": "walking",
+      "seconds": 10,
+      "frames": 240,
+      "file": "walking.mp4",
+      "maximumReachError": 3.197442310920451e-14,
+      "maximumPlantedFootDrift": 0,
+      "maximumKeyboardContactError": null,
+      "typingBursts": null
+    },
+    {
+      "pose": "typing",
+      "seconds": 10,
+      "frames": 240,
+      "file": "typing.mp4",
+      "maximumReachError": 2.1316282072803006e-14,
+      "maximumPlantedFootDrift": null,
+      "maximumKeyboardContactError": 0.42001215964386757,
+      "typingBursts": 6
+    },
+    {
+      "pose": "studying",
+      "seconds": 10,
+      "frames": 240,
+      "file": "studying.mp4",
+      "maximumReachError": 2.1316282072803006e-14,
+      "maximumPlantedFootDrift": null,
+      "maximumKeyboardContactError": null,
+      "typingBursts": null
+    },
+    {
+      "pose": "rapid",
+      "seconds": 10,
+      "frames": 240,
+      "file": "rapid.mp4",
+      "maximumReachError": 6.07087979554246e-14,
+      "maximumPlantedFootDrift": null,
+      "maximumKeyboardContactError": null,
+      "typingBursts": null
+    }
+  ],
+  "limitations": [
+    "Native browser access unavailable.",
+    "No real desktop/mobile layout, browser frame pacing or assistive technology verified.",
+    "MP4 files are offline SVG renders, not browser recordings."
+  ]
+}
